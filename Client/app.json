@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "afa778d3-076f-4e45-b433-726c955cf6e5"
+      }
+    },
+    "owner": "khaledzraiqi"
   }
 }
