@@ -3,7 +3,7 @@ run-name: Server deploy run
 on:
   push:
     paths:
-      - 'Client/**'
+      - 'Server/**'
     branches:
     - main
 jobs:
