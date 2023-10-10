@@ -2,8 +2,10 @@ name: Expo build
 run-name: Expo build run
 on:
   push:
-     branches:
-      - main
+    paths:
+      - 'Client/**'
+    branches:
+    - main
 jobs:
   build:
     name: Install and build
