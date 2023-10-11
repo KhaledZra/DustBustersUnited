@@ -1,5 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 
@@ -20,12 +26,14 @@ export default function ThemeProvider({ children }: PropsWithChildren) {
   //Temat som OS'et föreslår
   const autoScheme = useColorScheme();
 
-  const selectedScheme = colorScheme === "auto" ? autoScheme : colorScheme;
+  let selectedScheme = colorScheme === "auto" ? autoScheme : colorScheme;
+  let theme = selectedScheme === "dark" ? AppDarkTheme : AppLightTheme;
 
-  //välj rätt teamobjekt utifrån valt tema
-  const theme = selectedScheme === "dark" ? AppDarkTheme : AppLightTheme;
-
-  console.log(theme);
+  useEffect(() => {
+    selectedScheme = colorScheme === "auto" ? autoScheme : colorScheme;
+    theme = selectedScheme === "dark" ? AppDarkTheme : AppLightTheme;
+    console.log(theme);
+  });
 
   return (
     <ThemeContext.Provider value={{ setColorScheme }}>

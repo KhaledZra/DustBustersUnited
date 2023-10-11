@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import RootNavigator from "./src/RootNavigation";
 import ThemeProvider from "./src/themes/ThemeContext";
 
 export default function App() {
@@ -9,18 +9,8 @@ export default function App() {
     <SafeAreaProvider>
       <StatusBar style="auto" />
       <ThemeProvider>
-        <View style={styles.container}>
-          <Text>Open up App.tsx to start working on your app!</Text>
-        </View>
+        <RootNavigator />
       </ThemeProvider>
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
