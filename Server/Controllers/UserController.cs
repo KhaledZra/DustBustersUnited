@@ -40,4 +40,17 @@ public class UserController : ControllerBase
         _context.SaveChanges();
         return CreatedAtAction("Get", new { id = user.Id }, user);
     }
+
+    [HttpPost("login")]
+    public IActionResult Login(LoginModel loginModel)
+    {
+        var user = _context.UserAccounts.SingleOrDefault(u => u.UserName == loginModel.UserName);
+
+        if (user == null || user.Password != loginModel.Password)
+        {
+            return Unauthorized();
+        }
+        
+        return Ok("Nu är du inloggad");
+    }
 }
