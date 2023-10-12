@@ -12,11 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(u => u.UseSqlite("Data Sourc
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+// Need swagger to run during all build env
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
