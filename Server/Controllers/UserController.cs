@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using DTO;
 using User;
 
 [ApiController]
@@ -34,15 +32,16 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<UserAccount> Post(UserAccount user)
+    public ActionResult<UserAccount> Post(UserAccountDto user)
     {
-        _context.UserAccounts.Add(user);
+        var newUser = DtoToUser(user);
+        _context.UserAccounts.Add(newUser);
         _context.SaveChanges();
-        return CreatedAtAction("Get", new { id = user.Id }, user);
+        return CreatedAtAction("Get", new { id = newUser.Id }, newUser);
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginModel loginModel)
+    public IActionResult Login(UserAccountDto loginModel)
     {
         var user = _context.UserAccounts.SingleOrDefault(u => u.UserName == loginModel.UserName);
 
@@ -50,7 +49,18 @@ public class UserController : ControllerBase
         {
             return Unauthorized();
         }
-        
+
         return Ok("Nu är du inloggad");
+    }
+
+    //ServisMethod
+    private UserAccount DtoToUser(UserAccountDto dto)
+    {
+        return new UserAccount
+        {
+            UserName = dto.UserName,
+            Password = dto.Password
+        };
+
     }
 }
