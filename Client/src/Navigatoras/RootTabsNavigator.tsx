@@ -20,9 +20,7 @@ export default function RootTabsNavigator() {
           headerShown: false,
           tabBarIcon: (props) => (
             <MaterialIcons
-              // eslint-disable-next-line react/prop-types
               size={props.size}
-              // eslint-disable-next-line react/prop-types
               color={props.color}
               name="grid-view"
             />

@@ -24,6 +24,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "react", "react-native"],
   rules: {
+    "react/prop-types": "off",
     quotes: ["warn", "double"],
     "react/react-in-jsx-scope": "off",
     semi: ["warn", "always"],
