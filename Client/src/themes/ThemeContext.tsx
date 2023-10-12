@@ -21,7 +21,7 @@ const ThemeContext = createContext<ThemeContextValue>({} as ThemeContextValue);
 
 export default function ThemeProvider({ children }: PropsWithChildren) {
   //Temat som användaren valt i appen
-  const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
+  const [colorScheme, setColorScheme] = useState<ColorScheme>("auto");
 
   //Temat som OS'et föreslår
   const autoScheme = useColorScheme();
