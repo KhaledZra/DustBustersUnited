@@ -1,4 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
+import { HomeTabScreenProps } from "../../types";
+
+type Props = HomeTabScreenProps<"Home">;
 
 export default function HomeScreen() {
   return (
