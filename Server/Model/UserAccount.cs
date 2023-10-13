@@ -1,4 +1,5 @@
 namespace User;
+
 public class UserAccount
 {
     public int Id { get; set; }
