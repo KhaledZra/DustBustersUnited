@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Surface } from "react-native-paper";
-import { useSelector } from "react-redux";
 
-import { RootState, useAppDispatch } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { fetchUsers } from "../store/userSlice";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
-  const users = useSelector((state: RootState) => state.user.users);
-  const isLoading = useSelector((state: RootState) => state.user.isLoading);
+  const users = useAppSelector((state) => state.user.users);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
 
   return (
     <View style={styles.container}>
