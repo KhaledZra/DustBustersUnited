@@ -15,6 +15,29 @@ namespace Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
+            modelBuilder.Entity("User.HouseHold", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Code")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("HouseHolds");
+                });
+
             modelBuilder.Entity("User.UserAccount", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +55,17 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserAccounts");
+                });
+
+            modelBuilder.Entity("User.HouseHold", b =>
+                {
+                    b.HasOne("User.UserAccount", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 #pragma warning restore 612, 618
         }
