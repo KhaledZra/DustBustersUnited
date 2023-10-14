@@ -3,7 +3,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 
-export default function Login() {
+export default function LoginScreen() {
   const navigation = useNavigation();
 
   const [text, setText] = React.useState("");
@@ -15,7 +15,10 @@ export default function Login() {
         value={text}
         onChangeText={(text) => setText(text)}
       />
-      <Button mode="contained" onPress={() => null}>
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate("Registration")}
+      >
         Skapa konto
       </Button>
     </View>

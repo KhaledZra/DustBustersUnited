@@ -3,8 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 
-import HomeStackNavigator from "./Navigators/HomeStackNavigator";
-import store from "./store";
+import RootNavigator from "./Navigators/RootNavigator";
+import store from "./store/Index";
 import ThemeProvider from "./themes/ThemeContext";
 
 export default function App() {
@@ -13,8 +13,7 @@ export default function App() {
       <StatusBar style="auto" />
       <Provider store={store}>
         <ThemeProvider>
-          {/* <RootTabsNavigator /> */}
-          <HomeStackNavigator />
+          <RootNavigator />
         </ThemeProvider>
       </Provider>
     </SafeAreaProvider>
