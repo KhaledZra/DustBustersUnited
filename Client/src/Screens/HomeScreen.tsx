@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Surface } from "react-native-paper";
 import { useSelector } from "react-redux";
@@ -7,12 +8,23 @@ import { fetchUsers } from "../store/userSlice";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const users = useSelector((state: RootState) => state.user.users);
   const isLoading = useSelector((state: RootState) => state.user.isLoading);
 
   return (
     <View style={styles.container}>
       <Text>Home</Text>
+      <Button
+        mode="contained"
+        onPress={() =>
+          navigation.navigate("HomeTab", {
+            screen: "ChooseLogin",
+          })
+        }
+      >
+        Gå till ChooseLogin
+      </Button>
       <Button mode="contained" onPress={() => dispatch(fetchUsers())}>
         Fetch users!
       </Button>
