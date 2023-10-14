@@ -1,20 +1,20 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeStackNavigator from "./HomeStackNavigator";
-import { MaterialIcons } from "@expo/vector-icons";
+import HomeScreen from "../Screens/HomeScreen";
 
-export type RootTabsParamList = {
+export type TabNavParamList = {
   HomeTab: undefined;
 };
 
-const Tabs = createBottomTabNavigator<RootTabsParamList>();
+const Tabs = createBottomTabNavigator<TabNavParamList>();
 
-export default function RootTabsNavigator() {
+export default function TabNavigator() {
   return (
     <Tabs.Navigator>
       <Tabs.Screen
         name="HomeTab"
-        component={HomeStackNavigator}
+        component={HomeScreen}
         options={{
           title: "Hem",
           headerShown: false,
