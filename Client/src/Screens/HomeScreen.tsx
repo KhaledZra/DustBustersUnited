@@ -6,7 +6,7 @@ import { fetchUsers } from "../store/userSlice";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
-  const users = useAppSelector((state) => state.user.users);
+  const users = useAppSelector((state) => state.user.houseHolds);
   const isLoading = useAppSelector((state) => state.user.isLoading);
 
   return (

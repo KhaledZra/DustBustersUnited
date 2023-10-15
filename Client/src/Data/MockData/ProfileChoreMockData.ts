@@ -2,7 +2,7 @@ import { Chore } from "../Chore";
 import { Profile } from "../Profile";
 import { ProfileChore } from "../ProfileChore";
 import { User } from "../User";
-import { mockHousehold } from "./HouseHoldMochData";
+import { mockHousehold } from "./HouseHoldMockData";
 
 const mockChore: Chore = {
   id: 1,

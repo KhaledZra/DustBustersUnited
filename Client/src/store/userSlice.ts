@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { apiFetch } from "../utils/apiClient";
+import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
+import { User } from "../Data/User";
+import { Household } from "../Data/Household";
 
 /**
  * As an example I added a list of users to the state, since we already have that endpoint
@@ -18,7 +21,7 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    users: [] as any[],
+    households: [mockHousehold] as Household[],
     isLoading: false,
     isError: false,
   },
@@ -29,7 +32,7 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.users = [...action.payload];
+      state.households = [...action.payload];
     });
     builder.addCase(fetchUsers.rejected, (state) => {
       state.isError = true;
