@@ -33,9 +33,6 @@ export default function UserList() {
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <View style={styles.UserContainer}>
-              <Text style={{ color: theme.colors.text }}>ID: {item.id}</Text>
-            </View>
-            <View style={styles.UserContainer}>
               <Text style={{ color: theme.colors.text }}>
                 Namn: {item.userName}
               </Text>
