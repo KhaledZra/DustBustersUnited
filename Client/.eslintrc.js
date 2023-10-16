@@ -28,6 +28,7 @@ module.exports = {
     quotes: ["warn", "double"],
     "react/react-in-jsx-scope": "off",
     semi: ["warn", "always"],
+    "comma-dangle": "only-multiline",
     "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
 };
