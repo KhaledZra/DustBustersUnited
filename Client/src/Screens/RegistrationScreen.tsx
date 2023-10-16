@@ -33,7 +33,7 @@ export default function RegistrationScreen() {
         value={repeatedPassword}
         onChangeText={(text) => setRepeatedPassword(text)}
       />
-      <Text variant="displayLarge">Registration</Text>;
+      <Text variant="displayLarge">Registrera dig!</Text>
     </View>
   );
 }
