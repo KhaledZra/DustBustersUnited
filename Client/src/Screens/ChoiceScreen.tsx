@@ -1,10 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Button, PaperProvider } from "react-native-paper";
 
+import { RootStackScreenProps } from "../../types";
 import { useAppSelector } from "../store";
 
-export default function ChoiceScreen() {
+type Props = RootStackScreenProps<'Chooice'>
+
+export default function ChoiceScreen({ navigation }: Props) {
   const households = useAppSelector((state) => state.user.households);
   return (
     <PaperProvider>
@@ -27,7 +30,8 @@ export default function ChoiceScreen() {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => console.log("Gå med i hushåll")}
+            onPress={() => navigation.navigate("Step2")}
+            style={{ marginBottom: 6 }}
           >
             Gå med i hushåll
           </Button>
