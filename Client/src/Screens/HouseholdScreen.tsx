@@ -1,7 +1,9 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import { Button, Card, List, Surface, Text } from "react-native-paper";
+import { Appbar, Button, Card, List, Surface, Text } from "react-native-paper";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import { Chore } from "../Data/Chore";
+
+// https://www.npmjs.com/package/react-native-pager-view
 
 const getDaysSinceLastDone = (deadline: Date, interval: number) => {
   // Setup lastDone
@@ -9,7 +11,7 @@ const getDaysSinceLastDone = (deadline: Date, interval: number) => {
   lastDone.setDate(deadline.getDate() - interval);
 
   // Date now
-  const dateNow = new Date();
+  const dateNow = new Date(); // in the future use this to adjust the date so calender can be supported
 
   // Calculate time difference
   const timeDifference = dateNow.getTime() - lastDone.getTime();
@@ -20,6 +22,43 @@ const getDaysSinceLastDone = (deadline: Date, interval: number) => {
   return Math.floor(daysDifference); // Current day progress is not relevant?
 };
 
+function HeaderBar() {
+  return (
+    <Appbar.Header>
+      <Appbar.BackAction onPress={() => { }} />
+      <Appbar.Content title="Day-Placeholder" mode="center-aligned" />
+      <Appbar.Action icon="arrow-right" onPress={() => { }} />
+    </Appbar.Header>
+  );
+}
+
+interface displayDaysProps {
+  daysSinceDone: number;
+  interval: number;
+}
+
+function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
+  if (daysSinceDone < interval) {
+    return (
+      <View style={styles.circle}>
+        <Text variant="displayLarge" style={{ color: "white", textAlign: "center" }}>
+          {daysSinceDone}
+        </Text>
+      </View>
+    );
+  }
+  else {
+    return (
+      <View style={styles.errorCircle}>
+        <Text variant="displayLarge" style={{ color: "white", textAlign: "center" }}>
+          {daysSinceDone}
+        </Text>
+      </View>
+    );
+  }
+
+}
+
 function ChoreView(chore: Chore) {
   return (
     <Card
@@ -29,9 +68,10 @@ function ChoreView(chore: Chore) {
     >
       <Card.Content style={styles.content}>
         <Text variant="displayLarge">{chore.name}</Text>
-        <Text variant="displayLarge">
-          {getDaysSinceLastDone(chore.deadline, chore.repeatInterval)}
-        </Text>
+        <DisplayDaysSinceDone
+          daysSinceDone={getDaysSinceLastDone(chore.deadline, chore.repeatInterval)}
+          interval={chore.repeatInterval}
+        />
       </Card.Content>
     </Card>
   );
@@ -40,6 +80,7 @@ function ChoreView(chore: Chore) {
 export default function HouseholdScreen() {
   return (
     <View>
+      <HeaderBar/>
       <FlatList
         data={mockChores}
         keyExtractor={(item) => item.id.toString()}
@@ -70,4 +111,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  circle: {
+    backgroundColor: "grey",
+    width: 25,
+    height: 22,
+    borderRadius: 50
+  },
+  errorCircle: {
+    backgroundColor: "red",
+    width: 25,
+    height: 22,
+    borderRadius: 50
+  }
 });

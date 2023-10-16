@@ -21,7 +21,7 @@ export const mockChores: Chore[] = [
     description: "Lagt disk i diskmaskinen",
     energy: 2,
     isActive: true,
-    deadline: new Date("2023-10-21"),
+    deadline: new Date("2023-10-16"),
     repeatInterval: 7,
     houseHold: mockHousehold,
   },
