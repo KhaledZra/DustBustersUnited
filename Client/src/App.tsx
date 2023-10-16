@@ -3,10 +3,10 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 
-import RootNavigator from "./Navigators/RootNavigator";
+import React from "react";
+import RootStackNavigator from "./Navigators/RootStackNavigator";
 import store from "./store";
 import ThemeProvider from "./themes/ThemeContext";
-import React from "react";
 
 export default function App() {
   return (
@@ -14,7 +14,7 @@ export default function App() {
       <StatusBar style="auto" />
       <Provider store={store}>
         <ThemeProvider>
-          <RootNavigator />
+          <RootStackNavigator />
         </ThemeProvider>
       </Provider>
     </SafeAreaProvider>
