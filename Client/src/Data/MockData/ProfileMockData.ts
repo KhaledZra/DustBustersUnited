@@ -4,7 +4,7 @@ import { User } from "../User";
 
 const mockUser: User = {
   id: 1,
-  name: "Marcus Sake",
+  userName: "Marcus Sake",
   password: "Japan",
 };
 
