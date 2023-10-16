@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import { User } from "../Data/User";
 import { apiFetch } from "../utils/apiClient";
 
+type LoginPayload = { userName: string; password: string };
 /**
  * As an example I added a list of users to the state, since we already have that endpoint
  * Todo: remove this and "users" when it's no longer needed
  */
-export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
-  const response = await apiFetch("/user");
-  return response.json();
-  // The stuff we return here will become the action.payload
-});
+export const loginUser = createAsyncThunk<User, LoginPayload>(
+  "loginUser",
+
+  async (payload: LoginPayload) => {
+    const response = await apiFetch("User/login", payload); //Ändrade från "/login"
+    return response.json();
+  }
+);
 
 /**
  * Slice to handle "user" state
@@ -18,21 +23,15 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
 const userSlice = createSlice({
   name: "user",
   initialState: {
+    user: undefined as User | undefined,
     users: [] as any[],
     isLoading: false,
     isError: false,
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchUsers.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.users = [...action.payload];
-    });
-    builder.addCase(fetchUsers.rejected, (state) => {
-      state.isError = true;
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.user = action.payload;
     });
   },
 });

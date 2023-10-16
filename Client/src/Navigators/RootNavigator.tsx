@@ -18,7 +18,7 @@ const Stack = createNativeStackNavigator<RootNavParamList>();
 
 export default function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="TabNavigation">
+    <Stack.Navigator initialRouteName="ChooseLogin">
       <Stack.Screen
         name="TabNavigation"
         component={TabNavigator}
@@ -37,7 +37,7 @@ export default function RootNavigator() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ title: "Choose Login" }}
+        options={{ title: "Login" }}
       />
     </Stack.Navigator>
   );
