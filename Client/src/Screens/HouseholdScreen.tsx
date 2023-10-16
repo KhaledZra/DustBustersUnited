@@ -1,9 +1,11 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import { Appbar, Button, Card, List, Surface, Text } from "react-native-paper";
-import { mockChores } from "../Data/MockData/ChoreMockData";
-import { Chore } from "../Data/Chore";
+import { Appbar, Card, Text } from "react-native-paper";
 
-// https://www.npmjs.com/package/react-native-pager-view
+import { Chore } from "../Data/Chore";
+import { mockChores } from "../Data/MockData/ChoreMockData";
+
+// TODO Remove this comment later:
+// alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
 const getDaysSinceLastDone = (deadline: Date, interval: number) => {
   // Setup lastDone
@@ -24,10 +26,22 @@ const getDaysSinceLastDone = (deadline: Date, interval: number) => {
 
 function HeaderBar() {
   return (
-    <Appbar.Header>
-      <Appbar.BackAction onPress={() => { }} />
-      <Appbar.Content title="Day-Placeholder" mode="center-aligned" />
-      <Appbar.Action icon="arrow-right" onPress={() => { }} />
+    <Appbar.Header statusBarHeight={0}>
+      <Appbar.BackAction
+        onPress={() => {
+          console.log("day before navigation");
+        }}
+      />
+      <Appbar.Content
+        title="Day-Placeholder"
+        titleStyle={{ textAlign: "center" }}
+      />
+      <Appbar.Action
+        icon="arrow-right"
+        onPress={() => {
+          console.log("day after navigation");
+        }}
+      />
     </Appbar.Header>
   );
 }
@@ -41,22 +55,26 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   if (daysSinceDone < interval) {
     return (
       <View style={styles.circle}>
-        <Text variant="displayLarge" style={{ color: "white", textAlign: "center" }}>
+        <Text
+          variant="displayLarge"
+          style={{ color: "white", textAlign: "center" }}
+        >
           {daysSinceDone}
         </Text>
       </View>
     );
-  }
-  else {
+  } else {
     return (
       <View style={styles.errorCircle}>
-        <Text variant="displayLarge" style={{ color: "white", textAlign: "center" }}>
+        <Text
+          variant="displayLarge"
+          style={{ color: "white", textAlign: "center" }}
+        >
           {daysSinceDone}
         </Text>
       </View>
     );
   }
-
 }
 
 function ChoreView(chore: Chore) {
@@ -69,7 +87,10 @@ function ChoreView(chore: Chore) {
       <Card.Content style={styles.content}>
         <Text variant="displayLarge">{chore.name}</Text>
         <DisplayDaysSinceDone
-          daysSinceDone={getDaysSinceLastDone(chore.deadline, chore.repeatInterval)}
+          daysSinceDone={getDaysSinceLastDone(
+            chore.deadline,
+            chore.repeatInterval,
+          )}
           interval={chore.repeatInterval}
         />
       </Card.Content>
@@ -80,7 +101,7 @@ function ChoreView(chore: Chore) {
 export default function HouseholdScreen() {
   return (
     <View>
-      <HeaderBar/>
+      <HeaderBar />
       <FlatList
         data={mockChores}
         keyExtractor={(item) => item.id.toString()}
@@ -91,11 +112,6 @@ export default function HouseholdScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   surface: {
     padding: 8,
     margin: 8,
@@ -115,12 +131,12 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
     width: 25,
     height: 22,
-    borderRadius: 50
+    borderRadius: 50,
   },
   errorCircle: {
     backgroundColor: "red",
     width: 25,
     height: 22,
-    borderRadius: 50
-  }
+    borderRadius: 50,
+  },
 });
