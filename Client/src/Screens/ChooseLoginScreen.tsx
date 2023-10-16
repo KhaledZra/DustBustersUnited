@@ -8,7 +8,7 @@ export default function ChooseLoginScreen() {
   return (
     <View>
       <Button mode="contained" onPress={() => navigation.navigate("Login")}>
-        Login
+        Logga in
       </Button>
       <Button
         mode="contained"
