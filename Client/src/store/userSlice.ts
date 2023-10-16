@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import { Household } from "../Data/Household";
+import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
 import { User } from "../Data/User";
 import { apiFetch } from "../utils/apiClient";
 
@@ -24,7 +26,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: undefined as User | undefined,
-    users: [] as any[],
+    households: [mockHousehold] as Household[],
     isLoading: false,
     isError: false,
   },
@@ -32,6 +34,13 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.user = action.payload;
+    });
+    builder.addCase(loginUser.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(loginUser.rejected, (state) => {
+      state.isError = true;
     });
   },
 });

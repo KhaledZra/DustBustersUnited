@@ -1,29 +1,23 @@
-import { NavigatorScreenParams } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import TabNavigator, { TabNavParamList } from "./TabNavigator";
+import ChoiceScreen from "../Screens/ChoiceScreen";
 import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
+import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 
-export type RootNavParamList = {
-  TabNavigation: NavigatorScreenParams<TabNavParamList>;
+export type RootStackParamList = {
+  Chooice: undefined;
+  Step2: undefined;
   ChooseLogin: undefined;
   Registration: undefined;
   Login: undefined;
 };
 
-// const Stack = createNativeStackNavigator<HomeStackParamList>();
-const Stack = createNativeStackNavigator<RootNavParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function RootNavigator() {
+export default function RootStackNavigator() {
   return (
     <Stack.Navigator initialRouteName="ChooseLogin">
-      <Stack.Screen
-        name="TabNavigation"
-        component={TabNavigator}
-        options={{ title: "Navigation" }}
-      />
       <Stack.Screen
         name="ChooseLogin"
         component={ChooseLoginScreen}
@@ -38,6 +32,20 @@ export default function RootNavigator() {
         name="Login"
         component={LoginScreen}
         options={{ title: "Login" }}
+      />
+      <Stack.Screen
+        name="Chooice"
+        component={ChoiceScreen}
+        options={{
+          title: "Val",
+        }}
+      />
+      <Stack.Screen
+        name="Step2"
+        component={JoinHousholdScreen}
+        options={{
+          title: "Gå med hushåll Steg2",
+        }}
       />
     </Stack.Navigator>
   );
