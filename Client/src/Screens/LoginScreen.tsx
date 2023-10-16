@@ -7,7 +7,7 @@ import { loginUser } from "../store/userSlice";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-
+  //pusha skiten
   // Så här hämtar man data från redux store:
   const user = useAppSelector((state) => state.user.user);
   // så här anropar man en funktion i redux store:
