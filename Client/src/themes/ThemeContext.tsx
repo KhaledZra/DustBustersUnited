@@ -32,7 +32,6 @@ export default function ThemeProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     selectedScheme = colorScheme === "auto" ? autoScheme : colorScheme;
     theme = selectedScheme === "dark" ? AppDarkTheme : AppLightTheme;
-    console.log(theme);
   });
 
   return (
