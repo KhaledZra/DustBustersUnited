@@ -56,7 +56,7 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
     return (
       <View style={styles.circle}>
         <Text
-          variant="displayLarge"
+          variant="labelLarge"
           style={{ color: "white", textAlign: "center" }}
         >
           {daysSinceDone}
@@ -67,7 +67,7 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
     return (
       <View style={styles.errorCircle}>
         <Text
-          variant="displayLarge"
+          variant="labelLarge"
           style={{ color: "white", textAlign: "center" }}
         >
           {daysSinceDone}
@@ -85,7 +85,7 @@ function ChoreView(chore: Chore) {
       onPress={() => console.log("Navigating to choreid: " + chore.id)}
     >
       <Card.Content style={styles.content}>
-        <Text variant="displayLarge">{chore.name}</Text>
+        <Text variant="labelLarge">{chore.name}</Text>
         <DisplayDaysSinceDone
           daysSinceDone={getDaysSinceLastDone(
             chore.deadline,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    margin: 8,
+    margin: 8
   },
   content: {
     flex: 1,
