@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { useAppDispatch } from "../store";
 
 export default function RegistrationScreen() {
@@ -13,6 +13,7 @@ export default function RegistrationScreen() {
 
   function handleCreateUser() {
     if (password === repeatedPassword) {
+      //TODO
     }
   }
 
@@ -29,11 +30,13 @@ export default function RegistrationScreen() {
         onChangeText={(text) => setPassword(text)}
       />
       <TextInput
-        label="Namn"
+        label="repetera lösenord"
         value={repeatedPassword}
         onChangeText={(text) => setRepeatedPassword(text)}
       />
-      <Text variant="displayLarge">Registrera dig!</Text>
+      <Button mode="contained" onPress={() => handleCreateUser()}>
+        Logga in
+      </Button>
     </View>
   );
 }
