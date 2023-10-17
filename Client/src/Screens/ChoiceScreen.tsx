@@ -5,7 +5,7 @@ import { Button, PaperProvider } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import { useAppSelector } from "../store";
 
-type Props = RootStackScreenProps<'Chooice'>
+type Props = RootStackScreenProps<"Choice">;
 
 export default function ChoiceScreen({ navigation }: Props) {
   const households = useAppSelector((state) => state.user.households);
