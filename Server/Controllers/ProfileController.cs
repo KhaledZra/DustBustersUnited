@@ -13,14 +13,14 @@ public class ProfileController : ControllerBase
         _context = context;
     }
 
-    [HttpGet("{userId}")]
-    public ActionResult<Profile> Get(int userId)
+    [HttpGet("ByUser/{userId}")]
+    public ActionResult<List<Profile>> GetUsersProfile(int userId)
     {
         var profile = _context.Profiles
                 .Include(p => p.User)
                 .Include(p => p.Household)
                 .Include(p => p.Household.Owner)
-                .FirstOrDefault(p => p.UserId == userId); 
+                .Where(p => p.UserId == userId).ToList(); 
 
         if (profile == null)
         {
@@ -29,6 +29,24 @@ public class ProfileController : ControllerBase
 
         return Ok(profile);
     }
+
+    [HttpGet("{profileId}")]
+    public ActionResult<Profile> GetProfile(int profileId)
+    {
+        var profile = _context.Profiles
+                .Include(p => p.User)
+                .Include(p => p.Household)
+                .Include(p => p.Household.Owner)
+                .FirstOrDefault(p => p.Id == profileId); 
+
+        if (profile == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(profile);
+    }
+    
 
     [HttpPost("linkToHousehold")]
     public async Task<IActionResult> LinkToHousehold(int userId, int houseId, int householdCode, string displayName, int avatar, bool isAdmin)
@@ -44,8 +62,10 @@ public class ProfileController : ControllerBase
         var profile = _context.Profiles
                 .Include(p => p.User)
                 .Include(p => p.Household)
-                .FirstOrDefault(p => p.UserId == user.Id); var household = _context.Households.FirstOrDefault(h => h.Code == householdCode);
-
+                .Include(p => p.Household.Owner)
+                .FirstOrDefault(p => p.UserId == user.Id); 
+        
+        var household = _context.Households.FirstOrDefault(h => h.Code == householdCode);
         if (profile == null)
         {
             profile = new Profile
@@ -67,7 +87,9 @@ public class ProfileController : ControllerBase
         {
             profile.Household = household;
             await _context.SaveChangesAsync();
-            return Ok("Profilen har kopplats till hushållet.");
+            return Ok(profile);
+            // return CreatedAtAction("Get", new { id = profile.Id }, profile);
+
         }
 
         return BadRequest("Hushållet finns inte.");
