@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
@@ -7,19 +7,22 @@ import { loginUser } from "../store/userSlice";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  //pusha skiten
-  // Så här hämtar man data från redux store:
   const user = useAppSelector((state) => state.user.user);
-  // så här anropar man en funktion i redux store:
   const dispatch = useAppDispatch();
 
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  function handleLogin() {
-    console.log("before");
-    dispatch(loginUser({ userName: name, password: password }));
-    console.log("user?.name:", user?.userName);
+  useEffect(() => {
+    //TODO
+    if (user != null) {
+      navigation.navigate("Chooice");
+    }
+  });
+
+  async function handleLogin() {
+    //TODO
+    await dispatch(loginUser({ userName: name, password: password }));
   }
 
   return (
