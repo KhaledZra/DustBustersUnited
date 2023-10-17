@@ -17,30 +17,29 @@ public class HouseholdController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Household>> GetAllHousehold()
     {
-        var houseHolds = _context.Households.Include("Owner").ToList();
-        return Ok(houseHolds);
+        var households = _context.Households.Include("Owner").ToList();
+        return Ok(households);
     }
 
     [HttpGet("{id}")]
     public ActionResult<Household> Get(int id)
     {
-        var houseHold = _context.Households.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
-        if (houseHold == null)
+        var household = _context.Households.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
+        if (household == null)
         {
             return NotFound();
         }
-        return Ok(houseHold);
-
+        return Ok(household);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Household>> Post(HouseholdDto houseHold)
+    public async Task<ActionResult<Household>> Post(HouseholdDto householdDto)
     {
-        var hold = DtoToHousehold(houseHold);
-        hold.Confirmation();
-        _context.Households.Add(hold);
+        var household = DtoToHousehold(householdDto);
+        household.Confirmation();
+        _context.Households.Add(household);
         await _context.SaveChangesAsync();
-        return CreatedAtAction("Get", new { id = hold.Id }, hold);
+        return CreatedAtAction("Get", new { id = household.Id }, household);
     }
 
     private Household DtoToHousehold(HouseholdDto dto)
