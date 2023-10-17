@@ -4,6 +4,7 @@ import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
+import HouseholdScreen from "../Screens/HouseholdScreen";
 
 export type RootStackParamList = {
   Chooice: undefined;
@@ -11,6 +12,7 @@ export type RootStackParamList = {
   ChooseLogin: undefined;
   Registration: undefined;
   Login: undefined;
+  Household: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,6 +47,14 @@ export default function RootStackNavigator() {
         component={JoinHousholdScreen}
         options={{
           title: "Gå med hushåll Steg2",
+        }}
+      />
+      
+      <Stack.Screen
+        name="Household"
+        component={HouseholdScreen}
+        options={{
+          title: "Hushåll's Vy",
         }}
       />
     </Stack.Navigator>
