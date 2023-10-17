@@ -5,26 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
-public class HouseHoldController : ControllerBase
+public class HouseholdController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public HouseHoldController(ApplicationDbContext context)
+    public HouseholdController(ApplicationDbContext context)
     {
         _context = context;
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<HouseHold>> GetAllHouseHold()
+    public ActionResult<IEnumerable<Household>> GetAllHousehold()
     {
-        var houseHolds = _context.HouseHolds.Include("Owner").ToList();
+        var houseHolds = _context.Households.Include("Owner").ToList();
         return Ok(houseHolds);
     }
 
     [HttpGet("{id}")]
-    public ActionResult<HouseHold> Get(int id)
+    public ActionResult<Household> Get(int id)
     {
-        var houseHold = _context.HouseHolds.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
+        var houseHold = _context.Households.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
         if (houseHold == null)
         {
             return NotFound();
@@ -34,18 +34,18 @@ public class HouseHoldController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<HouseHold>> Post(HouseHoldDto houseHold)
+    public async Task<ActionResult<Household>> Post(HouseholdDto houseHold)
     {
-        var hold = DtoToHouseHold(houseHold);
+        var hold = DtoToHousehold(houseHold);
         hold.Confirmation();
-        _context.HouseHolds.Add(hold);
+        _context.Households.Add(hold);
         await _context.SaveChangesAsync();
         return CreatedAtAction("Get", new { id = hold.Id }, hold);
     }
 
-    private HouseHold DtoToHouseHold(HouseHoldDto dto)
+    private Household DtoToHousehold(HouseholdDto dto)
     {
-        return new HouseHold
+        return new Household
         {
             Name = dto.Name,
             OwnerId = dto.OwnerId

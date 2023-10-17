@@ -1,6 +1,6 @@
 namespace User;
 
-public class HouseHold
+public class Household
 {
     public int Id { get; set; }
     public string Name { get; set; }
