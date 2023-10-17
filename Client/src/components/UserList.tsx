@@ -6,7 +6,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 
 interface UserData {
   id: number;
-  userName: string;
+  username: string;
   password: string;
 }
 export default function UserList() {
@@ -14,13 +14,12 @@ export default function UserList() {
   const theme = useTheme();
 
   useEffect(() => {
-    const apiEndpoint = "http://51.20.127.226/api/User";
+    const apiEndpoint = process.env.EXPO_PUBLIC_API_URL + "User";
 
     fetch(apiEndpoint)
       .then((response) => response.json())
       .then((userData) => {
         setUserData(userData);
-        console.log(userData);
       })
       .catch((error) => {
         console.error("An error occurred:", error);
@@ -38,7 +37,7 @@ export default function UserList() {
           <View style={styles.listItem}>
             <View style={styles.UserContainer}>
               <Text style={{ color: theme.colors.text }}>
-                Namn: {item.userName}
+                Namn: {item.username}
               </Text>
             </View>
           </View>
@@ -55,7 +54,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
   },
-
   UserContainer: {
     padding: 4,
   },
