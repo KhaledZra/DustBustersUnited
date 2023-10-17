@@ -6,7 +6,7 @@ export default function ChooseLoginScreen() {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <View style={{padding: 5, gap: 5}}>
       <Button mode="contained" onPress={() => navigation.navigate("Login")}>
         Logga in
       </Button>
