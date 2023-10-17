@@ -1,10 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChoiceScreen from "../Screens/ChoiceScreen";
-import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
+import HouseholdScreen from "../Screens/HouseholdScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
-import HouseholdScreen from "../Screens/HouseholdScreen";
 
 export type RootStackParamList = {
   Chooice: undefined;
@@ -19,12 +18,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="ChooseLogin">
-      <Stack.Screen
-        name="ChooseLogin"
-        component={ChooseLoginScreen}
-        options={{ title: "Choose Login" }}
-      />
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Registration"
         component={RegistrationScreen}
@@ -49,7 +43,7 @@ export default function RootStackNavigator() {
           title: "Gå med hushåll Steg2",
         }}
       />
-      
+
       <Stack.Screen
         name="Household"
         component={HouseholdScreen}
