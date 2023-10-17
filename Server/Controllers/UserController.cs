@@ -43,14 +43,14 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login(UserAccountDto loginModel)
     {
-        var user = _context.UserAccounts.SingleOrDefault(u => u.UserName == loginModel.UserName);
+        var user = _context.UserAccounts.SingleOrDefault(u => u.Username == loginModel.Username);
 
         if (user == null || user.Password != loginModel.Password)
         {
             return Unauthorized();
         }
 
-        return Ok("Nu är du inloggad");
+        return Ok(user);
     }
 
     //ServisMethod
@@ -58,7 +58,7 @@ public class UserController : ControllerBase
     {
         return new UserAccount
         {
-            UserName = dto.UserName,
+            Username = dto.Username,
             Password = dto.Password
         };
 
