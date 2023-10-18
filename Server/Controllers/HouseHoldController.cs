@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO;
-using User;
+using Model;
 using Microsoft.EntityFrameworkCore;
 
 [ApiController]
@@ -15,16 +15,20 @@ public class HouseholdController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Household>> GetAllHousehold()
+    public ActionResult<IEnumerable<Household>> GetHouseholds()
     {
-        var households = _context.Households.Include("Owner").ToList();
+        var households = _context.Households
+            .Include(household => household.Profiles)
+            .ToList();
+
         return Ok(households);
     }
 
     [HttpGet("{id}")]
     public ActionResult<Household> Get(int id)
     {
-        var household = _context.Households.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
+        var household = _context.Households
+            .FirstOrDefault(h => h.Id == id);
         if (household == null)
         {
             return NotFound();
@@ -72,7 +76,7 @@ public class HouseholdController : ControllerBase
         return new Household
         {
             Name = dto.Name,
-            OwnerId = dto.OwnerId
+            UserId = dto.OwnerId
         };
     }
 }

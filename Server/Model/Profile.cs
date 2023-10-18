@@ -1,4 +1,4 @@
-namespace User;
+namespace Model;
 
 public class Profile
 {
@@ -11,6 +11,5 @@ public class Profile
     public int UserId { get; set; }
     public int HouseholdId { get; set; }
 
-    public UserAccount? User { get; set; }
-    public Household? Household { get; set; }
+    public User User { get; set; }
 }
