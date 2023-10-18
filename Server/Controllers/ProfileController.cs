@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using User;
+using Model;
 using Microsoft.EntityFrameworkCore;
 
 [ApiController]
@@ -18,9 +18,8 @@ public class ProfileController : ControllerBase
     {
         var profile = _context.Profiles
                 .Include(p => p.User)
-                .Include(p => p.Household)
-                .Include(p => p.Household.Owner)
-                .Where(p => p.UserId == userId).ToList(); 
+                // .Include(p => p.Household.User)
+                .Where(p => p.UserId == userId).ToList();
 
         if (profile == null)
         {
@@ -35,8 +34,6 @@ public class ProfileController : ControllerBase
     {
         var profile = _context.Profiles
                 .Include(p => p.User)
-                .Include(p => p.Household)
-                .Include(p => p.Household.Owner)
                 .FirstOrDefault(p => p.Id == profileId); 
 
         if (profile == null)
@@ -51,7 +48,7 @@ public class ProfileController : ControllerBase
     [HttpPost("linkToHousehold")]
     public async Task<IActionResult> LinkToHousehold(int userId, int houseId, int householdCode, string displayName, int avatar, bool isAdmin)
     {
-        var user = _context.UserAccounts.FirstOrDefault(u => u.Id == userId);
+        var user = _context.Users.FirstOrDefault(u => u.Id == userId);
         var house = _context.Households.FirstOrDefault(h => h.Id == houseId);
 
         if (user == null)
@@ -61,8 +58,7 @@ public class ProfileController : ControllerBase
 
         var profile = _context.Profiles
                 .Include(p => p.User)
-                .Include(p => p.Household)
-                .Include(p => p.Household.Owner)
+                // .Include(p => p.Household.User)
                 .FirstOrDefault(p => p.UserId == user.Id); 
         
         var household = _context.Households.FirstOrDefault(h => h.Code == householdCode);
@@ -76,7 +72,6 @@ public class ProfileController : ControllerBase
                 isAdmin = isAdmin,
                 isDeleted = false,
                 User = user,
-                Household = house
             };
 
             _context.Profiles.Add(profile);
@@ -85,7 +80,7 @@ public class ProfileController : ControllerBase
 
         if (household != null)
         {
-            profile.Household = household;
+            profile.HouseholdId = household.Id;
             await _context.SaveChangesAsync();
             return Ok(profile);
             // return CreatedAtAction("Get", new { id = profile.Id }, profile);
