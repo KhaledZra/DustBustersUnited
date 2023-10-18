@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChoiceScreen from "../Screens/ChoiceScreen";
-import HouseholdScreen from "../Screens/HouseholdScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
@@ -14,18 +13,14 @@ export type RootStackParamList = {
   Login: undefined;
   Household: undefined;
   ChoreView: undefined;
+  HouseholdInfo:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="ChooseLogin">
-      <Stack.Screen
-        name="ChooseLogin"
-        component={ChooseLoginScreen}
-        options={{ title: "Choose Login" }}
-      />
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Registration"
         component={RegistrationScreen}
