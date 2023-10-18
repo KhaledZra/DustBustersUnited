@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Household } from "../Data/Household";
+import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
 
 export const fetchTransientHousehold = createAsyncThunk<Household, string>(
@@ -14,11 +15,21 @@ export const fetchTransientHousehold = createAsyncThunk<Household, string>(
   }
 );
 
+export const fetchProfiles = createAsyncThunk<Profile[]>(
+  "fetchProfiles",
+  async () => {
+    const response: Response = await apiFetch(`Profile/ByUser/2`);
+    let json = await response.json();
+    return json;
+  }
+);
+
 const userSlice = createSlice({
   name: "household",
   initialState: {
     // All households the user is a member of
     households: [] as Household[],
+    profiles: [] as Profile[],
     // The household we are about to join
     transientHousehold: undefined as Household | undefined,
     avatars: Object.freeze([
@@ -40,6 +51,9 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchTransientHousehold.fulfilled, (state, action) => {
       state.transientHousehold = action.payload;
+    });
+    builder.addCase(fetchProfiles.fulfilled, (state, action) => {
+      state.profiles = action.payload;
     });
   },
 });

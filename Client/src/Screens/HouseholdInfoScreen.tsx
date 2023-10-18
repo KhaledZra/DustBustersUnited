@@ -1,13 +1,24 @@
+import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
+import { fetchProfiles } from "../store/householdSlice";
 
 export default function HouseholdInfoScreen() {
-  // const household = useAppSelector( state => state.)
+  const profiles = useAppSelector( state => state.household.profiles);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchProfiles())
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hushållsmedlemmar</Text>
-        <Button style={styles.button} labelStyle={styles.buttonText}>Person 1</Button>
+      {profiles.map( p => {
+        return(
+          <Button style={styles.button} labelStyle={styles.buttonText}>{p.displayName}</Button>
+
+        )
+      })}
         <Button style={styles.button} labelStyle={styles.buttonText}>Person 2</Button>
     </View>
   );
