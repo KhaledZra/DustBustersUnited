@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChoiceScreen from "../Screens/ChoiceScreen";
-import HouseholdInfo from "../Screens/HouseholdInfo";
+import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
 import HouseholdScreen from "../Screens/HouseholdScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
@@ -23,8 +23,8 @@ export default function RootStackNavigator() {
     <Stack.Navigator initialRouteName="HouseholdInfo">
       <Stack.Screen
         name="HouseholdInfo"
-        component={HouseholdInfo}
-        options={{ title: "Household Info" }}
+        component={HouseholdInfoScreen}
+        options={{ title: "Hushålls-info" }}
       />
       <Stack.Screen
         name="Registration"
