@@ -15,7 +15,7 @@ export default function HouseholdInfoScreen() {
       <Text style={styles.title}>Hushållsmedlemmar</Text>
       {profiles.map( p => {
         return(
-          <Button style={styles.button} labelStyle={styles.buttonText}>{p.displayName}</Button>
+          <Button style={styles.button} labelStyle={styles.buttonText} key={p.id}>{p.displayName}</Button>
 
         )
       })}
