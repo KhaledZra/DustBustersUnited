@@ -7,10 +7,3 @@ export interface Household {
   owner: User;
   availableAvatars: number[];
 }
-
-
-export interface HouseholdAutoComplete {
-  id: number;
-  name: string;
-  code: number;
-}
