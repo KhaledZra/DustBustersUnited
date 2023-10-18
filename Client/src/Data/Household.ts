@@ -5,4 +5,12 @@ export interface Household {
   name: string;
   code: number;
   owner: User;
+  availableAvatars: number[];
+}
+
+
+export interface HouseholdAutoComplete {
+  id: number;
+  name: string;
+  code: number;
 }

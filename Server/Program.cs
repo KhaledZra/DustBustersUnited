@@ -23,4 +23,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+// We cannot use "localhost" here since we need to access from emulator
+// The only "localhost" the emulator knows is itself!
+app.Run("http://0.0.0.0:5000");
