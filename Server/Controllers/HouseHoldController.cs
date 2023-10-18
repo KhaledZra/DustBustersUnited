@@ -5,47 +5,71 @@ using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
-public class HouseHoldController : ControllerBase
+public class HouseholdController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public HouseHoldController(ApplicationDbContext context)
+    public HouseholdController(ApplicationDbContext context)
     {
         _context = context;
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<HouseHold>> GetAllHouseHold()
+    public ActionResult<IEnumerable<Household>> GetAllHousehold()
     {
-        var houseHolds = _context.HouseHolds.Include("Owner").ToList();
-        return Ok(houseHolds);
+        var households = _context.Households.Include("Owner").ToList();
+        return Ok(households);
     }
 
     [HttpGet("{id}")]
-    public ActionResult<HouseHold> Get(int id)
+    public ActionResult<Household> Get(int id)
     {
-        var houseHold = _context.HouseHolds.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
-        if (houseHold == null)
+        var household = _context.Households.Include(h => h.Owner).FirstOrDefault(h => h.Id == id);
+        if (household == null)
         {
             return NotFound();
         }
-        return Ok(houseHold);
-
+        return Ok(household);
     }
+
+    //
+    // You get the household by code when you join a household
+    // Therefore we also need to return the available avatars here
+    //
+    [HttpGet("ByCode/{code}")]  
+    public ActionResult<Household> GetByCode(int code)
+    {
+        var household = _context.Households.FirstOrDefault(h => h.Code == code);
+        if (household == null) return NotFound();
+
+        var availableAvatars = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 };
+        var usedAvatars = _context.Profiles
+            .Where(p => p.HouseholdId == household.Id)
+            .Select(p => p.Avatar).ToList();
+
+        availableAvatars = availableAvatars.Except(usedAvatars).ToList();
+
+        if (availableAvatars.Count > 0) {
+            household.AvailableAvatars = availableAvatars;
+        }
+
+        return Ok(household);
+    }
+
 
     [HttpPost]
-    public async Task<ActionResult<HouseHold>> Post(HouseHoldDto houseHold)
+    public async Task<ActionResult<Household>> Post(HouseholdDto householdDto)
     {
-        var hold = DtoToHouseHold(houseHold);
-        hold.Confirmation();
-        _context.HouseHolds.Add(hold);
+        var household = DtoToHousehold(householdDto);
+        household.Confirmation();
+        _context.Households.Add(household);
         await _context.SaveChangesAsync();
-        return CreatedAtAction("Get", new { id = hold.Id }, hold);
+        return CreatedAtAction("Get", new { id = household.Id }, household);
     }
 
-    private HouseHold DtoToHouseHold(HouseHoldDto dto)
+    private Household DtoToHousehold(HouseholdDto dto)
     {
-        return new HouseHold
+        return new Household
         {
             Name = dto.Name,
             OwnerId = dto.OwnerId

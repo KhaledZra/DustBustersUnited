@@ -5,7 +5,7 @@ import { Button, PaperProvider } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import { useAppSelector } from "../store";
 
-type Props = RootStackScreenProps<'Chooice'>
+type Props = RootStackScreenProps<"Choice">;
 
 export default function ChoiceScreen({ navigation }: Props) {
   const households = useAppSelector((state) => state.user.households);
@@ -30,7 +30,7 @@ export default function ChoiceScreen({ navigation }: Props) {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate("Step2")}
+            onPress={() => navigation.navigate("JoinHousehold")}
             style={{ marginBottom: 6 }}
           >
             Gå med i hushåll
