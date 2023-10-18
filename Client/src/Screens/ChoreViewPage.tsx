@@ -30,15 +30,13 @@ export default function ChoreViewPage() {
         <View style={styles.centeredContainer}>
           <View style={styles.valueContainer}>
             <List.Item
-              title={
-                <Text style={styles.boldText}>
-                  Värde:
-                  <Badge style={styles.badeStyle}>
-                    {getDaysSinceLastDone(chore.deadline, chore.energy)}
-                  </Badge>
-                </Text>
-              }
+              title={<Text style={styles.boldText}>Värde:</Text>}
               description="Hur energiekrävande är sysslan?"
+              right={(props) => (
+                <Badge style={styles.badeStyle}>
+                  {getDaysSinceLastDone(chore.deadline, chore.energy)}
+                </Badge>
+              )}
             />
           </View>
         </View>
@@ -99,9 +97,6 @@ const styles = StyleSheet.create({
     padding: 2,
     borderRadius: 10,
     width: screenDimensions.width * 0.8,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   centeredContainer: {
     alignItems: "center",
@@ -112,7 +107,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   badeStyle: {
-    paddingLeft: 20,
     backgroundColor: "grey",
+    marginBottom: 7,
   },
 });
