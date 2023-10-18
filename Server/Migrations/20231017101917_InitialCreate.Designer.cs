@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231013120003_InitialCreate")]
+    [Migration("20231017101917_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -18,7 +18,7 @@ namespace Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
-            modelBuilder.Entity("User.HouseHold", b =>
+            modelBuilder.Entity("User.Household", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,44 @@ namespace Server.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("HouseHolds");
+                    b.ToTable("Households");
+                });
+
+            modelBuilder.Entity("User.Profile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Avatar")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("HouseholdId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("User.UserAccount", b =>
@@ -51,7 +88,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -60,7 +97,7 @@ namespace Server.Migrations
                     b.ToTable("UserAccounts");
                 });
 
-            modelBuilder.Entity("User.HouseHold", b =>
+            modelBuilder.Entity("User.Household", b =>
                 {
                     b.HasOne("User.UserAccount", "Owner")
                         .WithMany()
@@ -69,6 +106,25 @@ namespace Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("User.Profile", b =>
+                {
+                    b.HasOne("User.Household", "Household")
+                        .WithMany()
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.UserAccount", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

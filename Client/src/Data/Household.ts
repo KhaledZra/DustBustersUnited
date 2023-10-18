@@ -5,4 +5,5 @@ export interface Household {
   name: string;
   code: number;
   owner: User;
+  availableAvatars: number[];
 }

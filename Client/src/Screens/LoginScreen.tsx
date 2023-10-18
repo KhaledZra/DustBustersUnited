@@ -1,54 +1,72 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { loginUser } from "../store/userSlice";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  //pusha skiten
-  // Så här hämtar man data från redux store:
   const user = useAppSelector((state) => state.user.user);
-  // så här anropar man en funktion i redux store:
   const dispatch = useAppDispatch();
 
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  function handleLogin() {
-    console.log("before");
-    dispatch(loginUser({ userName: name, password: password }));
-    console.log("user?.name:", user?.userName);
+  useEffect(() => {
+    if (user != null) {
+      navigation.navigate("Chooice");
+    }
+  });
+
+  async function handleLogin() {
+    await dispatch(loginUser({ userName: name, password: password }));
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       {user && (
         <Text style={{ color: "white" }}>User: {JSON.stringify(user)}</Text>
       )}
-      <Button
-        onPress={() => {
-          dispatch(loginUser({ userName: "test", password: "password" }));
-        }}
-      >
-        {" "}
-        test{" "}
-      </Button>
-
-      <TextInput
-        label="Namn"
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
-      <TextInput
-        label="Lösenord"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      <Button mode="contained" onPress={() => handleLogin()}>
-        Logga in
-      </Button>
+      <View style={styles.loginContainer}>
+        <TextInput
+          label="Namn"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
+        <TextInput
+          label="Lösenord"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Button mode="contained" onPress={() => handleLogin()}>
+          Logga in
+        </Button>
+      </View>
+      <View style={styles.createAccountContainer}>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate("Registration")}
+          style={styles.bottomButton}
+        >
+          Skapa konto
+        </Button>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  loginContainer: {
+    flex: 1,
+  },
+  createAccountContainer: {
+    flex: 0.2,
+    justifyContent: "flex-end",
+  },
+  bottomButton: { marginBottom: 10 },
+});

@@ -8,7 +8,7 @@ import RegistrationScreen from "../Screens/RegistrationScreen";
 
 export type RootStackParamList = {
   Chooice: undefined;
-  Step2: undefined;
+  JoinHousehold: undefined;
   ChooseLogin: undefined;
   Registration: undefined;
   Login: undefined;
@@ -39,16 +39,12 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="Chooice"
         component={ChoiceScreen}
-        options={{
-          title: "Val",
-        }}
+        options={{ title: "Val" }}
       />
       <Stack.Screen
-        name="Step2"
+        name="JoinHousehold"
         component={JoinHousholdScreen}
-        options={{
-          title: "Gå med hushåll Steg2",
-        }}
+        options={{ title: "Gå med i hushåll" }}
       />
 
       <Stack.Screen
