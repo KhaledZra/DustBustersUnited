@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Model.User> Post(UserAccountDto user)
+    public ActionResult<User> Post(UserAccountDto user)
     {
         var newUser = DtoToUser(user);
         _context.Users.Add(newUser);
@@ -59,9 +59,9 @@ public class UserController : ControllerBase
     }
 
     //ServisMethod
-    private Model.User DtoToUser(UserAccountDto dto)
+    private User DtoToUser(UserAccountDto dto)
     {
-        return new Model.User
+        return new User
         {
             Username = dto.Username,
             Password = dto.Password
