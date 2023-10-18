@@ -4,21 +4,28 @@ import HouseholdScreen from "../Screens/HouseholdScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
+import HouseholdScreen from "../Screens/HouseholdScreen";
+import ChoreViewPage from "../Screens/ChoreViewPage";
 
 export type RootStackParamList = {
-  Chooice: undefined;
+  Choice: undefined;
   JoinHousehold: undefined;
-  ChooseLogin: undefined;
   Registration: undefined;
   Login: undefined;
   Household: undefined;
+  ChoreView: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="JoinHousehold">
+    <Stack.Navigator initialRouteName="ChooseLogin">
+      <Stack.Screen
+        name="ChooseLogin"
+        component={ChooseLoginScreen}
+        options={{ title: "Choose Login" }}
+      />
       <Stack.Screen
         name="Registration"
         component={RegistrationScreen}
@@ -30,7 +37,7 @@ export default function RootStackNavigator() {
         options={{ title: "Login" }}
       />
       <Stack.Screen
-        name="Chooice"
+        name="Choice"
         component={ChoiceScreen}
         options={{ title: "Val" }}
       />
@@ -45,6 +52,13 @@ export default function RootStackNavigator() {
         component={HouseholdScreen}
         options={{
           title: "Hushåll's Vy",
+        }}
+      />
+      <Stack.Screen
+        name="ChoreView"
+        component={ChoreViewPage}
+        options={{
+          title: "title",
         }}
       />
     </Stack.Navigator>

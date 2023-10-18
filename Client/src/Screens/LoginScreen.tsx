@@ -15,7 +15,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (user != null) {
-      navigation.navigate("Chooice");
+      navigation.navigate("Choice");
     }
   });
 

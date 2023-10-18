@@ -7,7 +7,7 @@ import { mockChores } from "../Data/MockData/ChoreMockData";
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
-const getDaysSinceLastDone = (deadline: Date, interval: number) => {
+export const getDaysSinceLastDone = (deadline: Date, interval: number) => {
   // Setup lastDone
   const lastDone = new Date(deadline);
   lastDone.setDate(deadline.getDate() - interval);
@@ -89,7 +89,7 @@ function ChoreView(chore: Chore) {
         <DisplayDaysSinceDone
           daysSinceDone={getDaysSinceLastDone(
             chore.deadline,
-            chore.repeatInterval,
+            chore.repeatInterval
           )}
           interval={chore.repeatInterval}
         />
