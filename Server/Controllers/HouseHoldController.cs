@@ -32,6 +32,31 @@ public class HouseholdController : ControllerBase
         return Ok(household);
     }
 
+    //
+    // You get the household by code when you join a household
+    // Therefore we also need to return the available avatars here
+    //
+    [HttpGet("ByCode/{code}")]  
+    public ActionResult<Household> GetByCode(int code)
+    {
+        var household = _context.Households.FirstOrDefault(h => h.Code == code);
+        if (household == null) return NotFound();
+
+        var availableAvatars = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 };
+        var usedAvatars = _context.Profiles
+            .Where(p => p.HouseholdId == household.Id)
+            .Select(p => p.Avatar).ToList();
+
+        availableAvatars = availableAvatars.Except(usedAvatars).ToList();
+
+        if (availableAvatars.Count > 0) {
+            household.AvailableAvatars = availableAvatars;
+        }
+
+        return Ok(household);
+    }
+
+
     [HttpPost]
     public async Task<ActionResult<Household>> Post(HouseholdDto householdDto)
     {

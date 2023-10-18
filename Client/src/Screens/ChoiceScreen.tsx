@@ -30,7 +30,7 @@ export default function ChoiceScreen({ navigation }: Props) {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate("Step2")}
+            onPress={() => navigation.navigate("JoinHousehold")}
             style={{ marginBottom: 6 }}
           >
             Gå med i hushåll
