@@ -2,18 +2,29 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import { Badge, Button, Card, List, Text } from "react-native-paper";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import { getDaysSinceLastDone } from "./HouseholdScreen";
-import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../Navigators/RootStackNavigator";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useEffect } from "react";
 
 const screenDimensions = Dimensions.get("screen");
 
-export default function ChoreViewPage() {
+type ChoreScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ChoreView"
+>;
+
+type Props = {
+  navigation: ChoreScreenNavigationProp;
+};
+
+export default function ChoreViewPage({ navigation }: Props) {
   const chore = mockChores[0];
-  const navigation = useNavigation();
 
-  navigation.setOptions({
-    title: chore.name,
-  });
-
+  useEffect(() => {
+    navigation.setOptions({
+      title: chore.name,
+    });
+  }, []);
   return (
     <Card style={styles.myCard}>
       <Card.Content>

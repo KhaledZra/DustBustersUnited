@@ -78,7 +78,7 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   }
 }
 
-function ChoreView(chore: Chore) {
+function ChoreView(chore: Chore, { navigation }: props) {
   return (
     <Card
       mode="outlined"
@@ -90,7 +90,7 @@ function ChoreView(chore: Chore) {
           <IconButton
             icon="pencil"
             size={15}
-            onPress={() => console.log("Edit: " + chore.id)}
+            onPress={() => navigation.navigate("EditChore")}
           />
         </Card.Actions>
 
