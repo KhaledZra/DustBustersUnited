@@ -7,6 +7,8 @@ import { mockChores } from "../Data/MockData/ChoreMockData";
 import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
 import { Household } from "../Data/Household";
 import { useEffect } from "react";
+import { RootStackParamList } from "../Navigators/RootStackNavigator";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -101,13 +103,25 @@ function ChoreView(chore: Chore) {
     </Card>
   );
 }
-// useEffect(() => {
-//   const navigation = useNavigation();
-//   navigation.setOptions({title: mockHousehold.name})
-// })
+
+type HouseholdScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Household"
+>;
+
+type Props = {
+  navigation: HouseholdScreenNavigationProp;
+};
 
 
-export default function HouseholdScreen() {
+export default function HouseholdScreen({ navigation }: Props) {
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: mockHousehold.name,
+    });
+  }, [])
+
   return (
     <View>
       <HeaderBar />
