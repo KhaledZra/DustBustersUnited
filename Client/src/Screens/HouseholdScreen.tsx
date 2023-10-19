@@ -1,8 +1,12 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import { Appbar, Card, Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
+import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
+import { Household } from "../Data/Household";
+import { useEffect } from "react";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -97,6 +101,11 @@ function ChoreView(chore: Chore) {
     </Card>
   );
 }
+// useEffect(() => {
+//   const navigation = useNavigation();
+//   navigation.setOptions({title: mockHousehold.name})
+// })
+
 
 export default function HouseholdScreen() {
   return (
