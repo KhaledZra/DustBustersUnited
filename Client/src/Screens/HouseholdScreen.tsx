@@ -1,8 +1,9 @@
-import { FlatList, StyleSheet, View } from "react-native";
-import { Appbar, Card, Text } from "react-native-paper";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
 
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
+import { RootStackScreenProps } from "../../types";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -84,21 +85,35 @@ function ChoreView(chore: Chore) {
       style={styles.card}
       onPress={() => console.log("Navigating to choreid: " + chore.id)}
     >
-      <Card.Content style={styles.content}>
-        <Text variant="labelLarge">{chore.name}</Text>
-        <DisplayDaysSinceDone
-          daysSinceDone={getDaysSinceLastDone(
-            chore.deadline,
-            chore.repeatInterval
-          )}
-          interval={chore.repeatInterval}
-        />
+      <Card.Content style={styles.contentStack}>
+        <Card.Actions>
+          <IconButton
+            icon="pencil"
+            size={15}
+            onPress={() => console.log("Edit: " + chore.id)}
+          />
+        </Card.Actions>
+
+        <Card.Content style={styles.content1}>
+          <Text variant="labelLarge">{chore.name}</Text>
+          <DisplayDaysSinceDone
+            daysSinceDone={getDaysSinceLastDone(
+              chore.deadline,
+              chore.repeatInterval
+            )}
+            interval={chore.repeatInterval}
+          />
+        </Card.Content>
       </Card.Content>
     </Card>
   );
 }
 
-export default function HouseholdScreen() {
+type props = RootStackScreenProps<"Household">;
+
+const screenDimensions = Dimensions.get("screen");
+
+export default function HouseholdScreen({ navigation }: props) {
   return (
     <View>
       <HeaderBar />
@@ -107,6 +122,16 @@ export default function HouseholdScreen() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <ChoreView {...item} />}
       />
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          icon="plus-circle-outline"
+          onPress={() => navigation.navigate("AddChore")}
+          style={styles.button}
+        >
+          Lägg till
+        </Button>
+      </View>
     </View>
   );
 }
@@ -120,7 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    margin: 8
+    margin: 8,
+    height: 50,
   },
   content: {
     flex: 1,
@@ -138,5 +164,32 @@ const styles = StyleSheet.create({
     width: 25,
     height: 22,
     borderRadius: 50,
+  },
+  button: {
+    width: screenDimensions.width / 3,
+    borderRadius: 20,
+    padding: 5,
+    marginTop: 400,
+    alignItems: "center",
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  contentStack: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    position: "relative",
+  },
+  content1: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    position: "absolute",
+    top: 13,
+    right: 0,
+    width: 325,
   },
 });

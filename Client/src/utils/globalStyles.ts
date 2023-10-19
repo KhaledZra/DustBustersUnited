@@ -22,4 +22,5 @@ export const s = StyleSheet.create({
   ph2: { paddingHorizontal: 2 },
   pv1: { paddingVertical: 1 },
   pv2: { paddingVertical: 2 },
+  boldText: { fontWeight: "bold" },
 });
