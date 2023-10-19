@@ -1,6 +1,6 @@
 import { registerRootComponent } from "expo";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 
 import React from "react";
@@ -11,12 +11,14 @@ import ThemeProvider from "./themes/ThemeContext";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar style="auto" />
-      <Provider store={store}>
-        <ThemeProvider>
-          <RootStackNavigator />
-        </ThemeProvider>
-      </Provider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar style="auto" />
+        <Provider store={store}>
+          <ThemeProvider>
+            <RootStackNavigator />
+          </ThemeProvider>
+        </Provider>
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
