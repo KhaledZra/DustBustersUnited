@@ -1,15 +1,10 @@
 import { Household } from "../Household";
-import { User } from "../User";
-
-const mockUser: User = {
-  id: 1,
-  userName: "Marcus Sake",
-  password: "Japan",
-};
+import { mockUser } from "./UserMockData";
 
 export const mockHousehold: Household = {
   id: 1,
   name: "Marcus Sake",
   code: 1234,
   owner: mockUser,
+  availableAvatars: [1, 2, 3, 4],
 };
