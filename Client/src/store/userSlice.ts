@@ -5,16 +5,25 @@ import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
 import { User } from "../Data/User";
 import { apiFetch } from "../utils/apiClient";
 
-type LoginPayload = { userName: string; password: string };
+type Payload = { userName: string; password: string };
 /**
  * As an example I added a list of users to the state, since we already have that endpoint
  * Todo: remove this and "users" when it's no longer needed
  */
-export const loginUser = createAsyncThunk<User, LoginPayload>(
+export const loginUser = createAsyncThunk<User, Payload>(
   "loginUser",
 
-  async (payload: LoginPayload) => {
+  async (payload: Payload) => {
     const response = await apiFetch("User/login", payload); //Ändrade från "/login"
+    return response.json();
+  }
+);
+
+export const registerUser = createAsyncThunk<User, Payload>(
+  "registerUser",
+
+  async (payload: Payload) => {
+    const response = await apiFetch("User", payload); 
     return response.json();
   }
 );
@@ -40,6 +49,21 @@ const userSlice = createSlice({
     });
 
     builder.addCase(loginUser.rejected, (state) => {
+      state.isError = true;
+    });
+
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(registerUser.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    });
+
+    builder.addCase(registerUser.rejected, (state) => {
+      state.isLoading = false;
       state.isError = true;
     });
   },
