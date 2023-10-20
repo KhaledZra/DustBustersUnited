@@ -1,7 +1,8 @@
-import { FlatList, StyleSheet, View } from "react-native";
-import { Appbar, Card, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
 
+import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
@@ -9,6 +10,8 @@ import { Household } from "../Data/Household";
 import { useEffect } from "react";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { globalStyle } from "../utils/globalStyles";
+import AddChoreScreen from "./AddChoreScreen";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -83,39 +86,44 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   }
 }
 
-function ChoreView(chore: Chore) {
+type ChoreViewProps = props & { chore: Chore };
+
+function ChoreView({ navigation, chore }: ChoreViewProps) {
   return (
     <Card
       mode="outlined"
       style={styles.card}
       onPress={() => console.log("Navigating to choreid: " + chore.id)}
     >
-      <Card.Content style={styles.content}>
-        <Text variant="labelLarge">{chore.name}</Text>
-        <DisplayDaysSinceDone
-          daysSinceDone={getDaysSinceLastDone(
-            chore.deadline,
-            chore.repeatInterval
-          )}
-          interval={chore.repeatInterval}
-        />
+      <Card.Content style={styles.contentStack}>
+        <Card.Actions>
+          <IconButton
+            icon="pencil"
+            size={15}
+            onPress={() => navigation.navigate("EditChore")}
+          />
+        </Card.Actions>
+
+        <Card.Content style={styles.content1}>
+          <Text variant="labelLarge">{chore.name}</Text>
+          <DisplayDaysSinceDone
+            daysSinceDone={getDaysSinceLastDone(
+              chore.deadline,
+              chore.repeatInterval
+            )}
+            interval={chore.repeatInterval}
+          />
+        </Card.Content>
       </Card.Content>
     </Card>
   );
 }
 
-type HouseholdScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Household"
->;
+type props = RootStackScreenProps<"Household">;
 
-type Props = {
-  navigation: HouseholdScreenNavigationProp;
-};
+const screenDimensions = Dimensions.get("screen");
 
-
-export default function HouseholdScreen({ navigation }: Props) {
-
+export default function HouseholdScreen({ navigation, route }: props) {
   useEffect(() => {
     navigation.setOptions({
       title: mockHousehold.name,
@@ -123,13 +131,23 @@ export default function HouseholdScreen({ navigation }: Props) {
   }, [])
 
   return (
-    <View>
+    <View style={globalStyle.flex1}>
       <HeaderBar />
       <FlatList
         data={mockChores}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ChoreView {...item} />}
+        renderItem={({ item }) => <ChoreView route={route} navigation={navigation} chore={item} />}
       />
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          icon="plus-circle-outline"
+          onPress={() => navigation.navigate("AddChore")}
+          style={styles.button}
+        >
+          Lägg till
+        </Button>
+      </View>
     </View>
   );
 }
@@ -143,7 +161,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    margin: 8
+    margin: 8,
+    height: 50,
   },
   content: {
     flex: 1,
@@ -161,5 +180,33 @@ const styles = StyleSheet.create({
     width: 25,
     height: 22,
     borderRadius: 50,
+  },
+  button: {
+    width: screenDimensions.width / 3,
+    borderRadius: 20,
+    padding: 5,
+    marginTop: 400,
+    alignItems: "center",
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10
+  },
+  contentStack: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    position: "relative",
+  },
+  content1: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    position: "absolute",
+    top: 13,
+    right: 0,
+    width: 325,
   },
 });
