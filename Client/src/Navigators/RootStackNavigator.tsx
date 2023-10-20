@@ -4,6 +4,7 @@ import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
 import HouseholdScreen from "../Screens/HouseholdScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
+import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 
 export type RootStackParamList = {
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   Login: undefined;
   Household: undefined;
   HouseholdInfo: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,6 +54,13 @@ export default function RootStackNavigator() {
         component={HouseholdScreen}
         options={{
           title: "Hushåll's Vy",
+        }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Personens profil",
         }}
       />
     </Stack.Navigator>
