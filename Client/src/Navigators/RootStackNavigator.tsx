@@ -24,7 +24,7 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="Registration"
         component={RegistrationScreen}
-        options={{ title: "Choose Login" }}
+        options={{ title: "Registrera" }}
       />
       <Stack.Screen
         name="Login"
