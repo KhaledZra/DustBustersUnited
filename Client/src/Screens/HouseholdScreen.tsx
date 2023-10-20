@@ -1,10 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
 
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { s } from "../utils/globalStyles";
+import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
+import { Household } from "../Data/Household";
+import { useEffect } from "react";
+import { RootStackParamList } from "../Navigators/RootStackNavigator";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { globalStyle } from "../utils/globalStyles";
+import AddChoreScreen from "./AddChoreScreen";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -117,8 +124,14 @@ type props = RootStackScreenProps<"Household">;
 const screenDimensions = Dimensions.get("screen");
 
 export default function HouseholdScreen({ navigation, route }: props) {
+  useEffect(() => {
+    navigation.setOptions({
+      title: mockHousehold.name,
+    });
+  }, [])
+
   return (
-    <View style={s.flex1}>
+    <View style={globalStyle.flex1}>
       <HeaderBar />
       <FlatList
         data={mockChores}

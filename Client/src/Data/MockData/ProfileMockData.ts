@@ -1,19 +1,6 @@
-import { Household } from "../Household";
 import { Profile } from "../Profile";
-import { User } from "../User";
-
-const mockUser: User = {
-  id: 1,
-  userName: "Marcus Sake",
-  password: "Japan",
-};
-
-const mockHousehold: Household = {
-  id: 1,
-  name: "Marcus Sake",
-  code: 1234,
-  owner: mockUser,
-};
+import { mockUser } from "./UserMockData";
+import { mockHousehold } from "./HouseHoldMockData";
 
 export const mockProfile: Profile = {
   id: 1,

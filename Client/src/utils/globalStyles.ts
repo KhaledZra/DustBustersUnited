@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const s = StyleSheet.create({
+export const globalStyle = StyleSheet.create({
   flex: { display: "flex" },
   flex1: { flex: 1 },
   radiusNone: { borderRadius: 0 },

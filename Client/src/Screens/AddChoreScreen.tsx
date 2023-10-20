@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Badge, Button, Card, TextInput } from "react-native-paper";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { s } from "../utils/globalStyles";
+import { globalStyle } from "../utils/globalStyles";
 import { getDaysSinceLastDone } from "./HouseholdScreen";
 
 export default function AddChoreScreen() {
@@ -10,23 +10,23 @@ export default function AddChoreScreen() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextInput
-          style={[styles.textInput, s.boldText]}
+          style={[styles.textInput, globalStyle.boldText]}
           label="Titel"
           underlineColor="transparent"
         />
         <TextInput
-          style={[styles.textInput, s.boldText]}
+          style={[styles.textInput, globalStyle.boldText]}
           underlineColor="transparent"
           label="Beskrivning"
           multiline
         />
 
         <Card>
-          <View style={[s.row, s.justifyBetween, s.alignCenter, s.p16]}>
-            <Text style={s.boldText}>Återkommer:</Text>
-            <View style={[s.row, s.gap2, s.alignCenter]}>
+          <View style={[globalStyle.row, globalStyle.justifyBetween, globalStyle.alignCenter, globalStyle.p16]}>
+            <Text style={globalStyle.boldText}>Återkommer:</Text>
+            <View style={[globalStyle.row, globalStyle.gap2, globalStyle.alignCenter]}>
               <Text>var</Text>
-              <Badge style={s.boldText}>
+              <Badge style={globalStyle.boldText}>
                 {getDaysSinceLastDone(chore.deadline, chore.repeatInterval)}
               </Badge>
               <Text>dag</Text>
@@ -35,10 +35,10 @@ export default function AddChoreScreen() {
         </Card>
 
         <Card>
-          <View style={[s.row, s.justifyBetween, s.alignCenter, s.p16]}>
-            <Text style={s.boldText}>Värde:</Text>
+          <View style={[globalStyle.row, globalStyle.justifyBetween, globalStyle.alignCenter, globalStyle.p16]}>
+            <Text style={globalStyle.boldText}>Värde:</Text>
             <Text>Hur energikrävande är sysslan?</Text>
-            <View style={[s.row, s.gap2, s.alignCenter]}>
+            <View style={[globalStyle.row, globalStyle.gap2, globalStyle.alignCenter]}>
               <Badge style={styles.badeStyle}>
                 {getDaysSinceLastDone(chore.deadline, chore.energy)}
               </Badge>
@@ -47,22 +47,22 @@ export default function AddChoreScreen() {
         </Card>
 
         <TextInput
-          style={s.boldText}
+          style={globalStyle.boldText}
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
       </ScrollView>
-      <View style={[s.row, s.gap1]}>
+      <View style={[globalStyle.row, globalStyle.gap1]}>
         <Button
           icon="plus-circle-outline"
-          style={[s.flex1, s.radiusNone]}
+          style={[globalStyle.flex1, globalStyle.radiusNone]}
           mode="contained"
         >
           Skapa
         </Button>
         <Button
           icon="close-circle-outline"
-          style={[s.flex1, s.radiusNone]}
+          style={[globalStyle.flex1, globalStyle.radiusNone]}
           mode="contained"
         >
           Stäng
