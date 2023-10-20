@@ -1,9 +1,10 @@
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
 
+import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { RootStackScreenProps } from "../../types";
+import { s } from "../utils/globalStyles";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -78,7 +79,9 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   }
 }
 
-function ChoreView(chore: Chore, { navigation }: props) {
+type ChoreViewProps = props & { chore: Chore };
+
+function ChoreView({ navigation, chore }: ChoreViewProps) {
   return (
     <Card
       mode="outlined"
@@ -113,14 +116,14 @@ type props = RootStackScreenProps<"Household">;
 
 const screenDimensions = Dimensions.get("screen");
 
-export default function HouseholdScreen({ navigation }: props) {
+export default function HouseholdScreen({ navigation, route }: props) {
   return (
-    <View>
+    <View style={s.flex1}>
       <HeaderBar />
       <FlatList
         data={mockChores}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ChoreView {...item} />}
+        renderItem={({ item }) => <ChoreView route={route} navigation={navigation} chore={item} />}
       />
       <View style={styles.buttonContainer}>
         <Button
@@ -175,6 +178,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10
   },
   contentStack: {
     flex: 1,

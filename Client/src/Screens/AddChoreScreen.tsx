@@ -1,9 +1,8 @@
-import { View, StyleSheet, Text, ScrollView } from "react-native";
-import { Badge, Button, Card, List, TextInput } from "react-native-paper";
-import { getDaysSinceLastDone } from "./HouseholdScreen";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Badge, Button, Card, TextInput } from "react-native-paper";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { s } from "../utils/globalStyles";
+import { getDaysSinceLastDone } from "./HouseholdScreen";
 
 export default function AddChoreScreen() {
   const chore = mockChores[0];
@@ -55,11 +54,11 @@ export default function AddChoreScreen() {
       </ScrollView>
       <View style={[s.row, s.gap1]}>
         <Button
-          icon="check-outline"
+          icon="plus-circle-outline"
           style={[s.flex1, s.radiusNone]}
           mode="contained"
         >
-          Spara
+          Skapa
         </Button>
         <Button
           icon="close-circle-outline"
