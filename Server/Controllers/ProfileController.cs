@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using DTO;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -16,17 +18,12 @@ public class ProfileController : ControllerBase
     [HttpGet("ByUser/{userId}")]
     public ActionResult<List<Profile>> GetUsersProfile(int userId)
     {
-        var profile = _context.Profiles
+        var profiles = _context.Profiles
                 .Include(p => p.User)
-                // .Include(p => p.Household.User)
+                .Include(p => p.Household)
                 .Where(p => p.UserId == userId).ToList();
 
-        if (profile == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(profile);
+        return Ok(profiles);
     }
 
     [HttpGet("{profileId}")]
@@ -34,7 +31,8 @@ public class ProfileController : ControllerBase
     {
         var profile = _context.Profiles
                 .Include(p => p.User)
-                .FirstOrDefault(p => p.Id == profileId); 
+                .Include(p => p.User)
+                .FirstOrDefault(p => p.Id == profileId);
 
         if (profile == null)
         {
@@ -43,50 +41,48 @@ public class ProfileController : ControllerBase
 
         return Ok(profile);
     }
-    
+
 
     [HttpPost("linkToHousehold")]
-    public async Task<IActionResult> LinkToHousehold(int userId, int houseId, int householdCode, string displayName, int avatar, bool isAdmin)
+    public async Task<IActionResult> LinkToHousehold(LinkToHouseholdDto dto)
     {
-        var user = _context.Users.FirstOrDefault(u => u.Id == userId);
-        var house = _context.Households.FirstOrDefault(h => h.Id == houseId);
+        var user = _context.Users.FirstOrDefault(u => u.Id == dto.UserId);
+        var household = _context.Households.FirstOrDefault(h => h.Code == dto.Code);
 
         if (user == null)
         {
             return BadRequest("Användaren finns inte.");
         }
 
-        var profile = _context.Profiles
+        if (household == null)
+        {
+            return BadRequest("Hushållet finns inte.");
+        }
+
+        Console.WriteLine("user.Id: " + user.Id + " household.Id: " + household.Id);
+        var existing_profile = _context.Profiles
                 .Include(p => p.User)
-                // .Include(p => p.Household.User)
-                .FirstOrDefault(p => p.UserId == user.Id); 
-        
-        var household = _context.Households.FirstOrDefault(h => h.Code == householdCode);
-        if (profile == null)
-        {
-            profile = new Profile
-            {
-                Avatar = avatar,
-                DisplayName = displayName,
-                isActive = true,
-                isAdmin = isAdmin,
-                isDeleted = false,
-                User = user,
-            };
+                .FirstOrDefault(p => p.UserId == user.Id && p.HouseholdId == household.Id);
 
-            _context.Profiles.Add(profile);
-            await _context.SaveChangesAsync();
+        if (existing_profile != null)
+        {
+            return BadRequest("Användaren är redan kopplad till hushållet.");
         }
 
-        if (household != null)
+        var profile = new Profile
         {
-            profile.HouseholdId = household.Id;
-            await _context.SaveChangesAsync();
-            return Ok(profile);
-            // return CreatedAtAction("Get", new { id = profile.Id }, profile);
+            Avatar = dto.Avatar,
+            DisplayName = dto.DisplayName,
+            HouseholdId = household.Id,
+            UserId = user.Id,
+            isActive = true,
+            isAdmin = dto.IsAdmin,
+            isDeleted = false,
+        };
 
-        }
-
-        return BadRequest("Hushållet finns inte.");
+        _context.Profiles.Add(profile);
+        await _context.SaveChangesAsync();
+        return Ok(profile);
     }
+
 }

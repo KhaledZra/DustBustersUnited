@@ -1,20 +1,18 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { RootStackScreenProps } from "../../types";
-import { useForm, Controller, SubmitHandler } from "react-hook-form"
-import { registerUser } from "../store/userSlice";
-
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { register } from "../store/userSlice/thunks";
 
 type Props = RootStackScreenProps<"Registration">;
 
 type Inputs = {
-  userName: string;
+  username: string;
   password: string;
   repeatedPassword: string;
-}
+};
 
 export default function RegistrationScreen({ navigation }: Props) {
   const user = useAppSelector((state) => state.user.user);
@@ -24,92 +22,126 @@ export default function RegistrationScreen({ navigation }: Props) {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     getValues,
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await dispatch(registerUser(data));
+    await dispatch(register(data));
     setPassword(data.password);
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     if (user?.password === password) {
-      navigation.navigate("Choice")
+      navigation.navigate("PickHousehold");
     }
-  }, [password]
-  )
+  }, [password]);
 
   return (
-    <View style={{gap: 5}}>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Namn"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            style={{margin: 5}} 
+    <View style={styles.container}>
+      <View style={styles.verticalSpacingContainer}>
+        <View style={styles.form}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Namn"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+            name="username"
+            rules={{
+              required: "Namn är obligatoriskt",
+              minLength: {
+                value: 2,
+                message: "Namn måste vara minst 2 tecken",
+              },
+            }}
           />
-        )}
-        name="userName"
-        rules={{ required: "Namn är obligatoriskt", minLength: { value: 2, message: "Namn måste vara minst 2 tecken" } }}
-      />
-      {errors.userName && <Text style={styles.errorText}>{errors.userName.message}</Text>}
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Lösenord"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            style={{margin: 5}} 
+          {errors.username && (
+            <Text style={styles.errorText}>{errors.username.message}</Text>
+          )}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Lösenord"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+            name="password"
+            rules={{
+              required: "lösenord är obligatoriskt",
+              minLength: {
+                value: 2,
+                message: "lösenord måste vara minst 2 tecken",
+              },
+            }}
           />
-        )}
-        name="password"
-        rules={{ required: "lösenord är obligatoriskt", minLength: { value: 2, message: "lösenord måste vara minst 2 tecken" } }}
-      />
-      {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="repetera lösenordet"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            style={{margin: 5}} 
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
+          )}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="repetera lösenordet"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+            name="repeatedPassword"
+            rules={{
+              required: "lösenord är obligatoriskt",
+              minLength: {
+                value: 2,
+                message: "lösenord måste vara minst 2 tecken",
+              },
+              validate: {
+                matchesPassword: (value) =>
+                  value === getValues("password") || "Lösenorden matchar inte",
+              },
+            }}
           />
-        )}
-        name="repeatedPassword"
-        rules={{ required: "lösenord är obligatoriskt", minLength: { value: 2, message: "lösenord måste vara minst 2 tecken" }, validate: {
-          matchesPassword: (value) => value === getValues("password") || "Lösenorden matchar inte",
-        },}}
-      />
-      {errors.repeatedPassword && <Text style={styles.errorText}>{errors.repeatedPassword.message}</Text>}
-      <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-        Registrera dig
-      </Button>
+          {errors.repeatedPassword && (
+            <Text style={styles.errorText}>
+              {errors.repeatedPassword.message}
+            </Text>
+          )}
+          <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            Registrera dig
+          </Button>
+        </View>
+
+        <View style={styles.createAccountContainer}>
+          <Button
+            icon={"login"}
+            mode="contained"
+            onPress={() => navigation.navigate("Login")}
+          >
+            Logga in
+          </Button>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { margin: 16, flex: 1 },
+  verticalSpacingContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
-  loginContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
+  form: { gap: 8 },
   createAccountContainer: {
-    flex: 1,
     justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
-  errorText: {
-    color: "red",
-  },
+  errorText: { color: "red" },
 });

@@ -1,30 +1,44 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ChoiceScreen from "../Screens/ChoiceScreen";
+import {
+  NativeStackNavigationOptions,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
+import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ChoreViewPage from "../Screens/ChoreViewPage";
-import HouseholdScreen from "../Screens/HouseholdScreen";
+import ChoreListScreen from "../Screens/ChoreListScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import AddChoreScreen from "../Screens/AddChoreScreen";
 import EditChoreScreen from "../Screens/EditChoreScreen";
+import StackHeader from "../Components/StackHeader";
+import HouseholdScreen from "../Screens/HouseholdScreen";
+import { Household } from "../Data/Household";
 
 export type RootStackParamList = {
-  Choice: undefined;
-  JoinHousehold: undefined;
+  // Auth
   Registration: undefined;
   Login: undefined;
-  Household: undefined;
+  // Create / Join Household
+  PickHousehold: undefined;
+  JoinHousehold: undefined;
+  HouseholdInfo: { household: Household | undefined }; // undefined is used to create new
+  //
+  ChoreList: undefined;
   ChoreView: undefined;
-  HouseholdInfo:undefined;
-  AddChore: undefined
-  EditChore: undefined
+  AddChore: undefined;
+  EditChore: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Household">
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={() => ({
+        header: (props) => <StackHeader {...props} />,
+      })}
+    >
       <Stack.Screen
         name="Registration"
         component={RegistrationScreen}
@@ -36,43 +50,50 @@ export default function RootStackNavigator() {
         options={{ title: "Login" }}
       />
       <Stack.Screen
-        name="Choice"
-        component={ChoiceScreen}
-        options={{ title: "Val" }}
+        name="PickHousehold"
+        component={PickHouseholdScreen}
+        options={{ title: "Skapa/Gå med i hushåll" }}
       />
       <Stack.Screen
         name="JoinHousehold"
         component={JoinHousholdScreen}
-        options={{ title: "Gå med i hushåll" }}
+        options={
+          {
+            title: "Gå med i hushåll",
+            backNav: true,
+          } as NativeStackNavigationOptions
+        }
       />
-
       <Stack.Screen
-        name="Household"
+        name="ChoreList"
+        component={ChoreListScreen}
+        options={{ title: "Hushåll's Vy" }}
+      />
+      <Stack.Screen
+        name="HouseholdInfo"
         component={HouseholdScreen}
-        options={{
-          title: "Hushåll's Vy",
-        }}
+        initialParams={{ household: undefined }}
+        options={
+          {
+            title: "Skapa hushåll",
+            backNav: true,
+          } as NativeStackNavigationOptions
+        }
       />
       <Stack.Screen
         name="AddChore"
         component={AddChoreScreen}
-        options={{
-          title: "Skapa en syssla",
-        }}
+        options={{ title: "Skapa en syssla" }}
       />
       <Stack.Screen
         name="EditChore"
         component={EditChoreScreen}
-        options={{
-          title: "Redigera en syssla",
-        }}
+        options={{ title: "Redigera en syssla" }}
       />
       <Stack.Screen
         name="ChoreView"
         component={ChoreViewPage}
-        options={{
-          title: "title",
-        }}
+        options={{ title: "title" }}
       />
     </Stack.Navigator>
   );
