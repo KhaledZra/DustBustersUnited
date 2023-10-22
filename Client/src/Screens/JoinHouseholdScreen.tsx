@@ -26,7 +26,6 @@ export default function JoinHousholdScreen() {
 
   const handleJoinPress = () => {
     if (!household || !displayName || !selectedAvatar) return;
-    console.log(typeof household.code)
     let dto: JoinHouseholdDto = {
       userId: 0, // we'll let the thunk figure this out from current state
       householdId: household.id,

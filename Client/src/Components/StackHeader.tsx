@@ -9,7 +9,6 @@ import { logout } from "../store/userSlice/thunks";
 import IconButtonAvatar from "./IconButtonAvatar";
 
 export default function StackHeader({ options }: React.PropsWithRef<any>) {
-  console.log(JSON.stringify(options, null, 2));
   // TODO: Should be able to solve this with `createSelector` instead
   // from here ---
   const [avatar, setAvatar] = useState<Avatar>();
