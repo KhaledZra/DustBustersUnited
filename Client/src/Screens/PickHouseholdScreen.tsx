@@ -7,6 +7,7 @@ import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 import { setActiveProfile } from "../store/userSlice";
 import { fetchProfiles } from "../store/userSlice/thunks";
+import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"PickHousehold" | "JoinHousehold">;
 
@@ -24,7 +25,7 @@ export default function PickHouseholdScreen({ navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>
         {profiles &&
           profiles.map((profile) => {
@@ -39,7 +40,7 @@ export default function PickHouseholdScreen({ navigation }: Props) {
             );
           })}
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={s.mt16}>
         <Button
           mode="contained"
           onPress={() => navigation.navigate("JoinHousehold")}
@@ -59,14 +60,3 @@ export default function PickHouseholdScreen({ navigation }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    padding: 16,
-  },
-  buttonContainer: {
-    marginTop: 16,
-  },
-});
