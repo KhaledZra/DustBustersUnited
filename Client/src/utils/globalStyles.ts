@@ -25,6 +25,8 @@ const globalStyle = StyleSheet.create({
   justifyEnd: { justifyContent: "flex-end" },
 
   alignCenter: { alignItems: "center" },
+  alignEnd: { alignItems: "flex-end" },
+
   alignSelfEnd: { alignSelf: "flex-end" },
 
   // Border Styles
@@ -46,6 +48,7 @@ const globalStyle = StyleSheet.create({
   gap1: { gap: 1 },
   gap2: { gap: 2 },
   gap4: { gap: 4 },
+  gap8: { gap: 8 },
   gap10: { gap: 10 },
   gap20: { gap: 20 },
 
@@ -70,7 +73,9 @@ const globalStyle = StyleSheet.create({
   pt15: { paddingTop: 15 },
   pt16: { paddingTop: 16 },
 
-  // Margin Vertical
+  // Margin
+  m16: { margin: 16 },
+
   mv10: { marginVertical: 10 },
 
   mb7: { marginBottom: 7 },

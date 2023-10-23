@@ -6,6 +6,7 @@ import { RootStackScreenProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../store";
 import { login } from "../store/userSlice/thunks";
 import Icon from "react-native-paper/src/components/Icon";
+import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"Login">;
 type Inputs = {
@@ -38,9 +39,9 @@ export default function LoginScreen({ navigation }: Props) {
   }, [error]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.verticalSpacingContainer}>
-        <View style={styles.form}>
+    <View style={[s.m16, s.flex1]}>
+      <View style={[s.flex1, s.justifyBetween]}>
+        <View style={s.gap8}>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -61,7 +62,7 @@ export default function LoginScreen({ navigation }: Props) {
             }}
           />
           {errors.username && (
-            <Text style={styles.errorText}>{errors.username.message}</Text>
+            <Text style={s.colRed}>{errors.username.message}</Text>
           )}
           <Controller
             control={control}
@@ -80,10 +81,10 @@ export default function LoginScreen({ navigation }: Props) {
           <Button mode="contained" onPress={handleSubmit(onSubmit)}>
             Logga in
           </Button>
-          {error && <Text style={styles.errorText}>{error}</Text>}
+          {error && <Text style={s.colRed}>{error}</Text>}
         </View>
       </View>
-      <View style={{ ...styles.createAccountContainer }}>
+      <View style={[s.justifyEnd, s.alignEnd]}>
         <Button
           icon={"account-plus"}
           mode="contained"
@@ -95,22 +96,3 @@ export default function LoginScreen({ navigation }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 16,
-    flex: 1,
-  },
-  verticalSpacingContainer: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  form: { gap: 8 },
-  createAccountContainer: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-  },
-  errorText: {
-    color: "red",
-  },
-});
