@@ -1,91 +1,91 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput, Text } from "react-native-paper";
-import { useAppDispatch, useAppSelector } from "../store";
-import { loginUser } from "../store/userSlice";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { Button, Text, TextInput } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
-import s from "../utils/globalStyles";
+import { useAppDispatch, useAppSelector } from "../store";
+import { login } from "../store/userSlice/thunks";
+import Icon from "react-native-paper/src/components/Icon";
 
 type Props = RootStackScreenProps<"Login">;
 type Inputs = {
-  userName: string;
+  username: string;
   password: string;
 };
 
 export default function LoginScreen({ navigation }: Props) {
   const user = useAppSelector((state) => state.user.user);
+  const error = useAppSelector((state) => state.user.loginError);
   const dispatch = useAppDispatch();
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await dispatch(loginUser(data));
-    setPassword(data.password);
+    await dispatch(login(data));
   };
 
   useEffect(() => {
-    if (user?.password === password) {
-      navigation.navigate("Choice");
-    } else {
-      if (password != "") {
-        setError("Inloggningen misslyckades.");
-      }
-    }
-  }, [password]);
+    if (user) navigation.navigate("PickHousehold");
+  }, [user]);
+
+  useEffect(() => {
+    setValue("password", "");
+  }, [error]);
 
   return (
-    <View style={[s.flex1, s.justifyCenter]}>
-      <View style={[s.flex1, s.justifyCenter]}>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              label="Namn"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              style={{ margin: 5 }}
-            />
+    <View style={styles.container}>
+      <View style={styles.verticalSpacingContainer}>
+        <View style={styles.form}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Namn"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+            name="username"
+            rules={{
+              required: "Namn är obligatoriskt",
+              minLength: {
+                value: 2,
+                message: "Namn måste vara minst 2 tecken",
+              },
+            }}
+          />
+          {errors.username && (
+            <Text style={styles.errorText}>{errors.username.message}</Text>
           )}
-          name="userName"
-          rules={{
-            required: "Namn är obligatoriskt",
-            minLength: { value: 2, message: "Namn måste vara minst 2 tecken" },
-          }}
-        />
-        {errors.userName && (
-          <Text style={s.colRed}>{errors.userName.message}</Text>
-        )}
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              label="Lösenord"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              style={{ margin: 5 }}
-            />
-          )}
-          name="password"
-          rules={{ required: true }}
-        />
-
-        <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-          Logga in
-        </Button>
-        {error && <Text style={s.colRed}>{error}</Text>}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Lösenord"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                secureTextEntry={true}
+              />
+            )}
+            name="password"
+            rules={{ required: "Lösenord är obligatoriskt" }}
+          />
+          <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            Logga in
+          </Button>
+          {error && <Text style={styles.errorText}>{error}</Text>}
+        </View>
       </View>
-      <View style={[s.flex1, s.justifyEnd, s.mb20]}>
+      <View style={{ ...styles.createAccountContainer }}>
         <Button
+          icon={"account-plus"}
           mode="contained"
           onPress={() => navigation.navigate("Registration")}
         >
@@ -95,3 +95,22 @@ export default function LoginScreen({ navigation }: Props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 16,
+    flex: 1,
+  },
+  verticalSpacingContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  form: { gap: 8 },
+  createAccountContainer: {
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  errorText: {
+    color: "red",
+  },
+});

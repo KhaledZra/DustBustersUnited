@@ -8,39 +8,48 @@ import {
   clearTransientHousehold,
   fetchTransientHousehold,
 } from "../store/householdSlice";
+import { JoinHouseholdDto } from "../Data/Household";
+import { joinHousehold } from "../store/userSlice/thunks";
 import s from "../utils/globalStyles";
 
 export default function JoinHousholdScreen() {
   const dispatch = useAppDispatch();
   const household = useAppSelector((s) => s.household.transientHousehold);
   const [selectedAvatar, setSelectedAvatar] = useState<number>();
-  const [text, setText] = useState<string>();
+  const [displayName, setDisplayName] = useState<string>();
 
   const handleChangeCode = (code: string | undefined) => {
     if (household) dispatch(clearTransientHousehold());
+    setDisplayName("");
     if (!code || code.length != 4 || isNaN(parseInt(code))) return;
     dispatch(fetchTransientHousehold(code));
   };
 
+  const handleJoinPress = () => {
+    if (!household || !displayName || !selectedAvatar) return;
+    let dto: JoinHouseholdDto = {
+      userId: 0, // we'll let the thunk figure this out from current state
+      householdId: household.id,
+      code: household.code,
+      displayName: displayName,
+      avatar: selectedAvatar,
+      isAdmin: false,
+    };
+
+    dispatch(joinHousehold(dto));
+  };
+
   return (
-    <View style={[s.flex1]}>
-      <View style={[s.flex1]}>
+    <View style={styles.container}>
+      <View>
         <View>
-          <Text>(Testa med kod 3091)</Text>
           <TextInput
             error={true}
-            label="kod:"
+            label="kod:  (3091)"            
             onChangeText={(text) => handleChangeCode(text)}
           />
         </View>
-        <View style={s.p10}>
-          <Button
-            mode="contained"
-            onPress={() => console.log("skcika förfrågan")}
-          >
-            Skicka förfrågan
-          </Button>
-        </View>
+
         {household && (
           <AvatarPicker
             household={household}
@@ -48,23 +57,38 @@ export default function JoinHousholdScreen() {
             onSelect={setSelectedAvatar}
           />
         )}
-        <View>
-          <TextInput
-            label="Välj display namn:"
-            onChangeText={(text) => setText(text)}
-          />
-        </View>
+        {household && (
+          <View>
+            <TextInput
+              label="Display-namn"              
+              onChangeText={(text) => setDisplayName(text)}
+            />
+          </View>
+        )}
       </View>
-
-      <View style={s.alignCenter}>
-        <Button
-          style={[s.w40, s.mb10]}
-          mode="contained"
-          onPress={() => console.log("Gå med")}
-        >
-          Gå med
-        </Button>
-      </View>
+      <Button
+        mode="contained"
+        disabled={
+          !household ||
+          !selectedAvatar ||
+          !displayName ||
+          displayName?.length == 0
+        }
+        onPress={handleJoinPress}
+      >
+        Gå med
+      </Button>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    padding: 16,
+  },
+  joinButton: {
+    alignSelf: "flex-end",
+  },
+});

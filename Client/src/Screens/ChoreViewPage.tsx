@@ -1,7 +1,7 @@
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Badge, Button, Card, List, Text } from "react-native-paper";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { getDaysSinceLastDone } from "./HouseholdScreen";
+import { getDaysSinceLastDone } from "./ChoreListScreen";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";

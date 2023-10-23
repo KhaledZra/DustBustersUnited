@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Badge, Button, Card, TextInput } from "react-native-paper";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import s from "../utils/globalStyles";
-import { getDaysSinceLastDone } from "./HouseholdScreen";
+import { getDaysSinceLastDone } from "./ChoreListScreen";
 
 export default function AddChoreScreen() {
   const chore = mockChores[0];
