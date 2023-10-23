@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { RootStackScreenProps } from "../../types";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import { registerUser } from "../store/userSlice";
+import s from "../utils/globalStyles";
 
 
 type Props = RootStackScreenProps<"Registration">;
@@ -56,7 +57,7 @@ export default function RegistrationScreen({ navigation }: Props) {
         name="userName"
         rules={{ required: "Namn är obligatoriskt", minLength: { value: 2, message: "Namn måste vara minst 2 tecken" } }}
       />
-      {errors.userName && <Text style={styles.errorText}>{errors.userName.message}</Text>}
+      {errors.userName && <Text style={s.colRed}>{errors.userName.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -71,7 +72,7 @@ export default function RegistrationScreen({ navigation }: Props) {
         name="password"
         rules={{ required: "lösenord är obligatoriskt", minLength: { value: 2, message: "lösenord måste vara minst 2 tecken" } }}
       />
-      {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+      {errors.password && <Text style={s.colRed}>{errors.password.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -88,28 +89,10 @@ export default function RegistrationScreen({ navigation }: Props) {
           matchesPassword: (value) => value === getValues("password") || "Lösenorden matchar inte",
         },}}
       />
-      {errors.repeatedPassword && <Text style={styles.errorText}>{errors.repeatedPassword.message}</Text>}
+      {errors.repeatedPassword && <Text style={s.colRed}>{errors.repeatedPassword.message}</Text>}
       <Button mode="contained" onPress={handleSubmit(onSubmit)}>
         Registrera dig
       </Button>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  loginContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  createAccountContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  errorText: {
-    color: "red",
-  },
-});

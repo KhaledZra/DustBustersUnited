@@ -4,6 +4,9 @@ const globalStyle = StyleSheet.create({
   // Overflow
   overflowHidden: { overflow: "hidden" },
 
+  // Color
+  colRed: { color: "red" }, 
+
   // Background color
   bgColGrey: { backgroundColor: "grey" },
   bgColWhite: { backgroundColor: "white" },
@@ -16,7 +19,9 @@ const globalStyle = StyleSheet.create({
 
   // Placement Styles
   justifyBetween: { justifyContent: "space-between" },
-  justifyCenter: { justifyContent: "center" },
+  justifyCenter: { justifyContent: "center" },  
+  justifyEnd: { justifyContent: "flex-end" },  
+
   alignCenter: { alignItems: "center" },
 
   // Border Styles
