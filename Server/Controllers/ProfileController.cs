@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using DTO;
 
 [ApiController]
@@ -59,7 +58,6 @@ public class ProfileController : ControllerBase
             return BadRequest("Hushållet finns inte.");
         }
 
-        Console.WriteLine("user.Id: " + user.Id + " household.Id: " + household.Id);
         var existing_profile = _context.Profiles
                 .Include(p => p.User)
                 .FirstOrDefault(p => p.UserId == user.Id && p.HouseholdId == household.Id);
@@ -91,13 +89,11 @@ public class ProfileController : ControllerBase
         var profile = _context.Profiles.FirstOrDefault(p => p.Id == profileId);
 
         if (profile != null)
-        {
-                
+        {  
             _context.Profiles.Remove(profile);
             _context.SaveChanges();
             return Ok("Hushållet har tagits bort från användaren.");
         }
-        
 
         return NotFound("Användaren har inte hushåll.");
     }
