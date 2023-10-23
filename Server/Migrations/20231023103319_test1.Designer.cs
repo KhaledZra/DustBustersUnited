@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231018105501_FixedIssueLooping")]
-    partial class FixedIssueLooping
+    [Migration("20231023103319_test1")]
+    partial class test1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,7 +108,7 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Model.Profile", b =>
                 {
-                    b.HasOne("Model.Household", null)
+                    b.HasOne("Model.Household", "Household")
                         .WithMany("Profiles")
                         .HasForeignKey("HouseholdId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -119,6 +119,8 @@ namespace Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Household");
 
                     b.Navigation("User");
                 });
