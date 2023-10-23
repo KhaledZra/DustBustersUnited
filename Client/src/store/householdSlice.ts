@@ -1,24 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from ".";
 import { Household } from "../Data/Household";
+import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
 
 export const fetchTransientHousehold = createAsyncThunk<Household, string>(
   "fetchTransientHousehold",
   async (code: string) => {
-    console.log("fetchTransientHousehold", code);
     const response: Response = await apiFetch(`Household/ByCode/${code}`);
-    console.log("response:", response.status);
+    return response.json();
+  }
+);
+
+export const fetchProfiles = createAsyncThunk<Profile[]>(
+  "fetchProfiles",
+  async (_:void, {getState}) => {
+    const user = (getState() as RootState).user.user
+    const response: Response = await apiFetch(`Profile/ByUser/${user!.id}`);
     let json = await response.json();
-    console.log("response:", json);
     return json;
   }
 );
 
-const userSlice = createSlice({
+export type Avatar = { id: number; avatar: string; color: string };
+const householdSlice = createSlice({
   name: "household",
   initialState: {
     // All households the user is a member of
     households: [] as Household[],
+    profiles: [] as Profile[],
     // The household we are about to join
     transientHousehold: undefined as Household | undefined,
     avatars: Object.freeze([
@@ -41,8 +51,11 @@ const userSlice = createSlice({
     builder.addCase(fetchTransientHousehold.fulfilled, (state, action) => {
       state.transientHousehold = action.payload;
     });
+    builder.addCase(fetchProfiles.fulfilled, (state, action) => {
+      state.profiles = action.payload;
+    });
   },
 });
 
-export const { clearTransientHousehold } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearTransientHousehold } = householdSlice.actions;
+export default householdSlice.reducer;

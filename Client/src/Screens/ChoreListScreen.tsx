@@ -1,17 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
+import { useEffect, useState } from "react";
 
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
-import { Household } from "../Data/Household";
-import { useEffect } from "react";
-import { RootStackParamList } from "../Navigators/RootStackNavigator";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { globalStyle } from "../utils/globalStyles";
-import AddChoreScreen from "./AddChoreScreen";
+import { useAppSelector } from "../store";
+import { Profile } from "../Data/Profile";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -119,16 +115,24 @@ function ChoreView({ navigation, chore }: ChoreViewProps) {
   );
 }
 
-type props = RootStackScreenProps<"Household">;
+type props = RootStackScreenProps<"ChoreList">;
 
 const screenDimensions = Dimensions.get("screen");
 
-export default function HouseholdScreen({ navigation, route }: props) {
+export default function ChoreListScreen({ navigation, route }: props) {
+  // TODO: Should be able to solve this with `createSelector` in store instead
+  // from here ---
+  const [profile, setProfile] = useState<Profile>();
+  const profiles = useAppSelector((state) => state.user.profiles);
+  const activeProfileId = useAppSelector((state) => state.user.activeProfileId);
   useEffect(() => {
-    navigation.setOptions({
-      title: mockHousehold.name,
-    });
-  }, [])
+    setProfile(profiles.find((p) => p.id === activeProfileId));
+  }, [profiles, activeProfileId]);
+  // --- to here
+
+  useEffect(() => {
+    navigation.setOptions({ title: profile?.household.name });
+  }, [profile]);
 
   return (
     <View style={globalStyle.flex1}>
@@ -136,7 +140,9 @@ export default function HouseholdScreen({ navigation, route }: props) {
       <FlatList
         data={mockChores}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ChoreView route={route} navigation={navigation} chore={item} />}
+        renderItem={({ item }) => (
+          <ChoreView route={route} navigation={navigation} chore={item} />
+        )}
       />
       <View style={styles.buttonContainer}>
         <Button
@@ -191,7 +197,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10
+    marginBottom: 10,
   },
   contentStack: {
     flex: 1,

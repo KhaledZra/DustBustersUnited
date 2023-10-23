@@ -1,15 +1,9 @@
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 if (!API_URL) {
-
   throw new Error(
-    "Missing env var: EXPO_PUBLIC_API_URL.. Please set it in .env file"
+    "Missing env var: EXPO_PUBLIC_API_URL... Please set it in the .env-file"
   );
 }
-
-// Important!
-// ---
-// Make sure API_URL is the IP to your local machine, not "localhost" !!
-// because the localhost is on the emulator (not your local machine!)
 
 export async function apiFetch(
   endpoint: string,
@@ -18,9 +12,9 @@ export async function apiFetch(
   timeout = 5000
 ): Promise<any> {
   let isPost = Object.keys(postData).length > 0;
+  options.method = isPost ? "POST" : "GET";
   if (isPost) {
-    options.body = JSON.stringify(postData);
-    options.method = "POST";
+    options.body = JSON.stringify(postData, null, 2);
     options.headers = {
       ...options.headers,
       Accept: "application/json",
@@ -31,7 +25,10 @@ export async function apiFetch(
   if (endpoint[0] !== "/" && API_URL![API_URL!.length - 1] !== "/")
     endpoint = "/" + endpoint;
 
-  console.log("[apiClient.ts] ::", API_URL + endpoint);
+  console.log("[apiClient.ts] ::", options.method, API_URL + endpoint);
+  if (options.body) {
+    console.log("[POST Body] ::", options.body);
+  }
   return Promise.race([
     fetch(API_URL + endpoint, options).catch((e) => {
       console.log("[apiClient.ts] Error: ", e);
