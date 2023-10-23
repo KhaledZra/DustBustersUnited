@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from ".";
 import { Household } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
@@ -13,8 +14,9 @@ export const fetchTransientHousehold = createAsyncThunk<Household, string>(
 
 export const fetchProfiles = createAsyncThunk<Profile[]>(
   "fetchProfiles",
-  async () => {
-    const response: Response = await apiFetch(`Profile/ByUser/2`);
+  async (_:void, {getState}) => {
+    const user = (getState() as RootState).user.user
+    const response: Response = await apiFetch(`Profile/ByUser/${user!.id}`);
     let json = await response.json();
     return json;
   }

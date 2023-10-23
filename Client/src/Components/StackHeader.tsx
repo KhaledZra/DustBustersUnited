@@ -38,6 +38,9 @@ export default function StackHeader({ options }: React.PropsWithRef<any>) {
     dispatch(setActiveProfile(undefined));
     navigation.navigate("PickHousehold");
   };
+  const handleShowHousehold = () => {
+    navigation.navigate("HouseholdInfo");
+  };
   const handleLogout = () => {
     dispatch(logout());
     navigation.navigate("Login");
@@ -72,16 +75,16 @@ export default function StackHeader({ options }: React.PropsWithRef<any>) {
             leadingIcon="home"
           />
         )}
+        {activeProfileId && (
+          <Menu.Item
+            onPress={handleShowHousehold}
+            title="Hushåll info"
+            leadingIcon="home"
+          />
+        )}
         <Divider />
         <Menu.Item onPress={handleLogout} title="Logout" leadingIcon="logout" />
       </Menu>
     </Appbar.Header>
   );
 }
-
-const styles = StyleSheet.create({
-  menuContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-});

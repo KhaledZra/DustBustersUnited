@@ -2,19 +2,19 @@ import {
   NativeStackNavigationOptions,
   createNativeStackNavigator,
 } from "@react-navigation/native-stack";
-import ChoreViewPage from "../Screens/ChoreViewPage";
-import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
-import LoginScreen from "../Screens/LoginScreen";
-import ProfileScreen from "../Screens/ProfileScreen";
-import RegistrationScreen from "../Screens/RegistrationScreen";
-import AddChoreScreen from "../Screens/AddChoreScreen";
-import EditChoreScreen from "../Screens/EditChoreScreen";
 import StackHeader from "../Components/StackHeader";
 import { Household } from "../Data/Household";
-import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
-import ChoreListScreen from "../Screens/ChoreListScreen";
-import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
+import AddChoreScreen from "../Screens/AddChoreScreen";
 import AddEditHouseholdScreen from "../Screens/AddEditHouseholdScreen";
+import ChoreListScreen from "../Screens/ChoreListScreen";
+import ChoreViewPage from "../Screens/ChoreViewPage";
+import EditChoreScreen from "../Screens/EditChoreScreen";
+import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
+import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
+import LoginScreen from "../Screens/LoginScreen";
+import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
+import ProfileScreen from "../Screens/ProfileScreen";
+import RegistrationScreen from "../Screens/RegistrationScreen";
 
 export type RootStackParamList = {
   // Auth
@@ -46,7 +46,12 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="HouseholdInfo"
         component={HouseholdInfoScreen}
-        options={{ title: "Hushålls-info" }}
+        options={
+          {
+            title: "Hushålls-info",
+            backNav: true,
+          } as NativeStackNavigationOptions
+        }
       />
       <Stack.Screen
         name="Registration"
@@ -107,9 +112,12 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{
-          title: "Personens profil",
-        }}
+        options={
+          {
+            title: "Personens profil",
+            backNav: true,
+          } as NativeStackNavigationOptions
+        }
       />
     </Stack.Navigator>
   );

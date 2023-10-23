@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { fetchProfiles } from "../store/householdSlice";
 
 export default function HouseholdInfoScreen() {
-  const profiles = useAppSelector((state) => state.household.profiles);
+  const profiles = useAppSelector((state) => state.user.profiles);
   const avatars = useAppSelector((state) => state.household.avatars);
 
   const householdCode = useAppSelector(
@@ -40,7 +40,6 @@ export default function HouseholdInfoScreen() {
           Kod för att gå med i hushåll
         </Text>
         <Text style={styles.codeBox}>
-          123
           {householdCode ? householdCode.code : " "}
         </Text>
       </View>

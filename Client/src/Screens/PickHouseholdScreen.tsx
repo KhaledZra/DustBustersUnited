@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 
 import { RootStackScreenProps } from "../../types";
+import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 import { setActiveProfile } from "../store/userSlice";
-import { Profile } from "../Data/Profile";
 import { fetchProfiles } from "../store/userSlice/thunks";
 
 type Props = RootStackScreenProps<"PickHousehold" | "JoinHousehold">;
@@ -50,7 +50,7 @@ export default function PickHouseholdScreen({ navigation }: Props) {
         <Button
           mode="contained"
           onPress={() =>
-            navigation.navigate("HouseholdInfo", { household: undefined })
+            navigation.navigate("AddEditHoushold", { household: undefined })
           }
         >
           Nytt hushåll
