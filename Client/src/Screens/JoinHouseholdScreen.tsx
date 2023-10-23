@@ -40,7 +40,7 @@ export default function JoinHousholdScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>
         <View>
           <TextInput
@@ -81,14 +81,3 @@ export default function JoinHousholdScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    padding: 16,
-  },
-  joinButton: {
-    alignSelf: "flex-end",
-  },
-});

@@ -5,8 +5,8 @@ const globalStyle = StyleSheet.create({
   overflowHidden: { overflow: "hidden" },
 
   // Color
-  colRed: { color: "red" }, 
-  colWhite: { color: "white" }, 
+  colRed: { color: "red" },
+  colWhite: { color: "white" },
 
   // Background color
   bgColGrey: { backgroundColor: "grey" },
@@ -21,10 +21,11 @@ const globalStyle = StyleSheet.create({
 
   // Placement Styles
   justifyBetween: { justifyContent: "space-between" },
-  justifyCenter: { justifyContent: "center" },  
-  justifyEnd: { justifyContent: "flex-end" },  
+  justifyCenter: { justifyContent: "center" },
+  justifyEnd: { justifyContent: "flex-end" },
 
   alignCenter: { alignItems: "center" },
+  alignSelfEnd: { alignSelf: "flex-end" },
 
   // Border Styles
   radiusNone: { borderRadius: 0 },
@@ -34,10 +35,10 @@ const globalStyle = StyleSheet.create({
 
   bw2: { borderWidth: 2 },
 
-  btlr10: {borderTopLeftRadius: 10},
-  btrr10: {borderTopRightRadius: 10},
-  bblr10: {borderBottomLeftRadius: 10},
-  bbrr10: {borderBottomRightRadius: 10},
+  btlr10: { borderTopLeftRadius: 10 },
+  btrr10: { borderTopRightRadius: 10 },
+  bblr10: { borderBottomLeftRadius: 10 },
+  bbrr10: { borderBottomRightRadius: 10 },
 
   bcTransparent: { borderColor: "transparent" },
 
