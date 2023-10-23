@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function AnimatedAppLoader({ children }: Props) {
-  const animation = useMemo(() => new Animated.Value(1), []);
+  const animation = useMemo(() => new Animated.Value(5), []);
   const [isAppReady, setAppReady] = useState(false);
   const [isSplashAnimationComplete, setAnimationComplete] = useState(false);
   const [isSplashReady, setSplashReady] = useState(false);
@@ -66,7 +66,7 @@ export function AnimatedAppLoader({ children }: Props) {
             }}
             source={image}
             onLoadEnd={onImageLoaded}
-            fadeDuration={10}
+            fadeDuration={3500}
           />
         </Animated.View>
       )}
