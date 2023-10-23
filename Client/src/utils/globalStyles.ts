@@ -6,9 +6,11 @@ const globalStyle = StyleSheet.create({
 
   // Color
   colRed: { color: "red" }, 
+  colWhite: { color: "white" }, 
 
   // Background color
   bgColGrey: { backgroundColor: "grey" },
+  bgColRed: { backgroundColor: "red" },
   bgColWhite: { backgroundColor: "white" },
 
   // Flex styles
@@ -77,9 +79,14 @@ const globalStyle = StyleSheet.create({
   mt16: { marginTop: 16 },
 
   // Width
+  w10: { width: "10%" },
   w20: { width: "20%" },
   w40: { width: "40%" },
   w80: { width: "80%" },
+
+  // Height
+  h35: { height: "35%" },
+  h40: { height: "40%" },
 
   // Aspect Ratio
   ar1: { aspectRatio: 1 },
