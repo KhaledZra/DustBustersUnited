@@ -84,9 +84,10 @@ public class ProfileController : ControllerBase
     }
 
     [HttpDelete("DeleteHousehold")]
-    public IActionResult DeleteHouseholdForUser(int profileId)
+    public IActionResult DeleteHouseholdForUser(DeleteHouseholdDto dto)
     {
-        var profile = _context.Profiles.FirstOrDefault(p => p.Id == profileId);
+        Console.WriteLine("profileId" + dto.ProfileId);
+        var profile = _context.Profiles.FirstOrDefault(p => p.Id == dto.ProfileId);
 
         if (profile != null)
         {  
@@ -97,4 +98,9 @@ public class ProfileController : ControllerBase
 
         return NotFound("Användaren har inte hushåll.");
     }
+}
+
+
+public class DeleteHouseholdDto {
+    public int ProfileId { get; set; }  
 }

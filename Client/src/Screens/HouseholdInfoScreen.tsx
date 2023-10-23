@@ -18,9 +18,7 @@ export default function HouseholdInfoScreen() {
     navigation.navigate("PickHousehold");
   }
 
-  useEffect(() => {
-    dispatch(deleteProfile());
-  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hushållsmedlemmar</Text>
