@@ -12,8 +12,10 @@ export async function apiFetch(
   timeout = 5000
 ): Promise<any> {
   let isPost = Object.keys(postData).length > 0;
-  options.method = isPost ? "POST" : "GET";
   if (isPost) {
+    if (!options.method) {
+      options.method = "POST";
+    }
     options.body = JSON.stringify(postData, null, 2);
     options.headers = {
       ...options.headers,

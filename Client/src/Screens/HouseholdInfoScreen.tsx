@@ -1,23 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
-import { fetchProfiles } from "../store/householdSlice";
+import { deleteProfile } from "../store/householdSlice";
 
 export default function HouseholdInfoScreen() {
   const profiles = useAppSelector((state) => state.user.profiles);
   const avatars = useAppSelector((state) => state.household.avatars);
-
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const householdCode = useAppSelector(
     (state) => state.household.transientHousehold
   );
-
-  const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const handleLeaveHousehold = () => {
+    dispatch(deleteProfile());
+    navigation.navigate("PickHousehold");
+  }
 
   useEffect(() => {
-    dispatch(fetchProfiles());
+    dispatch(deleteProfile());
   }, []);
   return (
     <View style={styles.container}>
@@ -44,7 +46,11 @@ export default function HouseholdInfoScreen() {
         </Text>
       </View>
 
-      <Button style={styles.bottomBox} labelStyle={styles.buttonText}>
+      <Button
+        style={styles.bottomBox}
+        labelStyle={styles.buttonText}
+        onPress={handleLeaveHousehold}
+      >
         Lämna hushåll
       </Button>
     </View>
