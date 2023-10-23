@@ -6,6 +6,7 @@ const globalStyle = StyleSheet.create({
 
   // Background color
   bgColGrey: { backgroundColor: "grey" },
+  bgColWhite: { backgroundColor: "white" },
 
   // Flex styles
   flex: { display: "flex" },
@@ -22,8 +23,14 @@ const globalStyle = StyleSheet.create({
   radiusNone: { borderRadius: 0 },
   br4: { borderRadius: 4 },
   br10: { borderRadius: 10 },
+  br20: { borderRadius: 20 },
 
   bw2: { borderWidth: 2 },
+
+  btlr10: {borderTopLeftRadius: 10},
+  btrr10: {borderTopRightRadius: 10},
+  bblr10: {borderBottomLeftRadius: 10},
+  bbrr10: {borderBottomRightRadius: 10},
 
   bcTransparent: { borderColor: "transparent" },
 
@@ -57,6 +64,8 @@ const globalStyle = StyleSheet.create({
   // Margin Vertical
   mv10: { marginVertical: 10 },
 
+  mb7: { marginBottom: 7 },
+  mb10: { marginBottom: 10 },
   mb20: { marginBottom: 20 },
 
   mt16: { marginTop: 16 },
@@ -64,6 +73,7 @@ const globalStyle = StyleSheet.create({
   // Width
   w20: { width: "20%" },
   w40: { width: "40%" },
+  w80: { width: "80%" },
 
   // Aspect Ratio
   ar1: { aspectRatio: 1 },
@@ -73,6 +83,10 @@ const globalStyle = StyleSheet.create({
 
   // Text Styles
   boldText: { fontWeight: "bold" },
+
+  textCenter: { textAlign: "center" },
+
+  fs26: { fontSize: 26 },
 });
 
 export default globalStyle;
