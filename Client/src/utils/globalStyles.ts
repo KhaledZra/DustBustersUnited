@@ -52,9 +52,14 @@ const globalStyle = StyleSheet.create({
   pv2: { paddingVertical: 2 },
 
   pt15: { paddingTop: 15 },
+  pt16: { paddingTop: 16 },
 
   // Margin Vertical
   mv10: { marginVertical: 10 },
+
+  mb20: { marginBottom: 20 },
+
+  mt16: { marginTop: 16 },
 
   // Width
   w20: { width: "20%" },

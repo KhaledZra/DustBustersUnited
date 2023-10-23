@@ -5,12 +5,14 @@ import { Button } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import { useAppSelector } from "../store";
 
+import s from "../utils/globalStyles";
+
 type Props = RootStackScreenProps<"Choice">;
 
 export default function ChoiceScreen({ navigation }: Props) {
   const households = useAppSelector((state) => state.user.households);
   return (
-    <View style={styles.container}>
+    <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>
         {households.map((household) => {
           return (
@@ -26,7 +28,7 @@ export default function ChoiceScreen({ navigation }: Props) {
           );
         })}
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={s.mt16}>
         <Button
           mode="contained"
           onPress={() => navigation.navigate("JoinHousehold")}
@@ -38,7 +40,7 @@ export default function ChoiceScreen({ navigation }: Props) {
           Nytt hushåll
         </Button>
       </View>
-      <View style={styles.closeButton}>
+      <View style={s.mb20}>
         <Button mode="contained" onPress={() => console.log("X Stäng")}>
           X Stäng
         </Button>
@@ -46,17 +48,3 @@ export default function ChoiceScreen({ navigation }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    padding: 16,
-  },
-  buttonContainer: {
-    marginTop: 16,
-  },
-  closeButton: {
-    marginBottom: 20,
-  },
-});
