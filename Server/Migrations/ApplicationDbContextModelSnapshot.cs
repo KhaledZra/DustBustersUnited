@@ -105,7 +105,7 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Model.Profile", b =>
                 {
-                    b.HasOne("Model.Household", null)
+                    b.HasOne("Model.Household", "Household")
                         .WithMany("Profiles")
                         .HasForeignKey("HouseholdId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -116,6 +116,8 @@ namespace Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Household");
 
                     b.Navigation("User");
                 });

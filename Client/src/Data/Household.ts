@@ -7,3 +7,12 @@ export interface Household {
   owner: User;
   availableAvatars: number[];
 }
+
+export type JoinHouseholdDto = {
+  userId: number;
+  householdId: number;
+  code: number;
+  displayName: string;
+  avatar: number;
+  isAdmin: boolean;
+};

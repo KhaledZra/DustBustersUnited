@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Badge, Button, Card, List, TextInput } from "react-native-paper";
-import { getDaysSinceLastDone } from "./HouseholdScreen";
+import { getDaysSinceLastDone } from "./ChoreListScreen";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import { globalStyle } from "../utils/globalStyles";
 

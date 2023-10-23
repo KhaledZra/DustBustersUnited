@@ -1,100 +1,116 @@
-
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput} from "react-native-paper";
+import { Button, Text, TextInput } from "react-native-paper";
+import { RootStackScreenProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../store";
-import { loginUser } from "../store/userSlice";
-import { useForm, Controller, SubmitHandler } from "react-hook-form"
+import { login } from "../store/userSlice/thunks";
+import Icon from "react-native-paper/src/components/Icon";
 
+type Props = RootStackScreenProps<"Login">;
 type Inputs = {
-  userName: string;
+  username: string;
   password: string;
-}
+};
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
+export default function LoginScreen({ navigation }: Props) {
   const user = useAppSelector((state) => state.user.user);
+  const error = useAppSelector((state) => state.user.loginError);
   const dispatch = useAppDispatch();
-  const [password, setPassword] = useState("");
 
   const {
     control,
     handleSubmit,
+    setValue,
+    formState: { errors },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await dispatch(loginUser(data));
-    setPassword(data.password);
-  }
-    useEffect(()=>{
+    await dispatch(login(data));
+  };
 
-      if (user?.password === password) {
-        navigation.navigate("Choice");
-      } 
-    }, [user, password]
-  )
+  useEffect(() => {
+    if (user) navigation.navigate("PickHousehold");
+  }, [user]);
+
+  useEffect(() => {
+    setValue("password", "");
+  }, [error]);
+
   return (
     <View style={styles.container}>
-      <View style={styles.loginContainer}>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Namn"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            style={{margin: 5}}
+      <View style={styles.verticalSpacingContainer}>
+        <View style={styles.form}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Namn"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+            name="username"
+            rules={{
+              required: "Namn är obligatoriskt",
+              minLength: {
+                value: 2,
+                message: "Namn måste vara minst 2 tecken",
+              },
+            }}
           />
-        )}
-        name="userName"
-        rules={{ required: true }}
-      />
-
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Lösenord"
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            style={{margin: 5}}
+          {errors.username && (
+            <Text style={styles.errorText}>{errors.username.message}</Text>
+          )}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Lösenord"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                secureTextEntry={true}
+              />
+            )}
+            name="password"
+            rules={{ required: "Lösenord är obligatoriskt" }}
           />
-        )}
-        name="password"
-        rules={{ required: true }}
-      />
-
-      <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-        Logga in
-      </Button>
-      </View>
-      <View style={{ ...styles.createAccountContainer, marginBottom: 20 }}>
-
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate("Registration")}
-        >
-        Skapa konto
-      </Button>
+          <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            Logga in
+          </Button>
+          {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
+      </View>
+      <View style={{ ...styles.createAccountContainer }}>
+        <Button
+          icon={"account-plus"}
+          mode="contained"
+          onPress={() => navigation.navigate("Registration")}
+        >
+          Skapa konto
+        </Button>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    margin: 16,
     flex: 1,
-    justifyContent: "center",
   },
-  loginContainer: {
+  verticalSpacingContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
+  form: { gap: 8 },
   createAccountContainer: {
-    flex: 1,
     justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  errorText: {
+    color: "red",
   },
 });

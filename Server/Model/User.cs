@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Model;
 
+[Index(nameof(Username), IsUnique = true)]
 public class User
 {
     public int Id { get; set; }
