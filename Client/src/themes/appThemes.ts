@@ -8,9 +8,9 @@ export const AppLightTheme = {
   colors: {
     ...DefaultTheme.colors,
     ...MD3LightTheme.colors,
-    primary: "#FFF",
     background: "#F2F2F2",
-    onPrimary: "black"
+    primary: "#fff",
+    onPrimary: "#000",
   },
 };
 
@@ -22,5 +22,6 @@ export const AppDarkTheme = {
     ...MD3DarkTheme.colors,
     primary: "rgb(255, 45, 85)",
     onPrimary: "white"
+
   },
 };

@@ -1,53 +1,93 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+import { Button, Text, TextInput } from "react-native-paper";
+import { RootStackScreenProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../store";
-import { loginUser } from "../store/userSlice";
+import { login } from "../store/userSlice/thunks";
+import Icon from "react-native-paper/src/components/Icon";
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
+type Props = RootStackScreenProps<"Login">;
+type Inputs = {
+  username: string;
+  password: string;
+};
+
+export default function LoginScreen({ navigation }: Props) {
   const user = useAppSelector((state) => state.user.user);
+  const error = useAppSelector((state) => state.user.loginError);
   const dispatch = useAppDispatch();
 
-  const [name, setName] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await dispatch(login(data));
+  };
 
   useEffect(() => {
-    if (user != null) {
-      navigation.navigate("Chooice");
-    }
-  });
+    if (user) navigation.navigate("PickHousehold");
+  }, [user]);
 
-  async function handleLogin() {
-    await dispatch(loginUser({ userName: name, password: password }));
-  }
+  useEffect(() => {
+    setValue("password", "");
+  }, [error]);
 
   return (
     <View style={styles.container}>
-      {user && (
-        <Text style={{ color: "white" }}>User: {JSON.stringify(user)}</Text>
-      )}
-      <View style={styles.loginContainer}>
-        <TextInput
-          label="Namn"
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-        <TextInput
-          label="Lösenord"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Button mode="contained" onPress={() => handleLogin()}>
-          Logga in
-        </Button>
+      <View style={styles.verticalSpacingContainer}>
+        <View style={styles.form}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Namn"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+            name="username"
+            rules={{
+              required: "Namn är obligatoriskt",
+              minLength: {
+                value: 2,
+                message: "Namn måste vara minst 2 tecken",
+              },
+            }}
+          />
+          {errors.username && (
+            <Text style={styles.errorText}>{errors.username.message}</Text>
+          )}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Lösenord"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                secureTextEntry={true}
+              />
+            )}
+            name="password"
+            rules={{ required: "Lösenord är obligatoriskt" }}
+          />
+          <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            Logga in
+          </Button>
+          {error && <Text style={styles.errorText}>{error}</Text>}
+        </View>
       </View>
-      <View style={styles.createAccountContainer}>
+      <View style={{ ...styles.createAccountContainer }}>
         <Button
+          icon={"account-plus"}
           mode="contained"
           onPress={() => navigation.navigate("Registration")}
-          style={styles.bottomButton}
         >
           Skapa konto
         </Button>
@@ -58,15 +98,19 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  loginContainer: {
+    margin: 16,
     flex: 1,
   },
+  verticalSpacingContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  form: { gap: 8 },
   createAccountContainer: {
-    flex: 0.2,
     justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
-  bottomButton: { marginBottom: 10 },
+  errorText: {
+    color: "red",
+  },
 });

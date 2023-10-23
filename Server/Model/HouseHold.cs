@@ -1,17 +1,18 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace User;
+namespace Model;
 
 public class Household
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public int Code { get; set; }
-    public int OwnerId { get; set; }
-    public UserAccount? Owner { get; set; }
+    public int UserId { get; set; }
 
     [NotMapped]
     public List<int> AvailableAvatars { get; set; } = new List<int>();
+    
+    public ICollection<Profile> Profiles { get; }  = new List<Profile>();
 
 
     public int Confirmation()

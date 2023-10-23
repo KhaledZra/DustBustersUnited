@@ -1,0 +1,26 @@
+import { StyleSheet } from "react-native";
+
+export const globalStyle = StyleSheet.create({
+  flex: { display: "flex" },
+  flex1: { flex: 1 },
+  radiusNone: { borderRadius: 0 },
+  row: { flexDirection: "row" },
+  justifyBetween: { justifyContent: "space-between" },
+  alignCenter: { alignItems: "center" },
+  gap1: { gap: 1 },
+  gap2: { gap: 2 },
+  gap4: { gap: 4 },
+  p1: { padding: 1 },
+  p2: { padding: 2 },
+  p4: { padding: 4 },
+  p6: { padding: 6 },
+  p8: { padding: 8 },
+  p12: { padding: 12 },
+  p16: { padding: 16 },
+  p20: { padding: 20 },
+  ph1: { paddingHorizontal: 1 },
+  ph2: { paddingHorizontal: 2 },
+  pv1: { paddingVertical: 1 },
+  pv2: { paddingVertical: 2 },
+  boldText: { fontWeight: "bold" },
+});

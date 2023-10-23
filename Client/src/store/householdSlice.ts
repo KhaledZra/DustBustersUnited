@@ -6,12 +6,8 @@ import { apiFetch } from "../utils/apiClient";
 export const fetchTransientHousehold = createAsyncThunk<Household, string>(
   "fetchTransientHousehold",
   async (code: string) => {
-    console.log("fetchTransientHousehold", code);
     const response: Response = await apiFetch(`Household/ByCode/${code}`);
-    console.log("response:", response.status);
-    let json = await response.json();
-    console.log("response:", json);
-    return json;
+    return response.json();
   }
 );
 
@@ -24,7 +20,7 @@ export const fetchProfiles = createAsyncThunk<Profile[]>(
   }
 );
 
-const userSlice = createSlice({
+const householdSlice = createSlice({
   name: "household",
   initialState: {
     // All households the user is a member of
@@ -58,5 +54,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearTransientHousehold } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearTransientHousehold } = householdSlice.actions;
+export default householdSlice.reducer;
