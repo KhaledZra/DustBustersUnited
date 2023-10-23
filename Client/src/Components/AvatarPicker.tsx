@@ -3,6 +3,7 @@ import { Household } from "../Data/Household";
 import { View, StyleSheet } from "react-native";
 import { useAppSelector } from "../store";
 import { Surface, Text, TouchableRipple } from "react-native-paper";
+import s from "../utils/globalStyles";
 
 type AvatarPickerProps = {
   household: Household;
@@ -21,17 +22,18 @@ export default function AvatarPicker({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[s.row, s.wrap, s.justifyCenter, s.mv10, s.gap10]}>
       {avatars.map((avatar) => (
         <Surface
           style={[
-            styles.pressable,
+            s.w20, s.ar1, s.e4, s.br4, s.bw2, s.bcTransparent,
             selected == avatar.id && { borderColor: avatar.color },
           ]}
           key={avatar.id}
         >
           <TouchableRipple
-            style={[styles.ripple, !isAvailable(avatar.id) && { opacity: 0.2 }]}
+            style={[s.flex1, s.justifyCenter, s.alignCenter,
+               !isAvailable(avatar.id) && { opacity: 0.2 }]}
             onPress={() => {
               onSelect(avatar.id);
             }}
@@ -45,22 +47,3 @@ export default function AvatarPicker({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginVertical: 10,
-    gap: 10,
-  },
-  pressable: {
-    width: "20%",
-    aspectRatio: 1,
-    elevation: 4,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "transparent",
-  },
-  ripple: { flex: 1, justifyContent: "center", alignItems: "center" },
-});
