@@ -52,6 +52,7 @@ const globalStyle = StyleSheet.create({
   p4: { padding: 4 },
   p6: { padding: 6 },
   p8: { padding: 8 },
+  p10: { padding: 10 },
   p12: { padding: 12 },
   p16: { padding: 16 },
   p20: { padding: 20 },

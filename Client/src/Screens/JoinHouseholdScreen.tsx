@@ -8,6 +8,7 @@ import {
   clearTransientHousehold,
   fetchTransientHousehold,
 } from "../store/householdSlice";
+import s from "../utils/globalStyles";
 
 export default function JoinHousholdScreen() {
   const dispatch = useAppDispatch();
@@ -22,51 +23,48 @@ export default function JoinHousholdScreen() {
   };
 
   return (
-    <PaperProvider>
-      <View>
-        <Text>(Testa med kod 3091)</Text>
-        <TextInput
-          error={true}
-          label="kod:"
-          onChangeText={(text) => handleChangeCode(text)}
-        />
+    <View style={[s.flex1]}>
+      <View style={[s.flex1]}>
+        <View>
+          <Text>(Testa med kod 3091)</Text>
+          <TextInput
+            error={true}
+            label="kod:"
+            onChangeText={(text) => handleChangeCode(text)}
+          />
+        </View>
+        <View style={s.p10}>
+          <Button
+            mode="contained"
+            onPress={() => console.log("skcika förfrågan")}
+          >
+            Skicka förfrågan
+          </Button>
+        </View>
+        {household && (
+          <AvatarPicker
+            household={household}
+            selected={selectedAvatar}
+            onSelect={setSelectedAvatar}
+          />
+        )}
+        <View>
+          <TextInput
+            label="Välj display namn:"
+            onChangeText={(text) => setText(text)}
+          />
+        </View>
       </View>
-      <View style={styles.requestButton}>
+
+      <View style={s.alignCenter}>
         <Button
+          style={[s.w40, s.mb10]}
           mode="contained"
-          onPress={() => console.log("skcika förfrågan")}
+          onPress={() => console.log("Gå med")}
         >
-          Skicka förfrågan
-        </Button>
-      </View>
-      {household && (
-        <AvatarPicker
-          household={household}
-          selected={selectedAvatar}
-          onSelect={setSelectedAvatar}
-        />
-      )}
-      <View>
-        <TextInput
-          label="Välj display namn:"
-          onChangeText={(text) => setText(text)}
-        />
-      </View>
-      <View style={styles.joinButton}>
-        <Button mode="contained" onPress={() => console.log("Gå med")}>
           Gå med
         </Button>
       </View>
-    </PaperProvider>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  requestButton: {
-    padding: 10,
-  },
-  joinButton: {
-    marginTop: 100,
-    padding: 60,
-  },
-});
