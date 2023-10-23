@@ -20,6 +20,7 @@ export const fetchProfiles = createAsyncThunk<Profile[]>(
   }
 );
 
+export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
   name: "household",
   initialState: {

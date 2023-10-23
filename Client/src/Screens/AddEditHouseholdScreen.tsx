@@ -3,9 +3,9 @@ import { View } from "react-native";
 
 import { RootStackScreenProps } from "../../types";
 
-type Props = RootStackScreenProps<"HouseholdInfo">;
+type Props = RootStackScreenProps<"AddEditHoushold">;
 
-export default function HouseholdScreen({}: Props) {
+export default function AddEditHousholdScreen({}: Props) {
   return (
     <View style={{ padding: 16, gap: 16 }}>
       <TextInput label="Hushållsnamn" />
