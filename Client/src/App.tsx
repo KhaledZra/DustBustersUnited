@@ -7,12 +7,12 @@ import React from "react";
 import RootStackNavigator from "./Navigators/RootStackNavigator";
 import store from "./store";
 import ThemeProvider from "./themes/ThemeContext";
-import { globalStyle } from "./utils/globalStyles";
+import s from "./utils/globalStyles";
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={globalStyle.flex1}>
+      <SafeAreaView style={s.flex1}>
         <StatusBar style="auto" />
         <Provider store={store}>
           <ThemeProvider>
