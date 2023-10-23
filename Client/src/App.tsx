@@ -12,8 +12,8 @@ import { globalStyle } from "./utils/globalStyles";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={globalStyle.flex1}>
-        <StatusBar style="auto" />
+      <StatusBar style="auto" />
+      <SafeAreaView style={globalStyle.flex1} edges={["bottom"]}>
         <Provider store={store}>
           <ThemeProvider>
             <RootStackNavigator />

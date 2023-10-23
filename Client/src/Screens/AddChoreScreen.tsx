@@ -1,11 +1,24 @@
+import { useController, useForm } from "react-hook-form";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Badge, Button, Card, TextInput } from "react-native-paper";
+import IntervalSelector from "../Components/IntervalSelector";
+import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import { globalStyle } from "../utils/globalStyles";
 import { getDaysSinceLastDone } from "./ChoreListScreen";
 
 export default function AddChoreScreen() {
   const chore = mockChores[0];
+
+  const { handleSubmit, register, control } = useForm<Chore>({
+    defaultValues: chore
+  })
+  const { field: nameField } = useController({ control, name: 'name' })
+
+  const saveChore = (chore: Chore) => {
+    console.log(chore)
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -13,26 +26,22 @@ export default function AddChoreScreen() {
           style={[styles.textInput, globalStyle.boldText]}
           label="Titel"
           underlineColor="transparent"
+          value={nameField.value}
+          onChangeText={nameField.onChange}
+          onBlur={nameField.onBlur}
         />
         <TextInput
           style={[styles.textInput, globalStyle.boldText]}
           underlineColor="transparent"
           label="Beskrivning"
           multiline
+          {...register('description')}
         />
 
-        <Card>
-          <View style={[globalStyle.row, globalStyle.justifyBetween, globalStyle.alignCenter, globalStyle.p16]}>
-            <Text style={globalStyle.boldText}>Återkommer:</Text>
-            <View style={[globalStyle.row, globalStyle.gap2, globalStyle.alignCenter]}>
-              <Text>var</Text>
-              <Badge style={globalStyle.boldText}>
-                {getDaysSinceLastDone(chore.deadline, chore.repeatInterval)}
-              </Badge>
-              <Text>dag</Text>
-            </View>
-          </View>
-        </Card>
+        <IntervalSelector
+          name="repeatInterval"
+          control={control}
+        />
 
         <Card>
           <View style={[globalStyle.row, globalStyle.justifyBetween, globalStyle.alignCenter, globalStyle.p16]}>
@@ -57,6 +66,7 @@ export default function AddChoreScreen() {
           icon="plus-circle-outline"
           style={[globalStyle.flex1, globalStyle.radiusNone]}
           mode="contained"
+          onPress={handleSubmit(saveChore)}
         >
           Skapa
         </Button>
