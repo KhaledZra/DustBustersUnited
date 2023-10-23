@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231018090303_UserAccountBinding")]
-    partial class UserAccountBinding
+    [Migration("20231023090501_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
-            modelBuilder.Entity("User.Household", b =>
+            modelBuilder.Entity("Model.Household", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,17 +31,17 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Households");
                 });
 
-            modelBuilder.Entity("User.Profile", b =>
+            modelBuilder.Entity("Model.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +78,7 @@ namespace Server.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("User.UserAccount", b =>
+            modelBuilder.Entity("Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,29 +94,27 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAccounts");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("User.Household", b =>
+            modelBuilder.Entity("Model.Household", b =>
                 {
-                    b.HasOne("User.UserAccount", "Owner")
+                    b.HasOne("Model.User", null)
                         .WithMany("Households")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("User.Profile", b =>
+            modelBuilder.Entity("Model.Profile", b =>
                 {
-                    b.HasOne("User.Household", "Household")
+                    b.HasOne("Model.Household", "Household")
                         .WithMany("Profiles")
                         .HasForeignKey("HouseholdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("User.UserAccount", "User")
+                    b.HasOne("Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -127,12 +125,12 @@ namespace Server.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("User.Household", b =>
+            modelBuilder.Entity("Model.Household", b =>
                 {
                     b.Navigation("Profiles");
                 });
 
-            modelBuilder.Entity("User.UserAccount", b =>
+            modelBuilder.Entity("Model.User", b =>
                 {
                     b.Navigation("Households");
                 });

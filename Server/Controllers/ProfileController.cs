@@ -85,4 +85,20 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
+    [HttpDelete("DeleteHousehold")]
+    public IActionResult DeleteHouseholdForUser(int profileId)
+    {
+        var profile = _context.Profiles.FirstOrDefault(p => p.Id == profileId);
+
+        if (profile != null)
+        {
+                
+            _context.Profiles.Remove(profile);
+            _context.SaveChanges();
+            return Ok("Hushållet har tagits bort från användaren.");
+        }
+        
+
+        return NotFound("Användaren har inte hushåll.");
+    }
 }
