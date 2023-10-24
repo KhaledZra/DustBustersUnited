@@ -1,11 +1,11 @@
 import { useController, useForm } from "react-hook-form";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Badge, Button, Card, TextInput } from "react-native-paper";
+import { ScrollView, View } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
 import s from "../utils/globalStyles";
-import { getDaysSinceLastDone } from "./ChoreListScreen";
+import EnergySelector from "../Components/EnergySelector";
 
 export default function AddChoreScreen() {
   const chore = mockChores[0];
@@ -26,31 +26,23 @@ export default function AddChoreScreen() {
           style={[s.overflowHidden, s.br10, s.boldText]}
           label="Titel"
           underlineColor="transparent"
+          multiline
           value={nameField.value}
           onChangeText={nameField.onChange}
           onBlur={nameField.onBlur}
         />
         <TextInput
           style={[s.overflowHidden, s.br10, s.boldText]}
-          underlineColor="transparent"
           label="Beskrivning"
+          underlineColor="transparent"
           multiline
+          onChangeText={nameField.onChange}
           {...register("description")}
         />
 
         <IntervalSelector name="repeatInterval" control={control} />
 
-        <Card>
-          <View style={[s.row, s.justifyBetween, s.alignCenter, s.p16]}>
-            <Text style={s.boldText}>Värde:</Text>
-            <Text>Hur energikrävande är sysslan?</Text>
-            <View style={[s.row, s.gap2, s.alignCenter]}>
-              <Badge style={s.bgColGrey}>
-                {getDaysSinceLastDone(chore.deadline, chore.energy)}
-              </Badge>
-            </View>
-          </View>
-        </Card>
+        <EnergySelector name="energy" control={control} />
 
         <TextInput
           style={s.boldText}

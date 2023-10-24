@@ -9,20 +9,21 @@ import store from "./store";
 import ThemeProvider from "./themes/ThemeContext";
 import s from "./utils/globalStyles";
 import { AnimatedAppLoader } from "./Components/SplashScreen";
-import globalStyle from "./utils/globalStyles";
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <StatusBar style="auto" />
-      <SafeAreaView style={globalStyle.flex1} edges={["bottom"]}>
-        <Provider store={store}>
-          <ThemeProvider>
-            <RootStackNavigator />
-          </ThemeProvider>
-        </Provider>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <AnimatedAppLoader>
+      <SafeAreaProvider>
+        <StatusBar style="auto" />
+        <SafeAreaView style={s.flex1} edges={["bottom"]}>
+          <Provider store={store}>
+            <ThemeProvider>
+              <RootStackNavigator />
+            </ThemeProvider>
+          </Provider>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </AnimatedAppLoader>
   );
 }
 

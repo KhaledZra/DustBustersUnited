@@ -6,7 +6,6 @@ import { Profile } from "../Data/Profile";
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { mockHousehold } from "../Data/MockData/HouseHoldMockData";
 import { useEffect, useState } from "react";
 import s from "../utils/globalStyles";
 
@@ -61,10 +60,7 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   if (daysSinceDone < interval) {
     return (
       <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
-        <Text
-          variant="labelLarge"
-          style={[s.colWhite, s.textCenter]}
-        >
+        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
       </View>
@@ -72,10 +68,7 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   } else {
     return (
       <View style={[s.bgColRed, s.w10, s.h35, s.br10]}>
-        <Text
-          variant="labelLarge"
-          style={[s.colWhite, s.textCenter]}
-        >
+        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
       </View>
@@ -88,16 +81,16 @@ type ChoreViewProps = props & { chore: Chore };
 function ChoreView({ navigation, chore }: ChoreViewProps) {
   return (
     <Card
-      style={[s.mt16, {maxHeight: "50%"}]} // TODO lista ut vrf de finns så mycket mellanrum cards
+      style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
       mode="outlined"
       onPress={() => console.log("Navigating to choreid: " + chore.id)}
     >
-      <Card.Content style={[s.flex1, s.row,]}>
+      <Card.Content style={[s.flex1, s.row]}>
         <Card.Actions style={s.h40}>
           <IconButton
             icon="pencil"
             size={15}
-            onPress={() => navigation.navigate("EditChore")}
+            onPress={() => navigation.navigate("EditChore", { chore })}
           />
         </Card.Actions>
 
