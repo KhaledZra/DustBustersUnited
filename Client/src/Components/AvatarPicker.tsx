@@ -18,7 +18,7 @@ export default function AvatarPicker({
 }: AvatarPickerProps) {
   const avatars = useAppSelector((state) => state.household.avatars);
   const isAvailable = (avatarId: number) => {
-    return household.availableAvatars.includes(avatarId);
+    return household && household.availableAvatars && household.availableAvatars.includes(avatarId);
   };
 
   return (
