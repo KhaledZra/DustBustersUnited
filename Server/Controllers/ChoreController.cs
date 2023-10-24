@@ -49,7 +49,7 @@ public class ChoreController : ControllerBase
         return CreatedAtAction("GetChore", new { id = chore.Id }, chore);
     }
     
-    [HttpPut]
+    [HttpPut("ToggleChoreActivity")]
     public IActionResult ToggleChoreActivity(int choreId)
     {
         var chore = _context.Chores.FirstOrDefault(chore => chore.Id == choreId);
