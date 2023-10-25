@@ -47,7 +47,17 @@ export default function EnergySelector({ name, control }: Props) {
       >
         {[1, 2, 4, 6, 8].map((value) => (
           <Pressable onPress={() => handleClick(value)}>
-            <Badge size={25} style={[s.boldText]}>
+            <Badge
+              size={25}
+              style={[
+                s.boldText,
+                {
+                  backgroundColor: `rgb(${120 + (8 - value) * 14}, ${
+                    120 + (8 - value) * 14
+                  }, ${120 + (8 - value) * 14})`,
+                },
+              ]}
+            >
               {value}
             </Badge>
           </Pressable>

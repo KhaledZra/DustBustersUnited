@@ -27,7 +27,7 @@ export default function AddChoreScreen() {
           label="Titel"
           underlineColor="transparent"
           multiline
-          value={nameField.value}
+          // value={nameField.value}
           onChangeText={nameField.onChange}
           onBlur={nameField.onBlur}
         />
