@@ -11,12 +11,16 @@ import {
 import { JoinHouseholdDto } from "../Data/Household";
 import { joinHousehold } from "../store/userSlice/thunks";
 import s from "../utils/globalStyles";
+import { useRoute } from "@react-navigation/native";
+
 
 export default function JoinHousholdScreen() {
+  const route = useRoute();
   const dispatch = useAppDispatch();
   const household = useAppSelector((s) => s.household.transientHousehold);
   const [selectedAvatar, setSelectedAvatar] = useState<number>();
   const [displayName, setDisplayName] = useState<string>();
+  const { code } = route.params;
 
   const handleChangeCode = (code: string | undefined) => {
     if (household) dispatch(clearTransientHousehold());

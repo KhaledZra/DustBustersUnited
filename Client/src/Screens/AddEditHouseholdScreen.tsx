@@ -6,7 +6,8 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store";
 import { addHousehold } from "../store/householdSlice";
 import { User } from "../Data/User";
-import { AddHouseholdDTO } from "../Data/Household";
+import { AddHouseholdDTO, Household } from "../Data/Household";
+import { useRoute } from "@react-navigation/native";
 
 type Props = RootStackScreenProps<"AddEditHoushold">;
 
@@ -25,9 +26,10 @@ export default function AddEditHousholdScreen({navigation}: Props) {
     if (user) {
       data.OwnerId = user;
     }else {return}
-    await dispatch(addHousehold(data))
-    // navigation.navigate("JoinHousehold", {code: data.});
-
+    const response = await dispatch(addHousehold(data))
+    const household = response.payload as Household
+    console.log("add edit response: ", household.code)
+    navigation.navigate("JoinHousehold", { code: household.code });
   }
   
   return (
