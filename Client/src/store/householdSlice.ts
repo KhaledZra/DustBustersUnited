@@ -28,13 +28,7 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   
   async (payload : AddHouseholdDTO) => {
     console.log("DTO " ,payload)
-    const response = await apiFetch("Household", {
-      method: "POST",
-      Headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await apiFetch("Household", payload);
     const jsonResponse = await response.json();
     console.log("response", jsonResponse);
 

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using DTO;
 using Model;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -65,22 +66,12 @@ public class HouseholdController : ControllerBase
 
 
     [HttpPost]
-    public async Task<ActionResult<Household>> Post(HouseholdDto householdDto)
+    public async Task<ActionResult<Household>> Post(HouseholdDto dto)
     {
-        var household = DtoToHousehold(householdDto);
-        household.Confirmation();
+        var household = new Household(dto);
         _context.Households.Add(household);
         await _context.SaveChangesAsync();
         return CreatedAtAction("Get", new { id = household.Id }, household);
-    }
-
-    private Household DtoToHousehold(HouseholdDto dto)
-    {
-        return new Household
-        {
-            Name = dto.Name,
-            UserId = dto.OwnerId
-        };
     }
     
     // Service method
