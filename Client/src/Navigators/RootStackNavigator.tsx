@@ -29,7 +29,7 @@ export type RootStackParamList = {
   AddEditHoushold: { household: Household | undefined }; // undefined is used to create new
   //
   ChoreList: undefined;
-  ChoreView: undefined;
+  ChoreView: { chore: Chore };
   AddChore: undefined;
   EditChore: { chore: Chore };
 };
