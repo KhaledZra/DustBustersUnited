@@ -10,7 +10,7 @@ import { AddHouseholdDTO } from "../Data/Household";
 
 type Props = RootStackScreenProps<"AddEditHoushold">;
 
-export default function AddEditHousholdScreen({}: Props) {
+export default function AddEditHousholdScreen({navigation}: Props) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state)=> state.user.user?.id)
   
@@ -26,6 +26,8 @@ export default function AddEditHousholdScreen({}: Props) {
       data.OwnerId = user;
     }else {return}
     await dispatch(addHousehold(data))
+    // navigation.navigate("JoinHousehold", {code: data.});
+
   }
   
   return (
