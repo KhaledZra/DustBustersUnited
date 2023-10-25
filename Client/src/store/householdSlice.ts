@@ -27,21 +27,15 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
   "deleteProfile",
   async (_: void, { getState, dispatch }) => {
     const profileId = (getState() as RootState).user.activeProfileId;
-    try{
       const response: Response = await apiFetch(
         `Profile/DeleteHousehold`,
         {profileId},
         { method: "DELETE" }
       );
       dispatch(setActiveProfile(undefined));
+      dispatch(fetchProfiles());
       let json = await response.json();
-      console.log("funkar")
       return json;
-    }
-    catch{
-      console.log("funkar inte")
-      return "fel fel fel"
-    }
   }
 );
 

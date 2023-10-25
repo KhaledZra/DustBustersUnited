@@ -1,24 +1,37 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import { useAppDispatch } from "../store";
+import { deleteProfile } from "../store/householdSlice";
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const handleLeaveHousehold = () => {
+    dispatch(deleteProfile());
+    navigation.navigate("PickHousehold");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Här kom du till din profil</Text>
-    </View>
+    <Button
+      style={[styles.button, { backgroundColor: "red" }]}
+      labelStyle={styles.buttonText}
+      onPress={handleLeaveHousehold}
+    >
+      Delete
+    </Button>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightgray',
+  button: {
+    paddingVertical: 10,
+    backgroundColor: "white",
+    margin: 10,
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
+  buttonText: {
+    color: "black",
+    fontSize: 20,
   },
 });
