@@ -15,6 +15,7 @@ import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
+import { Chore } from "../Data/Chore";
 
 export type RootStackParamList = {
   // Auth
@@ -30,7 +31,7 @@ export type RootStackParamList = {
   ChoreList: undefined;
   ChoreView: undefined;
   AddChore: undefined;
-  EditChore: undefined;
+  EditChore: { chore: Chore };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

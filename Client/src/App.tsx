@@ -14,13 +14,13 @@ export default function App() {
   return (
     <AnimatedAppLoader>
       <SafeAreaProvider>
-        <SafeAreaView style={s.flex1}>
-            <StatusBar style="auto" />
-            <Provider store={store}>
-              <ThemeProvider>
-                <RootStackNavigator />
-              </ThemeProvider>
-            </Provider>
+        <StatusBar style="auto" />
+        <SafeAreaView style={s.flex1} edges={["bottom"]}>
+          <Provider store={store}>
+            <ThemeProvider>
+              <RootStackNavigator />
+            </ThemeProvider>
+          </Provider>
         </SafeAreaView>
       </SafeAreaProvider>
     </AnimatedAppLoader>
