@@ -22,6 +22,7 @@ public class UserController : ControllerBase
             // .ThenInclude(household => household.Profiles) // risky, endpoint probably needs refacturing
             .ToList();
 
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(users);
     }
 
@@ -31,8 +32,10 @@ public class UserController : ControllerBase
         var user = _context.Users.Find(id);
         if (user == null)
         {
-            return NotFound();
+            Console.WriteLine("Code: 404, User not found!");
+            return NotFound("User not found!");
         }
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(user);
     }
 
@@ -42,6 +45,8 @@ public class UserController : ControllerBase
         var newUser = DtoToUser(user);
         _context.Users.Add(newUser);
         _context.SaveChanges();
+        
+        Console.WriteLine("Code: 201, Created new user!");
         return CreatedAtAction("Get", new { id = newUser.Id }, newUser);
     }
 
@@ -52,9 +57,11 @@ public class UserController : ControllerBase
 
         if (user == null || user.Password != loginModel.Password)
         {
+            Console.WriteLine("Code: 401, Unauthorized!");
             return Unauthorized();
         }
 
+        Console.WriteLine("Code: 200, Logged in!");
         return Ok(user);
     }
 

@@ -19,6 +19,7 @@ public class ChoreProfileController : ControllerBase
     {
         var profileChores = _context.ProfileChores.ToList();
 
+        Console.WriteLine($"Code: 200, Ok!");
         return Ok(profileChores);
     }
 
@@ -30,8 +31,10 @@ public class ChoreProfileController : ControllerBase
         
         if (profileChore == null)
         {
+            Console.WriteLine($"Code: 404, ProfileChore not found!");
             return NotFound();
         }
+        Console.WriteLine($"Code: 200, Ok!");
         return Ok(profileChore);
     }
 
@@ -39,18 +42,30 @@ public class ChoreProfileController : ControllerBase
     public async Task<IActionResult> ToggleChoreActivity(ProfileChoreDto profileChoreDto)
     {
         var chore = await _context.Chores.FirstOrDefaultAsync(chore => chore.Id == profileChoreDto.ChoreId);
-        if (chore == null) return NotFound("Chore not found");
+        if (chore == null)
+        {
+            Console.WriteLine($"Code: 404, Chore not found!");
+            return NotFound("Chore not found");
+        }
         
         var profile = await _context.Profiles.FirstOrDefaultAsync(profile => profile.Id == profileChoreDto.ProfileId);
-        if (profile == null) return NotFound("Profile not found");
+        if (profile == null)
+        {
+            Console.WriteLine($"Code: 404, Profile not found!");
+            return NotFound("Profile not found");
+        }
 
         var profileChore = DtoToProfileChore(profileChoreDto);
         _context.ProfileChores.Add(profileChore);
 
         if (!await ChoreController.UpdateChoreDeadline(profileChoreDto.ChoreId, _context))
+        {
+            Console.WriteLine($"Code: 400, Failed to update ChoreDate!");
             return BadRequest("Failed to update ChoreDate");
+        }
 
         await _context.SaveChangesAsync();
+        Console.WriteLine($"Code: 201, Created ProfileChore and Updated Profile.Deadline!");
         return CreatedAtAction("GetProfileChore", new { id = profileChore.Id }, profileChore);
     }
     
@@ -59,10 +74,16 @@ public class ChoreProfileController : ControllerBase
     {
         var profileChore = _context.ProfileChores.FirstOrDefault(profileChore => profileChore.Id == profileChoreId);
 
-        if (profileChore == null) return NotFound("Chore not found");
+        if (profileChore == null)
+        {
+            Console.WriteLine($"Code: 404, ProfileChore not found!");
+            return NotFound("ProfileChore not found");
+        }
 
         _context.ProfileChores.Remove(profileChore);
         _context.SaveChanges();
+        
+        Console.WriteLine($"Code: 200, Ok!");
         return Ok($"ChoreId: {profileChoreId}, was deleted");
     }
     
