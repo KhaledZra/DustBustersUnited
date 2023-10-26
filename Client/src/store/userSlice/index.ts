@@ -2,13 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { Profile } from "../../Data/Profile";
 import { User } from "../../Data/User";
-import {
-  saveChoreToDb,
-  fetchProfiles,
-  joinHousehold,
-  login,
-  register,
-} from "./thunks";
+import { fetchProfiles, joinHousehold, login, register } from "./thunks";
 import { Chore } from "../../Data/Chore";
 import { RootState } from "..";
 
@@ -82,9 +76,6 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchProfiles.fulfilled, (state, action) => {
       state.profiles = action.payload;
-    });
-    builder.addCase(saveChoreToDb.fulfilled, (state, action) => {
-      state.chores.push(action.payload);
     });
   },
 });

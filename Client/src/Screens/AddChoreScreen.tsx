@@ -6,8 +6,8 @@ import { ChoreDto } from "../Data/Chore";
 import s from "../utils/globalStyles";
 import EnergySelector from "../Components/EnergySelector";
 import { useAppDispatch, useAppSelector } from "../store";
-import { saveChoreToDb } from "../store/userSlice/thunks";
 import { RootStackScreenProps } from "../../types";
+import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
 
 type Props = RootStackScreenProps<"AddChore">;
 
@@ -27,7 +27,7 @@ export default function AddChoreScreen({ navigation }: Props) {
     householdId: activeProfile!.household.id,
   };
 
-  const { handleSubmit, register, control } = useForm<ChoreDto>({
+  const { handleSubmit, control } = useForm<ChoreDto>({
     defaultValues: choreDto,
   });
   const { field: nameField } = useController({ control, name: "name" });
@@ -51,7 +51,6 @@ export default function AddChoreScreen({ navigation }: Props) {
           label="Titel"
           underlineColor="transparent"
           multiline
-          // value={nameField.value}
           onChangeText={nameField.onChange}
           onBlur={nameField.onBlur}
         />

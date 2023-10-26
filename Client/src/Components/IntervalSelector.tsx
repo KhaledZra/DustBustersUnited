@@ -7,7 +7,7 @@ import s from "../utils/globalStyles";
 
 type Props = {
   name: "repeatInterval";
-  control: Control<ChoreDto>;
+  control: Control<Chore>;
 };
 
 export default function IntervalSelector({ name, control }: Props) {

@@ -3,7 +3,7 @@ using DTO;
 using Model;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 public class ChoreController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -50,7 +50,7 @@ public class ChoreController : ControllerBase
         return CreatedAtAction("GetChore", new { id = chore.Id }, chore);
     }
 
-    [HttpPut("ToggleChoreActivity")]
+    [HttpPut("ToggleActivity")]
     public IActionResult ToggleChoreActivity(int choreId)
     {
         var chore = _context.Chores.FirstOrDefault(chore => chore.Id == choreId);
@@ -60,6 +60,21 @@ public class ChoreController : ControllerBase
         chore.IsActive = !chore.IsActive;
         _context.SaveChanges();
         return AcceptedAtAction("GetChore", new { id = chore.Id }, chore);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateChore(Chore incomingChore)
+    {
+        var currentChore = _context.Chores.FirstOrDefault(chore => chore.Id == incomingChore.Id);
+
+        if (currentChore == null)
+            return NotFound("Chore not found");
+
+        _context.Entry(currentChore).CurrentValues.SetValues(incomingChore);
+
+        _context.SaveChanges();
+
+        return Ok(currentChore);
     }
 
     [HttpDelete]

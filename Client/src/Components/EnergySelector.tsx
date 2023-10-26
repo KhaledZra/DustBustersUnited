@@ -7,7 +7,7 @@ import { useState } from "react";
 
 type Props = {
   name: "energy";
-  control: Control<ChoreDto>;
+  control: Control<Chore>;
 };
 
 export default function EnergySelector({ name, control }: Props) {
