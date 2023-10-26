@@ -13,6 +13,8 @@ type Props = RootStackScreenProps<"AddEditHoushold">;
 
 export default function AddEditHousholdScreen({navigation}: Props) {
   const dispatch = useAppDispatch();
+  const route = useRoute();
+  
   const user = useAppSelector((state)=> state.user.user?.id)
   
   const {
@@ -28,8 +30,8 @@ export default function AddEditHousholdScreen({navigation}: Props) {
     }else {return}
     const response = await dispatch(addHousehold(data))
     const household = response.payload as Household
-    console.log("add edit response: ", household.code)
-    navigation.navigate("JoinHousehold", { code: household.code });
+    const code = household.code
+    navigation.navigate("JoinHousehold", { code });
   }
   
   return (
