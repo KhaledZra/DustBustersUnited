@@ -24,7 +24,7 @@ export type RootStackParamList = {
   // Create / Join Household
   Profile: undefined;
   PickHousehold: undefined;
-  JoinHousehold: undefined;
+  JoinHousehold: {code: number | undefined}
   HouseholdInfo: undefined;
   AddEditHoushold: { household: Household | undefined }; // undefined is used to create new
   //
