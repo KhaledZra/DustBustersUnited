@@ -8,10 +8,12 @@ using Model;
 public class ChoreController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly ILogger<ChoreController> _logger;
 
-    public ChoreController(ApplicationDbContext context)
+    public ChoreController(ApplicationDbContext context, ILogger<ChoreController> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     [HttpGet()]
@@ -41,7 +43,6 @@ public class ChoreController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Chore>> PostChore(ChoreDto choreDto)
     {
-        Console.WriteLine("post chores");
         var isFound = await HouseholdController.ConfirmHouseholdId(choreDto.HouseholdId, _context);
         if (isFound == false)
         {
@@ -75,18 +76,22 @@ public class ChoreController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateChore(Chore incomingChore)
+    public async Task<IActionResult> UpdateChore(Chore incomingChore, ILogger<ChoreController> logger)
     {
         var currentChore = _context.Chores.FirstOrDefault(chore => chore.Id == incomingChore.Id);
 
         if (currentChore == null)
+        {
+            logger.LogInformation("Code: 202, Chore is updated");
             return NotFound("Chore not found");
+        }
 
         _context.Entry(currentChore).CurrentValues.SetValues(incomingChore);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
-        return Ok(currentChore);
+        Console.WriteLine("Code: 202, Chore is updated!");
+        return AcceptedAtAction("GetChore", new { id = incomingChore.Id }, incomingChore);
     }
 
     [HttpDelete]
