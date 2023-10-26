@@ -14,8 +14,11 @@ import s from "../utils/globalStyles";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
+import { RootStackScreenProps } from "../../types";
 
-export default function JoinHousholdScreen() {
+type Props = RootStackScreenProps<"JoinHousehold">;
+
+export default function JoinHousholdScreen({navigation}: Props) {
   const route = useRoute<RouteProp<RootStackParamList, 'JoinHousehold'>>();
   let code: number | undefined;
   if (route.params) {
@@ -64,6 +67,7 @@ export default function JoinHousholdScreen() {
     };
 
     dispatch(joinHousehold(dto));
+    navigation.navigate("ChoreList")
   };
 
   return (
