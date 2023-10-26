@@ -3,7 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { RootStackScreenProps } from "../../types";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form"
+import s from "../utils/globalStyles";
+
+
 import { register } from "../store/userSlice/thunks";
 
 type Props = RootStackScreenProps<"Registration">;
@@ -38,9 +41,9 @@ export default function RegistrationScreen({ navigation }: Props) {
   }, [password]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.verticalSpacingContainer}>
-        <View style={styles.form}>
+    <View style={[s.m16, s.flex1]}>
+      <View style={[s.flex1, s.justifyBetween]}>
+        <View style={s.gap8}>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -61,7 +64,7 @@ export default function RegistrationScreen({ navigation }: Props) {
             }}
           />
           {errors.username && (
-            <Text style={styles.errorText}>{errors.username.message}</Text>
+            <Text style={s.colRed}>{errors.username.message}</Text>
           )}
           <Controller
             control={control}
@@ -83,7 +86,7 @@ export default function RegistrationScreen({ navigation }: Props) {
             }}
           />
           {errors.password && (
-            <Text style={styles.errorText}>{errors.password.message}</Text>
+            <Text style={s.colRed}>{errors.password.message}</Text>
           )}
           <Controller
             control={control}
@@ -109,7 +112,7 @@ export default function RegistrationScreen({ navigation }: Props) {
             }}
           />
           {errors.repeatedPassword && (
-            <Text style={styles.errorText}>
+            <Text style={s.colRed}>
               {errors.repeatedPassword.message}
             </Text>
           )}
@@ -118,7 +121,7 @@ export default function RegistrationScreen({ navigation }: Props) {
           </Button>
         </View>
 
-        <View style={styles.createAccountContainer}>
+        <View style={[s.justifyEnd, s.alignEnd]}>
           <Button
             icon={"login"}
             mode="contained"
@@ -131,17 +134,3 @@ export default function RegistrationScreen({ navigation }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { margin: 16, flex: 1 },
-  verticalSpacingContainer: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  form: { gap: 8 },
-  createAccountContainer: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-  },
-  errorText: { color: "red" },
-});

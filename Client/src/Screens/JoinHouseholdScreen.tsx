@@ -10,6 +10,7 @@ import {
 } from "../store/householdSlice";
 import { JoinHouseholdDto } from "../Data/Household";
 import { joinHousehold } from "../store/userSlice/thunks";
+import s from "../utils/globalStyles";
 
 export default function JoinHousholdScreen() {
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ export default function JoinHousholdScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>
         <View>
           <TextInput
@@ -80,14 +81,3 @@ export default function JoinHousholdScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    padding: 16,
-  },
-  joinButton: {
-    alignSelf: "flex-end",
-  },
-});

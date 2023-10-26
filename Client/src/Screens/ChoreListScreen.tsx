@@ -1,13 +1,13 @@
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
-import { useEffect, useState } from "react";
+import { useAppSelector } from "../store";
+import { Profile } from "../Data/Profile";
 
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { globalStyle } from "../utils/globalStyles";
-import { useAppSelector } from "../store";
-import { Profile } from "../Data/Profile";
+import { useEffect, useState } from "react";
+import s from "../utils/globalStyles";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -59,22 +59,16 @@ interface displayDaysProps {
 function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   if (daysSinceDone < interval) {
     return (
-      <View style={styles.circle}>
-        <Text
-          variant="labelLarge"
-          style={{ color: "white", textAlign: "center" }}
-        >
+      <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
+        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
       </View>
     );
   } else {
     return (
-      <View style={styles.errorCircle}>
-        <Text
-          variant="labelLarge"
-          style={{ color: "white", textAlign: "center" }}
-        >
+      <View style={[s.bgColRed, s.w10, s.h35, s.br10]}>
+        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
       </View>
@@ -87,20 +81,20 @@ type ChoreViewProps = props & { chore: Chore };
 function ChoreView({ navigation, chore }: ChoreViewProps) {
   return (
     <Card
+      style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
       mode="outlined"
-      style={styles.card}
       onPress={() => console.log("Navigating to choreid: " + chore.id)}
     >
-      <Card.Content style={styles.contentStack}>
-        <Card.Actions>
+      <Card.Content style={[s.flex1, s.row]}>
+        <Card.Actions style={s.h40}>
           <IconButton
             icon="pencil"
             size={15}
-            onPress={() => navigation.navigate("EditChore")}
+            onPress={() => navigation.navigate("EditChore", { chore })}
           />
         </Card.Actions>
 
-        <Card.Content style={styles.content1}>
+        <View style={[s.flex1, s.row, s.justifyBetween]}>
           <Text variant="labelLarge">{chore.name}</Text>
           <DisplayDaysSinceDone
             daysSinceDone={getDaysSinceLastDone(
@@ -109,7 +103,7 @@ function ChoreView({ navigation, chore }: ChoreViewProps) {
             )}
             interval={chore.repeatInterval}
           />
-        </Card.Content>
+        </View>
       </Card.Content>
     </Card>
   );
@@ -135,7 +129,7 @@ export default function ChoreListScreen({ navigation, route }: props) {
   }, [profile]);
 
   return (
-    <View style={globalStyle.flex1}>
+    <View style={s.flex1}>
       <HeaderBar />
       <FlatList
         data={mockChores}
@@ -144,12 +138,12 @@ export default function ChoreListScreen({ navigation, route }: props) {
           <ChoreView route={route} navigation={navigation} chore={item} />
         )}
       />
-      <View style={styles.buttonContainer}>
+      <View style={s.alignCenter}>
         <Button
           mode="contained"
           icon="plus-circle-outline"
           onPress={() => navigation.navigate("AddChore")}
-          style={styles.button}
+          style={[s.br20, s.p6, s.mb10]}
         >
           Lägg till
         </Button>
@@ -157,62 +151,3 @@ export default function ChoreListScreen({ navigation, route }: props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  surface: {
-    padding: 8,
-    margin: 8,
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  card: {
-    margin: 8,
-    height: 50,
-  },
-  content: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  circle: {
-    backgroundColor: "grey",
-    width: 25,
-    height: 22,
-    borderRadius: 50,
-  },
-  errorCircle: {
-    backgroundColor: "red",
-    width: 25,
-    height: 22,
-    borderRadius: 50,
-  },
-  button: {
-    width: screenDimensions.width / 3,
-    borderRadius: 20,
-    padding: 5,
-    marginTop: 400,
-    alignItems: "center",
-  },
-  buttonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  contentStack: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    position: "relative",
-  },
-  content1: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignContent: "center",
-    position: "absolute",
-    top: 13,
-    right: 0,
-    width: 325,
-  },
-});

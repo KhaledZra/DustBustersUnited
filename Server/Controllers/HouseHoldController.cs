@@ -82,4 +82,12 @@ public class HouseholdController : ControllerBase
             UserId = dto.OwnerId
         };
     }
+    
+    // Service method
+    public static async Task<bool> ConfirmHouseholdId(int householdId, ApplicationDbContext context)
+    {
+        var household = await context.Households.FindAsync(householdId);
+
+        return household != null;
+    }
 }

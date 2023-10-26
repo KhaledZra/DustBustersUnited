@@ -1,68 +1,67 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Badge, Button, Card, TextInput } from "react-native-paper";
+import { useController, useForm } from "react-hook-form";
+import { ScrollView, View } from "react-native";
+import { Button, TextInput } from "react-native-paper";
+import IntervalSelector from "../Components/IntervalSelector";
+import { Chore } from "../Data/Chore";
 import { mockChores } from "../Data/MockData/ChoreMockData";
-import { globalStyle } from "../utils/globalStyles";
-import { getDaysSinceLastDone } from "./ChoreListScreen";
+import s from "../utils/globalStyles";
+import EnergySelector from "../Components/EnergySelector";
 
 export default function AddChoreScreen() {
   const chore = mockChores[0];
+
+  const { handleSubmit, register, control } = useForm<Chore>({
+    defaultValues: chore,
+  });
+  const { field: nameField } = useController({ control, name: "name" });
+
+  const saveChore = (chore: Chore) => {
+    console.log(chore);
+  };
+
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <View style={s.flex1}>
+      <ScrollView contentContainerStyle={[s.pt15, s.ph15, s.flex1, s.gap20]}>
         <TextInput
-          style={[styles.textInput, globalStyle.boldText]}
+          style={[s.overflowHidden, s.br10, s.boldText]}
           label="Titel"
           underlineColor="transparent"
-        />
-        <TextInput
-          style={[styles.textInput, globalStyle.boldText]}
-          underlineColor="transparent"
-          label="Beskrivning"
           multiline
+          value={nameField.value}
+          onChangeText={nameField.onChange}
+          onBlur={nameField.onBlur}
+        />
+        <TextInput
+          style={[s.overflowHidden, s.br10, s.boldText]}
+          label="Beskrivning"
+          underlineColor="transparent"
+          multiline
+          onChangeText={nameField.onChange}
+          {...register("description")}
         />
 
-        <Card>
-          <View style={[globalStyle.row, globalStyle.justifyBetween, globalStyle.alignCenter, globalStyle.p16]}>
-            <Text style={globalStyle.boldText}>Återkommer:</Text>
-            <View style={[globalStyle.row, globalStyle.gap2, globalStyle.alignCenter]}>
-              <Text>var</Text>
-              <Badge style={globalStyle.boldText}>
-                {getDaysSinceLastDone(chore.deadline, chore.repeatInterval)}
-              </Badge>
-              <Text>dag</Text>
-            </View>
-          </View>
-        </Card>
+        <IntervalSelector name="repeatInterval" control={control} />
 
-        <Card>
-          <View style={[globalStyle.row, globalStyle.justifyBetween, globalStyle.alignCenter, globalStyle.p16]}>
-            <Text style={globalStyle.boldText}>Värde:</Text>
-            <Text>Hur energikrävande är sysslan?</Text>
-            <View style={[globalStyle.row, globalStyle.gap2, globalStyle.alignCenter]}>
-              <Badge style={styles.badeStyle}>
-                {getDaysSinceLastDone(chore.deadline, chore.energy)}
-              </Badge>
-            </View>
-          </View>
-        </Card>
+        <EnergySelector name="energy" control={control} />
 
         <TextInput
-          style={globalStyle.boldText}
+          style={s.boldText}
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
       </ScrollView>
-      <View style={[globalStyle.row, globalStyle.gap1]}>
+      <View style={[s.row, s.gap1]}>
         <Button
           icon="plus-circle-outline"
-          style={[globalStyle.flex1, globalStyle.radiusNone]}
+          style={[s.flex1, s.radiusNone]}
           mode="contained"
+          onPress={handleSubmit(saveChore)}
         >
           Skapa
         </Button>
         <Button
           icon="close-circle-outline"
-          style={[globalStyle.flex1, globalStyle.radiusNone]}
+          style={[s.flex1, s.radiusNone]}
           mode="contained"
         >
           Stäng
@@ -71,26 +70,3 @@ export default function AddChoreScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContainer: {
-    paddingTop: 15,
-    paddingHorizontal: 15,
-    flex: 1,
-    gap: 20,
-  },
-  textInput: {
-    overflow: "hidden",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-
-  badeStyle: {
-    backgroundColor: "grey",
-  },
-});
