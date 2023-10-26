@@ -60,8 +60,8 @@ public class ChoreProfileController : ControllerBase
 
         if (!await ChoreController.UpdateChoreDeadline(profileChoreDto.ChoreId, _context))
         {
-            Console.WriteLine($"Code: 400, Failed to update ChoreDate!");
-            return BadRequest("Failed to update ChoreDate");
+            Console.WriteLine($"Code: 400, Failed to update Profile.Deadline!");
+            return BadRequest("Failed to update Profile.Deadline");
         }
 
         await _context.SaveChangesAsync();
