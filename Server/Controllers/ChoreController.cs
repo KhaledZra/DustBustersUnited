@@ -82,7 +82,7 @@ public class ChoreController : ControllerBase
 
         if (currentChore == null)
         {
-            logger.LogInformation("Code: 202, Chore is updated");
+            logger.LogInformation("404: Chore not found");
             return NotFound("Chore not found");
         }
 
@@ -90,7 +90,7 @@ public class ChoreController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        Console.WriteLine("Code: 202, Chore is updated!");
+        logger.LogInformation("Code: 202, Chore is updated!");
         return AcceptedAtAction("GetChore", new { id = incomingChore.Id }, incomingChore);
     }
 
