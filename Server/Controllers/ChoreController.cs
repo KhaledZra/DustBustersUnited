@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO;
+using Microsoft.EntityFrameworkCore;
 using Model;
 
 [ApiController]
@@ -23,10 +24,11 @@ public class ChoreController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Chore> GetChore(int id)
+    public ActionResult<Chore> GetChore(int choreId)
     {
         var chore = _context.Chores
-            .FirstOrDefault(h => h.Id == id);
+            .FirstOrDefault(chore => chore.Id == choreId);
+        
         if (chore == null)
         {
             Console.WriteLine($"Code: 404, Chore not found!");
@@ -102,5 +104,17 @@ public class ChoreController : ControllerBase
             IsActive = true,
             Deadline = DateTime.Now.AddDays(dto.RepeatInterval)
         };
+    }
+    
+    // Service Method
+    public static async Task<bool> UpdateChoreDeadline(int choreId, ApplicationDbContext context)
+    {
+        var chore = await context.Chores.FirstOrDefaultAsync((chore) => chore.Id == choreId);
+
+        if (chore == null) return false;
+
+        chore.Deadline = DateTime.Now.AddDays(chore.RepeatInterval);
+        await context.SaveChangesAsync();
+        return true;
     }
 }
