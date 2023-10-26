@@ -2,7 +2,7 @@ import { Pressable, ScrollView, View } from "react-native";
 import { Card, Badge, Text } from "react-native-paper";
 import s from "../utils/globalStyles";
 import { Control, useController } from "react-hook-form";
-import { Chore } from "../Data/Chore";
+import { Chore, ChoreDto } from "../Data/Chore";
 import { useState } from "react";
 
 type Props = {
@@ -46,8 +46,18 @@ export default function EnergySelector({ name, control }: Props) {
         ]}
       >
         {[1, 2, 4, 6, 8].map((value) => (
-          <Pressable onPress={() => handleClick(value)}>
-            <Badge size={25} style={[s.boldText]}>
+          <Pressable key={value} onPress={() => handleClick(value)}>
+            <Badge
+              size={25}
+              style={[
+                s.boldText,
+                {
+                  backgroundColor: `rgb(${120 + (8 - value) * 14}, ${
+                    120 + (8 - value) * 14
+                  }, ${120 + (8 - value) * 14})`,
+                },
+              ]}
+            >
               {value}
             </Badge>
           </Pressable>

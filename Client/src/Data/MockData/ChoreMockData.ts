@@ -10,7 +10,7 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-16"),
     repeatInterval: 7,
-    houseHold: mockHousehold,
+    household: mockHousehold,
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-25"),
     repeatInterval: 14,
-    houseHold: mockHousehold,
+    household: mockHousehold,
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-25"),
     repeatInterval: 14,
-    houseHold: mockHousehold,
+    household: mockHousehold,
   },
   {
     id: 4,
@@ -40,6 +40,6 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-25"),
     repeatInterval: 14,
-    houseHold: mockHousehold,
+    household: mockHousehold,
   },
 ];
