@@ -7,6 +7,7 @@ import type { Profile } from "../../Data/Profile";
 import type { User } from "../../Data/User";
 import { storageKeys } from "../../constants";
 import { apiFetch } from "../../utils/apiClient";
+import { Chore, ChoreDto } from "../../Data/Chore";
 
 type LoginPayload = { username: string; password: string };
 export const login = createAsyncThunk<User, LoginPayload>(
@@ -54,6 +55,14 @@ export const fetchProfiles = createAsyncThunk<Profile[]>(
     if (!user) return [];
     const response: Response = await apiFetch(`Profile/ByUser/${user.id}`);
     return response.json() as Promise<Profile[]>;
+  }
+);
+
+export const saveChoreToDb = createAsyncThunk<Chore, ChoreDto>(
+  "user/addChore",
+  async (choreDto) => {
+    const response: Response = await apiFetch(`chore/PostChore`, choreDto);
+    return response.json() as Promise<Chore>;
   }
 );
 

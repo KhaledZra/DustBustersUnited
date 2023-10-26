@@ -2,24 +2,36 @@ import { useController, useForm } from "react-hook-form";
 import { ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import IntervalSelector from "../Components/IntervalSelector";
-import { Chore } from "../Data/Chore";
+import { Chore, ChoreDto } from "../Data/Chore";
 import s from "../utils/globalStyles";
 import EnergySelector from "../Components/EnergySelector";
 import { RootStackScreenProps } from "../../types";
+import { useAppDispatch } from "../store";
+import { saveChoreToDb } from "../store/userSlice/thunks";
 
 type Props = RootStackScreenProps<"EditChore">;
 
 export default function AddChoreScreen({ route }: Props) {
   const { chore } = route.params;
+  const choreDto: ChoreDto = {
+    description: chore.description,
+    energy: chore.energy,
+    name: chore.name,
+    repeatInterval: chore.repeatInterval,
+    householdId: chore.household.id,
+  };
 
-  const { handleSubmit, register, control } = useForm<Chore>({
+  const dispatch = useAppDispatch();
+
+  const { handleSubmit, register, control } = useForm<ChoreDto>({
     defaultValues: chore,
   });
 
   const { field: nameField } = useController({ control, name: "name" });
 
-  const saveChore = (chore: Chore) => {
-    console.log(chore);
+  const saveChore = (choreDto: ChoreDto) => {
+    dispatch(saveChoreToDb(choreDto));
+    console.log(choreDto);
   };
 
   return (
@@ -51,6 +63,7 @@ export default function AddChoreScreen({ route }: Props) {
           style={s.boldText}
           label="Tilldela till anvädare: "
           underlineColor="transparent"
+          value={chore.name}
         />
       </ScrollView>
       <View style={[s.row, s.gap1]}>

@@ -8,5 +8,13 @@ export interface Chore {
   isActive: boolean;
   deadline: Date;
   repeatInterval: number;
-  houseHold: Household;
+  household: Household;
 }
+
+export type ChoreDto = {
+  name: string;
+  description: string;
+  energy: number;
+  repeatInterval: number;
+  householdId: number;
+};

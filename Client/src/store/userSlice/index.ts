@@ -2,7 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { Profile } from "../../Data/Profile";
 import { User } from "../../Data/User";
-import { fetchProfiles, joinHousehold, login, register } from "./thunks";
+import {
+  saveChoreToDb,
+  fetchProfiles,
+  joinHousehold,
+  login,
+  register,
+} from "./thunks";
+import { Chore } from "../../Data/Chore";
+import { RootState } from "..";
 
 type UserState = {
   user: User | undefined;
@@ -12,6 +20,7 @@ type UserState = {
   loginError: string | undefined;
   joinHouseholdError: string | undefined;
   isError: boolean;
+  chores: Chore[];
 };
 
 const initialState: UserState = {
@@ -22,6 +31,7 @@ const initialState: UserState = {
   joinHouseholdError: undefined,
   isLoading: false,
   isError: false,
+  chores: [],
 };
 
 const userSlice = createSlice({
@@ -72,6 +82,9 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchProfiles.fulfilled, (state, action) => {
       state.profiles = action.payload;
+    });
+    builder.addCase(saveChoreToDb.fulfilled, (state, action) => {
+      state.chores.push(action.payload);
     });
   },
 });

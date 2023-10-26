@@ -3,7 +3,7 @@ using DTO;
 using Model;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class ChoreController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -13,7 +13,7 @@ public class ChoreController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
+    [HttpGet()]
     public ActionResult<IEnumerable<Chore>> GetChores()
     {
         var chores = _context.Chores.ToList();
@@ -34,21 +34,22 @@ public class ChoreController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Chore>> Post(ChoreDto choreDto)
+    public async Task<ActionResult<Chore>> PostChore(ChoreDto choreDto)
     {
+        Console.WriteLine("post chores");
         var isFound = await HouseholdController.ConfirmHouseholdId(choreDto.HouseholdId, _context);
         if (isFound == false)
         {
             return UnprocessableEntity("Bad householdId");
         }
-        
+
         var chore = DtoToChore(choreDto);
         _context.Chores.Add(chore);
         await _context.SaveChangesAsync();
-        
+
         return CreatedAtAction("GetChore", new { id = chore.Id }, chore);
     }
-    
+
     [HttpPut("ToggleChoreActivity")]
     public IActionResult ToggleChoreActivity(int choreId)
     {
@@ -60,7 +61,7 @@ public class ChoreController : ControllerBase
         _context.SaveChanges();
         return AcceptedAtAction("GetChore", new { id = chore.Id }, chore);
     }
-    
+
     [HttpDelete]
     public IActionResult DeleteChore(int choreId)
     {
@@ -82,7 +83,7 @@ public class ChoreController : ControllerBase
             Energy = dto.Energy,
             RepeatInterval = dto.RepeatInterval,
             HouseholdId = dto.HouseholdId,
-            
+
             // Defaults
             IsActive = true,
             Deadline = DateTime.Now.AddDays(dto.RepeatInterval)
