@@ -14,10 +14,11 @@ type Props = RootStackScreenProps<"PickHousehold" | "JoinHousehold">;
 export default function PickHouseholdScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const profiles = useAppSelector((state) => state.user.profiles);
+  const profileId = useAppSelector((state) => state.user.activeProfileId);
 
   useEffect(() => {
     dispatch(fetchProfiles());
-  }, []);
+  }, [profileId]);
 
   const handleProfileClick = (profile: Profile) => {
     dispatch(setActiveProfile(profile.id));

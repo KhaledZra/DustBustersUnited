@@ -4,6 +4,8 @@ import { Household } from "../Data/Household";
 import { AddHouseholdDTO } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
+import { setActiveProfile } from "./userSlice";
+import { fetchProfiles } from "./userSlice/thunks";
 
 export const fetchTransientHousehold = createAsyncThunk<Household, string>(
   "fetchTransientHousehold",
@@ -13,11 +15,49 @@ export const fetchTransientHousehold = createAsyncThunk<Household, string>(
   }
 );
 
-export const fetchProfiles = createAsyncThunk<Profile[]>(
-  "fetchProfiles",
-  async (_:void, {getState}) => {
-    const user = (getState() as RootState).user.user
-    const response: Response = await apiFetch(`Profile/ByUser/${user!.id}`);
+export const setActiveStatus = createAsyncThunk<Profile[]>(
+  "setActiveStatus",
+  async (_: void, { getState, dispatch }) => {
+    const profileId = (getState() as RootState).user.activeProfileId;
+    const response: Response = await apiFetch(
+      `Profile/ToggleProfileActive`,
+      { profileId },
+      { method: "PUT" }
+    );
+    dispatch(fetchProfiles());
+    let json = await response.json();
+    console.log(json);
+    return json;
+  }
+);
+
+export const setAdminStatus = createAsyncThunk<Profile[]>(
+  "setAdminStatus",
+  async (_: void, { getState, dispatch }) => {
+    const profileId = (getState() as RootState).user.activeProfileId;
+    const response: Response = await apiFetch(
+      `Profile/ToggleProfileAdmin`,
+      { profileId },
+      { method: "PUT" }
+    );
+    dispatch(fetchProfiles());
+    let json = await response.json();
+    console.log(json);
+    return json;
+  }
+);
+
+export const deleteProfile = createAsyncThunk<Profile[]>(
+  "deleteProfile",
+  async (_: void, { getState, dispatch }) => {
+    const profileId = (getState() as RootState).user.activeProfileId;
+    const response: Response = await apiFetch(
+      `Profile/DeleteHousehold`,
+      { profileId },
+      { method: "DELETE" }
+    );
+    dispatch(setActiveProfile(undefined));
+    dispatch(fetchProfiles());
     let json = await response.json();
     return json;
   }

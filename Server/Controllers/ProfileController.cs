@@ -91,12 +91,13 @@ public class ProfileController : ControllerBase
     }
 
     [HttpDelete("DeleteHousehold")]
-    public IActionResult DeleteHouseholdForUser(int profileId)
+    public IActionResult DeleteHouseholdForUser(DeleteHouseholdDto dto)
     {
-        var profile = _context.Profiles.FirstOrDefault(p => p.Id == profileId);
+        Console.WriteLine("profileId" + dto.ProfileId);
+        var profile = _context.Profiles.FirstOrDefault(p => p.Id == dto.ProfileId);
 
         if (profile != null)
-        {  
+        {
             _context.Profiles.Remove(profile);
             _context.SaveChanges();
             Console.WriteLine("Code: 200, Ok! Hushållet har tagits bort från användaren.");
@@ -106,4 +107,39 @@ public class ProfileController : ControllerBase
         Console.WriteLine("Code: 404, Användaren har inte hushåll.");
         return NotFound("Användaren har inte hushåll.");
     }
+
+    [HttpPut("ToggleProfileActive")]
+    public IActionResult ToggleProfileActive(int profileId)
+    {
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+
+        if (foundProfile == null)
+        {
+            return NotFound("Profile not found");
+        }
+
+        foundProfile.isActive = !foundProfile.isActive;
+        _context.SaveChanges();
+        return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
+    }
+
+    [HttpPut("ToggleProfileAdmin")]
+    public IActionResult ToggleProfileAdmin(int profileId)
+    {
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+
+        if (foundProfile == null)
+        {
+            return NotFound("Profile not found");
+        }
+
+        foundProfile.isAdmin = !foundProfile.isAdmin;
+        _context.SaveChanges();
+        return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
+    }
+}
+
+public class DeleteHouseholdDto
+{
+    public int ProfileId { get; set; }
 }
