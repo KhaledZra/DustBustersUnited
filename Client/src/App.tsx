@@ -8,11 +8,9 @@ import RootStackNavigator from "./Navigators/RootStackNavigator";
 import store from "./store";
 import ThemeProvider from "./themes/ThemeContext";
 import s from "./utils/globalStyles";
-import { AnimatedAppLoader } from "./Components/SplashScreen";
 
 export default function App() {
   return (
-    <AnimatedAppLoader>
       <SafeAreaProvider>
         <StatusBar style="auto" />
         <SafeAreaView style={s.flex1} edges={["bottom"]}>
@@ -23,7 +21,6 @@ export default function App() {
           </Provider>
         </SafeAreaView>
       </SafeAreaProvider>
-    </AnimatedAppLoader>
   );
 }
 
