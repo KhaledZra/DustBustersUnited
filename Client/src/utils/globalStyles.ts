@@ -7,11 +7,14 @@ const globalStyle = StyleSheet.create({
   // Color
   colRed: { color: "red" },
   colWhite: { color: "white" },
+  colBlack: { color: "black" },
 
   // Background color
   bgColGrey: { backgroundColor: "grey" },
   bgColRed: { backgroundColor: "red" },
   bgColWhite: { backgroundColor: "white" },
+  bgColBlack: { backgroundColor: "black" },
+  bgColGreen: { backgroundColor: "green" },
 
   // Flex styles
   flex: { display: "flex" },
@@ -69,12 +72,14 @@ const globalStyle = StyleSheet.create({
 
   pv1: { paddingVertical: 1 },
   pv2: { paddingVertical: 2 },
+  pv3: { paddingVertical: 10 },
 
   pt15: { paddingTop: 15 },
   pt16: { paddingTop: 16 },
 
   // Margin
   m16: { margin: 16 },
+  m10: { margin: 10 },
 
   mv10: { marginVertical: 10 },
 
@@ -89,6 +94,7 @@ const globalStyle = StyleSheet.create({
   w20: { width: "20%" },
   w40: { width: "40%" },
   w80: { width: "80%" },
+  w150: { width: 150 },
 
   // Height
   h35: { height: "35%" },
@@ -106,6 +112,8 @@ const globalStyle = StyleSheet.create({
   textCenter: { textAlign: "center" },
 
   fs26: { fontSize: 26 },
+  fs60: { fontSize: 60 },
+  fs20: { fontSize: 20 },
 });
 
 export default globalStyle;
