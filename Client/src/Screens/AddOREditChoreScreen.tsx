@@ -13,7 +13,7 @@ import s from "../utils/globalStyles";
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
 export default function AddOrEditChoreScreen({ route, navigation }: Props) {
-  const householdId = useAppSelector(selectActiveHousehold)
+  const householdId = useAppSelector(selectActiveHousehold);
   const { chore } = route.params;
   const isEdit = Boolean(chore);
 
@@ -26,21 +26,24 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
       name: "",
       repeatInterval: 1,
       householdId,
-    }
+    },
   });
 
   const { field: nameField } = useController({ control, name: "name" });
-  const { field: descriptionField } = useController({ control, name: "description" });
+  const { field: descriptionField } = useController({
+    control,
+    name: "description",
+  });
 
   const onSubmit = (chore: Chore) => {
     console.log(chore);
     if (isEdit) {
       dispatch(updateChore(chore));
     } else {
-      const newChore = { ...chore, householdId }
+      const newChore = { ...chore, householdId };
       dispatch(saveChoreToDb(newChore));
     }
-    navigation.pop()
+    navigation.pop();
   };
 
   return (
@@ -87,6 +90,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           icon="close-circle-outline"
           style={[s.flex1, s.radiusNone]}
           mode="contained"
+          onPress={() => navigation.pop()}
         >
           Stäng
         </Button>
