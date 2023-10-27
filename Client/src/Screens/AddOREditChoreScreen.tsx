@@ -1,38 +1,45 @@
 import { useController, useForm } from "react-hook-form";
 import { ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import IntervalSelector from "../Components/IntervalSelector";
-import { Chore, ChoreDto } from "../Data/Chore";
-import s from "../utils/globalStyles";
-import EnergySelector from "../Components/EnergySelector";
 import { RootStackScreenProps } from "../../types";
-import { useAppDispatch } from "../store";
-import { updateChore } from "../store/choreSlice/thunks";
+import EnergySelector from "../Components/EnergySelector";
+import IntervalSelector from "../Components/IntervalSelector";
+import { Chore } from "../Data/Chore";
+import { RootState, useAppDispatch, useAppSelector } from "../store";
+import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
+import s from "../utils/globalStyles";
 
-type Props = RootStackScreenProps<"EditChore">;
+type Props = RootStackScreenProps<"AddOrEditChore">;
 
-export default function AddChoreScreen({ route }: Props) {
+const selectActiveHousehold = (state: RootState) => state.user.profiles.find(p => p.id === state.user.activeProfileId)?.household.id!
+
+export default function AddOrEditChoreScreen({ route }: Props) {
+  const householdId = useAppSelector(selectActiveHousehold)
   const { chore } = route.params;
-  const choreDto: ChoreDto = {
-    description: chore.description,
-    energy: chore.energy,
-    name: chore.name,
-    repeatInterval: chore.repeatInterval,
-    householdId: chore.household.id,
-  };
+  const isEdit = Boolean(chore);
 
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control } = useForm<Chore>({
-    defaultValues: chore,
+    defaultValues: chore || {
+      description: "",
+      energy: 2,
+      name: "",
+      repeatInterval: 1,
+      householdId,
+    }
   });
 
   const { field: nameField } = useController({ control, name: "name" });
-  const { field: descriptionField } = useController({ control, name: "name" });
+  const { field: descriptionField } = useController({ control, name: "description" });
 
   const onSubmit = (chore: Chore) => {
-    dispatch(updateChore(chore));
-    console.log(choreDto);
+    if (isEdit) {
+      dispatch(updateChore(chore));
+    } else {
+      const newChore = { ...chore, householdId }
+      dispatch(saveChoreToDb(newChore));
+    }
   };
 
   return (

@@ -3,19 +3,18 @@ import {
   createNativeStackNavigator,
 } from "@react-navigation/native-stack";
 import StackHeader from "../Components/StackHeader";
+import { Chore } from "../Data/Chore";
 import { Household } from "../Data/Household";
-import AddChoreScreen from "../Screens/AddChoreScreen";
 import AddEditHouseholdScreen from "../Screens/AddEditHouseholdScreen";
 import ChoreListScreen from "../Screens/ChoreListScreen";
 import ChoreViewPage from "../Screens/ChoreViewPage";
-import EditChoreScreen from "../Screens/EditChoreScreen";
+import EditChoreScreen from "../Screens/AddOREditChoreScreen";
 import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
-import { Chore, ChoreDto } from "../Data/Chore";
 
 export type RootStackParamList = {
   // Auth
@@ -30,8 +29,7 @@ export type RootStackParamList = {
   //
   ChoreList: undefined;
   ChoreView: { chore: Chore };
-  AddChore: undefined;
-  EditChore: { chore: Chore };
+  AddOrEditChore: { chore?: Chore };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -96,14 +94,9 @@ export default function RootStackNavigator() {
         }
       />
       <Stack.Screen
-        name="AddChore"
-        component={AddChoreScreen}
-        options={{ title: "Skapa en syssla" }}
-      />
-      <Stack.Screen
-        name="EditChore"
+        name="AddOrEditChore"
         component={EditChoreScreen}
-        options={{ title: "Redigera en syssla" }}
+        options={({ route }) => ({ title: route.params.chore ? "Redigera en syssla" : "Skapa en syssla" })}
       />
       <Stack.Screen
         name="ChoreView"

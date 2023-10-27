@@ -1,4 +1,3 @@
-import { Household } from "./Household";
 
 export interface Chore {
   id: number;
@@ -8,13 +7,7 @@ export interface Chore {
   isActive: boolean;
   deadline: Date;
   repeatInterval: number;
-  household: Household;
+  householdId: number;
 }
 
-export type ChoreDto = {
-  name: string;
-  description: string;
-  energy: number;
-  repeatInterval: number;
-  householdId: number;
-};
+export type ChoreCreateDto = Omit<Chore, 'id' | 'isActive' | 'deadline'>
