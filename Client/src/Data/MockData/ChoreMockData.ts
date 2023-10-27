@@ -1,5 +1,4 @@
 import { Chore } from "../Chore";
-import { mockHousehold } from "./HouseHoldMockData";
 
 export const mockChores: Chore[] = [
   {
@@ -10,7 +9,7 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-16"),
     repeatInterval: 7,
-    household: mockHousehold,
+    householdId: 1,
   },
   {
     id: 2,
@@ -20,7 +19,7 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-25"),
     repeatInterval: 14,
-    household: mockHousehold,
+    householdId: 1,
   },
   {
     id: 3,
@@ -30,7 +29,7 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-25"),
     repeatInterval: 14,
-    household: mockHousehold,
+    householdId: 1,
   },
   {
     id: 4,
@@ -40,6 +39,6 @@ export const mockChores: Chore[] = [
     isActive: true,
     deadline: new Date("2023-10-25"),
     repeatInterval: 14,
-    household: mockHousehold,
+    householdId: 1,
   },
 ];

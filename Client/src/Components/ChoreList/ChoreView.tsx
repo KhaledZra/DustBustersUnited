@@ -22,7 +22,7 @@ export default function ChoreView({ navigation, chore }: ChoreViewProps) {
           <IconButton
             icon="pencil"
             size={15}
-            onPress={() => navigation.navigate("EditChore", { chore })}
+            onPress={() => navigation.navigate("AddOrEditChore", { chore })}
           />
         </Card.Actions>
 

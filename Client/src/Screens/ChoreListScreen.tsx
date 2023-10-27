@@ -44,7 +44,8 @@ export default function ChoreListScreen({ navigation, route }: props) {
         <Button
           mode="contained"
           icon="plus-circle-outline"
-          onPress={() => navigation.navigate("AddChore")}
+          
+          onPress={() => navigation.navigate("AddOrEditChore", {})}
           style={[s.br20, s.p6, s.mb10]}
         >
           Lägg till
