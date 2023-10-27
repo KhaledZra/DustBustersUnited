@@ -1,22 +1,37 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { Profiler } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button } from "react-native-paper";
-import { useAppDispatch } from "../store";
-import { deleteProfile } from "../store/householdSlice";
+import { Button, Text } from "react-native-paper";
+import { Profile } from "../Data/Profile";
+import { useAppDispatch, useAppSelector } from "../store";
+import {
+  deleteProfile,
+  setActiveStatus,
+  setAdminStatus,
+} from "../store/householdSlice";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const profiles = useAppSelector((state) => state.user.profiles);
+  const profileId = useAppSelector((state) => state.user.activeProfileId);
+  const [profile, setProfile] = useState<Profile>();
+  useEffect(() => {
+    const profile = profiles.find((p) => p.id == profileId);
+    setProfile(profile);
+  }, [profileId, profiles]);
+
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
   };
 
-  // const handelActiveHousehold = () => {
-  //   dispatch(setActiveStatus({profileId, isActive}));
-  //   navigation.navigate("PickHousehold");
-  // };
+  const handelActiveHousehold = () => {
+    dispatch(setActiveStatus());
+  };
+  const handelAdminHousehold = () => {
+    dispatch(setAdminStatus());
+  };
 
   return (
     <View style={styles.container}>
@@ -31,17 +46,17 @@ export default function ProfileScreen() {
       <Button
         style={[styles.button, { backgroundColor: "green" }]}
         labelStyle={styles.buttonText}
-        // onPress={() => handelActiveHousehold(profileId, true)}
+        onPress={() => handelActiveHousehold()}
       >
-        Active
+        <Text style={styles.buttonText}>
+          {profile && profile.isActive ? "Active" : "Not Activ"}
+        </Text>
       </Button>
       <View style={styles.spacing} />
-      <Button
-        style={styles.button}
-        labelStyle={styles.buttonText}
-        onPress={handleLeaveHousehold}
-      >
-        Admin
+      <Button style={styles.button} onPress={() => handelAdminHousehold()}>
+        <Text style={styles.buttonText}>
+          {profile && profile.isAdmin ? "Admin" : "Not Admin"}
+        </Text>
       </Button>
     </View>
   );
