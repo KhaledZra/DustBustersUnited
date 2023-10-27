@@ -1,9 +1,9 @@
-import { Pressable, ScrollView, View } from "react-native";
-import { Card, Badge, Text } from "react-native-paper";
-import s from "../utils/globalStyles";
-import { Control, useController } from "react-hook-form";
-import { Chore, ChoreDto } from "../Data/Chore";
 import { useState } from "react";
+import { Control, useController } from "react-hook-form";
+import { Pressable, ScrollView, View } from "react-native";
+import { Badge, Card, Text } from "react-native-paper";
+import { Chore } from "../Data/Chore";
+import s from "../utils/globalStyles";
 
 type Props = {
   name: "energy";

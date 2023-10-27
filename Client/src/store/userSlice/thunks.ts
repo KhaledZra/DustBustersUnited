@@ -7,7 +7,6 @@ import type { Profile } from "../../Data/Profile";
 import type { User } from "../../Data/User";
 import { storageKeys } from "../../constants";
 import { apiFetch } from "../../utils/apiClient";
-import { Chore, ChoreDto } from "../../Data/Chore";
 
 type LoginPayload = { username: string; password: string };
 export const login = createAsyncThunk<User, LoginPayload>(

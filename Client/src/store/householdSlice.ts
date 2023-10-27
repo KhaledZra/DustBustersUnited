@@ -117,3 +117,8 @@ const householdSlice = createSlice({
 
 export const { clearTransientHousehold } = householdSlice.actions;
 export default householdSlice.reducer;
+
+export const selectActiveHousehold = (
+  state: RootState) => state.user.profiles.find(
+    p => p.id === state.user.activeProfileId)
+    ?.household.id!

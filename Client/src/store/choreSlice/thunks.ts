@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Chore, ChoreDto } from "../../Data/Chore";
+import { Chore, ChoreCreateDto } from "../../Data/Chore";
 import { apiFetch } from "../../utils/apiClient";
 
-export const saveChoreToDb = createAsyncThunk<Chore, ChoreDto>(
+export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
   async (choreDto) => {
-    const response: Response = await apiFetch(`chore/PostChore`, choreDto);
+    const response: Response = await apiFetch(`chore`, choreDto, { method: "POST" });
     return response.json() as Promise<Chore>;
   }
 );
