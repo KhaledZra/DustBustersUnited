@@ -5,7 +5,6 @@ import { RootStackScreenProps } from "../../types";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store";
 import { addHousehold } from "../store/householdSlice";
-import { User } from "../Data/User";
 import { AddHouseholdDTO, Household } from "../Data/Household";
 import { useRoute } from "@react-navigation/native";
 

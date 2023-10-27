@@ -90,7 +90,7 @@ function ChoreView({ navigation, chore }: ChoreViewProps) {
           <IconButton
             icon="pencil"
             size={15}
-            onPress={() => navigation.navigate("EditChore", { chore })}
+            onPress={() => navigation.navigate("AddOrEditChore", { chore })}
           />
         </Card.Actions>
 
@@ -142,7 +142,7 @@ export default function ChoreListScreen({ navigation, route }: props) {
         <Button
           mode="contained"
           icon="plus-circle-outline"
-          onPress={() => navigation.navigate("AddChore")}
+          onPress={() => navigation.navigate("AddOrEditChore", {})}
           style={[s.br20, s.p6, s.mb10]}
         >
           Lägg till

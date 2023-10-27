@@ -5,15 +5,14 @@ import { RootStackScreenProps } from "../../types";
 import EnergySelector from "../Components/EnergySelector";
 import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
-import { RootState, useAppDispatch, useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
+import { selectActiveHousehold } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
-const selectActiveHousehold = (state: RootState) => state.user.profiles.find(p => p.id === state.user.activeProfileId)?.household.id!
-
-export default function AddOrEditChoreScreen({ route }: Props) {
+export default function AddOrEditChoreScreen({ route, navigation }: Props) {
   const householdId = useAppSelector(selectActiveHousehold)
   const { chore } = route.params;
   const isEdit = Boolean(chore);
@@ -34,12 +33,14 @@ export default function AddOrEditChoreScreen({ route }: Props) {
   const { field: descriptionField } = useController({ control, name: "description" });
 
   const onSubmit = (chore: Chore) => {
+    console.log(chore);
     if (isEdit) {
       dispatch(updateChore(chore));
     } else {
       const newChore = { ...chore, householdId }
       dispatch(saveChoreToDb(newChore));
     }
+    navigation.pop()
   };
 
   return (

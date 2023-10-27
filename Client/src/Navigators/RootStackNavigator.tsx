@@ -6,9 +6,9 @@ import StackHeader from "../Components/StackHeader";
 import { Chore } from "../Data/Chore";
 import { Household } from "../Data/Household";
 import AddEditHouseholdScreen from "../Screens/AddEditHouseholdScreen";
+import AddOrEditChoreScreen from "../Screens/AddOREditChoreScreen";
 import ChoreListScreen from "../Screens/ChoreListScreen";
 import ChoreViewPage from "../Screens/ChoreViewPage";
-import EditChoreScreen from "../Screens/AddOREditChoreScreen";
 import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
 import JoinHousholdScreen from "../Screens/JoinHouseholdScreen";
 import LoginScreen from "../Screens/LoginScreen";
@@ -95,8 +95,8 @@ export default function RootStackNavigator() {
       />
       <Stack.Screen
         name="AddOrEditChore"
-        component={EditChoreScreen}
-        options={({ route }) => ({ title: route.params.chore ? "Redigera en syssla" : "Skapa en syssla" })}
+        component={AddOrEditChoreScreen}
+        options={({ route }) => ({ presentation: "modal", title: route.params.chore ? "Redigera en syssla" : "Skapa en syssla" })}
       />
       <Stack.Screen
         name="ChoreView"
