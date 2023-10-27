@@ -2,21 +2,45 @@ import { useController, useForm } from "react-hook-form";
 import { ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import IntervalSelector from "../Components/IntervalSelector";
-import { Chore } from "../Data/Chore";
-import { mockChores } from "../Data/MockData/ChoreMockData";
+import { ChoreDto } from "../Data/Chore";
 import s from "../utils/globalStyles";
 import EnergySelector from "../Components/EnergySelector";
+import { useAppDispatch, useAppSelector } from "../store";
+import { RootStackScreenProps } from "../../types";
+import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
 
-export default function AddChoreScreen() {
-  const chore = mockChores[0];
+type Props = RootStackScreenProps<"AddChore">;
 
-  const { handleSubmit, register, control } = useForm<Chore>({
-    defaultValues: chore,
+export default function AddChoreScreen({ navigation }: Props) {
+  const dispatch = useAppDispatch();
+  const userSlice = useAppSelector((state) => state.user);
+
+  const activeProfile = userSlice.profiles.find(
+    (u) => (u.id = userSlice.activeProfileId!)
+  );
+
+  const choreDto: ChoreDto = {
+    description: "",
+    energy: 0,
+    name: "",
+    repeatInterval: 0,
+    householdId: activeProfile!.household.id,
+  };
+
+  const { handleSubmit, control } = useForm<ChoreDto>({
+    defaultValues: choreDto,
   });
   const { field: nameField } = useController({ control, name: "name" });
+  const { field: descriptionField } = useController({
+    control,
+    name: "description",
+  });
 
-  const saveChore = (chore: Chore) => {
-    console.log(chore);
+  const saveChore = (choreDto: ChoreDto) => {
+    dispatch(saveChoreToDb(choreDto));
+
+    if (navigation.canGoBack()) navigation.goBack();
+    else navigation.navigate("ChoreList");
   };
 
   return (
@@ -27,7 +51,6 @@ export default function AddChoreScreen() {
           label="Titel"
           underlineColor="transparent"
           multiline
-          value={nameField.value}
           onChangeText={nameField.onChange}
           onBlur={nameField.onBlur}
         />
@@ -36,8 +59,7 @@ export default function AddChoreScreen() {
           label="Beskrivning"
           underlineColor="transparent"
           multiline
-          onChangeText={nameField.onChange}
-          {...register("description")}
+          onChangeText={descriptionField.onChange}
         />
 
         <IntervalSelector name="repeatInterval" control={control} />

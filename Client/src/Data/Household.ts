@@ -8,6 +8,11 @@ export interface Household {
   availableAvatars: number[];
 }
 
+export interface AddHouseholdDTO {
+  Name: string;
+  OwnerId: number;
+}
+
 export type JoinHouseholdDto = {
   userId: number;
   householdId: number;

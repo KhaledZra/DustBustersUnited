@@ -1,11 +1,11 @@
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Badge, Button, Card, List, Text } from "react-native-paper";
-import { mockChores } from "../Data/MockData/ChoreMockData";
 import { getDaysSinceLastDone } from "./ChoreListScreen";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import s from "../utils/globalStyles";
+import { RouteProp } from "@react-navigation/native";
 
 const screenDimensions = Dimensions.get("screen");
 
@@ -16,10 +16,11 @@ type ChoreScreenNavigationProp = NativeStackNavigationProp<
 
 type Props = {
   navigation: ChoreScreenNavigationProp;
+  route: RouteProp<RootStackParamList, "ChoreView">;
 };
 
-export default function ChoreViewPage({ navigation }: Props) {
-  const chore = mockChores[0];
+export default function ChoreViewPage({ navigation, route }: Props) {
+  const {chore} = route.params;
 
   useEffect(() => {
     navigation.setOptions({

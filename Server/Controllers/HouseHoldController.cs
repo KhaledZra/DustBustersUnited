@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using DTO;
 using Model;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -21,6 +22,7 @@ public class HouseholdController : ControllerBase
             .Include(household => household.Profiles)
             .ToList();
 
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(households);
     }
 
@@ -31,8 +33,10 @@ public class HouseholdController : ControllerBase
             .FirstOrDefault(h => h.Id == id);
         if (household == null)
         {
-            return NotFound();
+            Console.WriteLine("Code: 404, Household not found!");
+            return NotFound("Household not found!");
         }
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(household);
     }
 
@@ -44,7 +48,11 @@ public class HouseholdController : ControllerBase
     public ActionResult<Household> GetByCode(int code)
     {
         var household = _context.Households.FirstOrDefault(h => h.Code == code);
-        if (household == null) return NotFound();
+        if (household == null)
+        {
+            Console.WriteLine("Code: 400, Bad request, household does not exist!");
+            return BadRequest("household does not exist!");
+        }
 
         // Todo: Can we refactor this bit to some function?
         // from here --
@@ -60,27 +68,20 @@ public class HouseholdController : ControllerBase
         }
         // -- to here
 
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(household);
     }
 
 
     [HttpPost]
-    public async Task<ActionResult<Household>> Post(HouseholdDto householdDto)
+    public async Task<ActionResult<Household>> Post(HouseholdDto dto)
     {
-        var household = DtoToHousehold(householdDto);
-        household.Confirmation();
+        var household = new Household(dto);
         _context.Households.Add(household);
         await _context.SaveChangesAsync();
+        
+        Console.WriteLine("Code: 201, Logged in!");
         return CreatedAtAction("Get", new { id = household.Id }, household);
-    }
-
-    private Household DtoToHousehold(HouseholdDto dto)
-    {
-        return new Household
-        {
-            Name = dto.Name,
-            UserId = dto.OwnerId
-        };
     }
     
     // Service method

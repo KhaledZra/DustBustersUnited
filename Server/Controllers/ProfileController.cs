@@ -22,6 +22,7 @@ public class ProfileController : ControllerBase
                 .Include(p => p.Household)
                 .Where(p => p.UserId == userId).ToList();
 
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(profiles);
     }
 
@@ -35,9 +36,11 @@ public class ProfileController : ControllerBase
 
         if (profile == null)
         {
-            return NotFound();
+            Console.WriteLine("Code: 404, Profile not found!");
+            return NotFound("Profile not found!");
         }
 
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(profile);
     }
 
@@ -50,11 +53,13 @@ public class ProfileController : ControllerBase
 
         if (user == null)
         {
+            Console.WriteLine("Code: 400, Användaren finns inte.");
             return BadRequest("Användaren finns inte.");
         }
 
         if (household == null)
         {
+            Console.WriteLine("Code: 400, Hushållet finns inte.");
             return BadRequest("Hushållet finns inte.");
         }
 
@@ -64,6 +69,7 @@ public class ProfileController : ControllerBase
 
         if (existing_profile != null)
         {
+            Console.WriteLine("Code: 400, Användaren är redan kopplad till hushållet.");
             return BadRequest("Användaren är redan kopplad till hushållet.");
         }
 
@@ -80,6 +86,7 @@ public class ProfileController : ControllerBase
 
         _context.Profiles.Add(profile);
         await _context.SaveChangesAsync();
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(profile);
     }
 
@@ -93,9 +100,11 @@ public class ProfileController : ControllerBase
         {
             _context.Profiles.Remove(profile);
             _context.SaveChanges();
+            Console.WriteLine("Code: 200, Ok! Hushållet har tagits bort från användaren.");
             return Ok("Hushållet har tagits bort från användaren.");
         }
 
+        Console.WriteLine("Code: 404, Användaren har inte hushåll.");
         return NotFound("Användaren har inte hushåll.");
     }
 

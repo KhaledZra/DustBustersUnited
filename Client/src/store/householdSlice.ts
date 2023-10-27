@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { Household } from "../Data/Household";
+import { AddHouseholdDTO } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
 import { setActiveProfile } from "./userSlice";
@@ -62,6 +63,20 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
   }
 );
 
+export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
+  "createHousehold",
+  
+  async (payload : AddHouseholdDTO) => {
+    console.log("DTO " ,payload)
+    const response = await apiFetch("Household", payload);
+    const jsonResponse = await response.json();
+    console.log("response", jsonResponse);
+
+    return jsonResponse;
+  }
+);
+
+
 export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
   name: "household",
@@ -91,6 +106,12 @@ const householdSlice = createSlice({
     builder.addCase(fetchTransientHousehold.fulfilled, (state, action) => {
       state.transientHousehold = action.payload;
     });
+    builder.addCase(fetchProfiles.fulfilled, (state, action) => {
+      state.profiles = action.payload;
+    });
+    builder.addCase(addHousehold.fulfilled, (state, action)=> {
+      state.households.push( action.payload);
+    })
   },
 });
 
