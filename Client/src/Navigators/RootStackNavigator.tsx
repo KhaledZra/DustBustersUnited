@@ -14,7 +14,6 @@ import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
-import { ProfileChore } from "../Data/ProfileChore";
 import AddOrEditChoreScreen from "../Screens/AddOrEditChoreScreen";
 
 export type RootStackParamList = {
