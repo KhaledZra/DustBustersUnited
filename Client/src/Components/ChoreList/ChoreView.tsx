@@ -15,7 +15,7 @@ export default function ChoreView({ navigation, chore }: ChoreViewProps) {
     <Card
       style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
       mode="outlined"
-      onPress={() => navigation.push('ChoreView', {chore: chore})}
+      onPress={() => navigation.push("ChoreView", { chore })}
     >
       <Card.Content style={[s.flex1, s.row]}>
         <Card.Actions style={s.h40}>

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, Dimensions } from "react-native";
 import { Badge, Button, Card, List, Text } from "react-native-paper";
 import { getDaysSinceLastDone } from "./ChoreListScreen";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
@@ -6,6 +6,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import s from "../utils/globalStyles";
 import { RouteProp } from "@react-navigation/native";
+import { useAppDispatch } from "../store";
+import { markChoreAsCompleted } from "../store/choreSlice/thunks";
 
 const screenDimensions = Dimensions.get("screen");
 
@@ -20,13 +22,20 @@ type Props = {
 };
 
 export default function ChoreViewPage({ navigation, route }: Props) {
-  const {chore} = route.params;
+  const { chore } = route.params;
 
   useEffect(() => {
     navigation.setOptions({
       title: chore.name,
     });
   }, []);
+
+  const dispatch = useAppDispatch();
+
+  const handleMarkChoreAsCompleted = () => {
+    dispatch(markChoreAsCompleted(chore.id));
+    navigation.pop();
+  };
 
   return (
     <View style={[s.flex1]}>
@@ -58,9 +67,9 @@ export default function ChoreViewPage({ navigation, route }: Props) {
       <Button
         icon="plus-circle-outline"
         mode="contained"
-        onPress={() => console.log("Avklarat")}
         style={[s.p6]}
         labelStyle={s.boldText}
+        onPress={handleMarkChoreAsCompleted}
       >
         Avklarat
       </Button>

@@ -3,7 +3,7 @@ import { Profile } from "./Profile";
 
 export interface ProfileChore {
   id: number;
-  dateCompleted: Date | null;
+  dateCompleted: string | null;
   profile: Profile;
   chore: Chore;
 }

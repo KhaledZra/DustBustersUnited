@@ -1,6 +1,6 @@
 import { FlatList, View } from "react-native";
 import { Button } from "react-native-paper";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { Profile } from "../Data/Profile";
 import { RootStackScreenProps } from "../../types";
 import { mockChores } from "../Data/MockData/ChoreMockData";
@@ -8,14 +8,14 @@ import { useEffect, useState } from "react";
 import s from "../utils/globalStyles";
 import ChoreListHeaderBar from "../Components/ChoreList/ChoreListHeaderBar";
 import ChoreView from "../Components/ChoreList/ChoreView";
+import { getChores } from "../store/choreSlice/thunks";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
-type props = RootStackScreenProps<"ChoreList">;
+type Props = RootStackScreenProps<"ChoreList">;
 
-
-export default function ChoreListScreen({ navigation, route }: props) {
+export default function ChoreListScreen({ navigation, route }: Props) {
   // TODO: Should be able to solve this with `createSelector` in store instead
   // from here ---
   const [profile, setProfile] = useState<Profile>();
@@ -30,11 +30,18 @@ export default function ChoreListScreen({ navigation, route }: props) {
     navigation.setOptions({ title: profile?.household.name });
   }, [profile]);
 
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getChores());
+  });
+
+  const chores = useAppSelector((state) => state.chore.chores);
+
   return (
     <View style={s.flex1}>
       <ChoreListHeaderBar />
       <FlatList
-        data={mockChores}
+        data={chores}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ChoreView route={route} navigation={navigation} chore={item} />
@@ -44,7 +51,6 @@ export default function ChoreListScreen({ navigation, route }: props) {
         <Button
           mode="contained"
           icon="plus-circle-outline"
-          
           onPress={() => navigation.navigate("AddOrEditChore", {})}
           style={[s.br20, s.p6, s.mb10]}
         >
