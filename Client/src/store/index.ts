@@ -5,11 +5,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import userSlice, { setActiveProfile, setUser } from "./userSlice";
 import householdSlice from "./householdSlice";
 import { storageKeys } from "../constants";
+import choreSlice from "./choreSlice";
 
 const store = configureStore({
   reducer: {
     user: userSlice,
     household: householdSlice,
+    chore: choreSlice,
   },
 });
 

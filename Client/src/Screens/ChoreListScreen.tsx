@@ -1,21 +1,21 @@
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { Profile } from "../Data/Profile";
 
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
-import { mockChores } from "../Data/MockData/ChoreMockData";
 import { useEffect, useState } from "react";
 import s from "../utils/globalStyles";
+import { getChores } from "../store/choreSlice/thunks";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
-export const getDaysSinceLastDone = (deadline: Date, interval: number) => {
+export const getDaysSinceLastDone = (deadline: string, interval: number) => {
   // Setup lastDone
   const lastDone = new Date(deadline);
-  lastDone.setDate(deadline.getDate() - interval);
+  lastDone.setDate(lastDone.getDate() - interval);
 
   // Date now
   const dateNow = new Date(); // in the future use this to adjust the date so calender can be supported
@@ -76,14 +76,14 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   }
 }
 
-type ChoreViewProps = props & { chore: Chore };
+type ChoreViewProps = Props & { chore: Chore };
 
 function ChoreView({ navigation, chore }: ChoreViewProps) {
   return (
     <Card
       style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
       mode="outlined"
-      onPress={() => navigation.push('ChoreView', {chore: chore})}
+      onPress={() => navigation.push("ChoreView", { chore: chore })}
     >
       <Card.Content style={[s.flex1, s.row]}>
         <Card.Actions style={s.h40}>
@@ -109,11 +109,11 @@ function ChoreView({ navigation, chore }: ChoreViewProps) {
   );
 }
 
-type props = RootStackScreenProps<"ChoreList">;
+type Props = RootStackScreenProps<"ChoreList">;
 
 const screenDimensions = Dimensions.get("screen");
 
-export default function ChoreListScreen({ navigation, route }: props) {
+export default function ChoreListScreen({ navigation, route }: Props) {
   // TODO: Should be able to solve this with `createSelector` in store instead
   // from here ---
   const [profile, setProfile] = useState<Profile>();
@@ -128,11 +128,18 @@ export default function ChoreListScreen({ navigation, route }: props) {
     navigation.setOptions({ title: profile?.household.name });
   }, [profile]);
 
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getChores());
+  });
+
+  const chores = useAppSelector((state) => state.chore.chores);
+
   return (
     <View style={s.flex1}>
       <HeaderBar />
       <FlatList
-        data={mockChores}
+        data={chores}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ChoreView route={route} navigation={navigation} chore={item} />
