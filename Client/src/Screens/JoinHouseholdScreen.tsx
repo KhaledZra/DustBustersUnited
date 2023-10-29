@@ -65,6 +65,9 @@ export default function JoinHousholdScreen({navigation}: Props) {
       avatar: selectedAvatar,
       isAdmin: false,         //TODO skaparen av household borde bli admin 
     };
+    if(code){
+      dto.isAdmin = true;
+    }
 
     dispatch(joinHousehold(dto));
     navigation.navigate("ChoreList")
