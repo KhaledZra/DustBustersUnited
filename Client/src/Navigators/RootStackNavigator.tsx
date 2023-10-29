@@ -15,6 +15,7 @@ import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
+import { ProfileChore } from "../Data/ProfileChore";
 
 export type RootStackParamList = {
   // Auth
@@ -23,7 +24,7 @@ export type RootStackParamList = {
   // Create / Join Household
   Profile: undefined;
   PickHousehold: undefined;
-  JoinHousehold: {code: number | undefined}
+  JoinHousehold: { code: number | undefined };
   HouseholdInfo: undefined;
   AddEditHoushold: { household: Household | undefined }; // undefined is used to create new
   //
@@ -96,7 +97,10 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="AddOrEditChore"
         component={AddOrEditChoreScreen}
-        options={({ route }) => ({ presentation: "modal", title: route.params.chore ? "Redigera en syssla" : "Skapa en syssla" })}
+        options={({ route }) => ({
+          presentation: "modal",
+          title: route.params.chore ? "Redigera en syssla" : "Skapa en syssla",
+        })}
       />
       <Stack.Screen
         name="ChoreView"

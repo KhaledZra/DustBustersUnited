@@ -65,9 +65,9 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
 
 export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   "createHousehold",
-  
-  async (payload : AddHouseholdDTO) => {
-    console.log("DTO " ,payload)
+
+  async (payload: AddHouseholdDTO) => {
+    console.log("DTO ", payload);
     const response = await apiFetch("Household", payload);
     const jsonResponse = await response.json();
     console.log("response", jsonResponse);
@@ -75,7 +75,6 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
     return jsonResponse;
   }
 );
-
 
 export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
@@ -109,16 +108,15 @@ const householdSlice = createSlice({
     builder.addCase(fetchProfiles.fulfilled, (state, action) => {
       state.profiles = action.payload;
     });
-    builder.addCase(addHousehold.fulfilled, (state, action)=> {
-      state.households.push( action.payload);
-    })
+    builder.addCase(addHousehold.fulfilled, (state, action) => {
+      state.households.push(action.payload);
+    });
   },
 });
 
 export const { clearTransientHousehold } = householdSlice.actions;
 export default householdSlice.reducer;
 
-export const selectActiveHousehold = (
-  state: RootState) => state.user.profiles.find(
-    p => p.id === state.user.activeProfileId)
-    ?.household.id!
+export const selectActiveHousehold = (state: RootState) =>
+  state.user.profiles.find((p) => p.id === state.user.activeProfileId)
+    ?.household.id!;
