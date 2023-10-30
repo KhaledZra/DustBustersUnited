@@ -1,13 +1,12 @@
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
-import { Profile } from "../Data/Profile";
-
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import s from "../utils/globalStyles";
 import { getChores } from "../store/choreSlice/thunks";
+import { selectActiveProfile } from "../store/userSlice"
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -114,15 +113,8 @@ type Props = RootStackScreenProps<"ChoreList">;
 const screenDimensions = Dimensions.get("screen");
 
 export default function ChoreListScreen({ navigation, route }: Props) {
-  // TODO: Should be able to solve this with `createSelector` in store instead
-  // from here ---
-  const [profile, setProfile] = useState<Profile>();
-  const profiles = useAppSelector((state) => state.user.profiles);
-  const activeProfileId = useAppSelector((state) => state.user.activeProfileId);
-  useEffect(() => {
-    setProfile(profiles.find((p) => p.id === activeProfileId));
-  }, [profiles, activeProfileId]);
-  // --- to here
+
+  const profile = useAppSelector(selectActiveProfile);
 
   useEffect(() => {
     navigation.setOptions({ title: profile?.household.name });
