@@ -44,6 +44,22 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
+         [HttpGet("GetProfilesByHousehold/{householdId}")]           //TODO använd denna
+    public ActionResult<Profile> GetProfileByHousehold(int householdId)
+    {
+        var profiles = _context.Profiles
+                .FirstOrDefault(p => p.HouseholdId == householdId);
+
+        if (profiles == null)
+        {
+            Console.WriteLine("Code: 404, Household has no members!");
+            return NotFound("Household has no members!");
+        }
+
+        Console.WriteLine("Code: 200, Ok!");
+        return Ok(profiles);
+    }
+
 
     [HttpPost("linkToHousehold")]
     public async Task<IActionResult> LinkToHousehold(LinkToHouseholdDto dto)

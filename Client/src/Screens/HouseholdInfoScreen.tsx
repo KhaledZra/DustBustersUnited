@@ -22,7 +22,7 @@ export default function HouseholdInfoScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Hushållsmedlemmar</Text>
       {profiles.map((p) => {
-        const profileAvatar = avatars.find((avatar) => avatar.id === p.id);
+        const profileAvatar = avatars.find((avatar) => avatar.id === p.avatar);
         return (
           <Button
             style={styles.button}
