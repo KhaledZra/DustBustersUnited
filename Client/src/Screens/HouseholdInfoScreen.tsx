@@ -1,25 +1,34 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
-import { deleteProfile } from "../store/householdSlice";
+import householdSlice, { deleteProfile, getProfiles } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 
 export default function HouseholdInfoScreen() {
-  const profiles = useAppSelector((state) => state.user.profiles);
-  const avatars = useAppSelector((state) => state.household.avatars);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const householdId = useAppSelector((state) => state.household.transientHousehold?.id);
   const householdCode = useAppSelector(
-    (state) => state.household.transientHousehold
-  );
+    (state) => state.household.transientHousehold);
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
   };
-
-  return (
+  
+  useEffect(() => {
+    if (householdId) {
+      dispatch(getProfiles(householdId));
+      console.log("DISPATCH!!!")
+    }
+  }, []);
+  
+  const profiles = useAppSelector((state) => state.household.profiles);
+  const gaga = useAppSelector((state)=> state.household)
+  console.log("GGGGGGGGGGGGG",  gaga.profiles)
+    const avatars = useAppSelector((state) => state.household.avatars);
+    return (
     <ScrollView contentContainerStyle={[s.flex1]}>
       <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
         Hushållsmedlemmar

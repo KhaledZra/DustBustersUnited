@@ -31,7 +31,6 @@ public class ProfileController : ControllerBase
     {
         var profile = _context.Profiles
                 .Include(p => p.User)
-                .Include(p => p.User)
                 .FirstOrDefault(p => p.Id == profileId);
 
         if (profile == null)
@@ -44,6 +43,22 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
+    [HttpGet("Profiles/GetProfilesByHousehold/{householdId}")]           //TODO använd denna
+    public ActionResult<List<Profile>> GetProfilesByHousehold(int householdId)
+    {
+        var profiles = _context.Profiles
+        .Where(p=> p.HouseholdId == householdId)
+        .ToList();
+
+        if (profiles.Count == 0)
+        {
+            Console.WriteLine("Code: 404, Household has no members!");
+            return NotFound("Household has no members!");
+        }
+
+        Console.WriteLine("Get PROFILES by household, Code: 200, Ok!");
+        return Ok(profiles);
+    }
 
     [HttpPost("linkToHousehold")]
     public async Task<IActionResult> LinkToHousehold(LinkToHouseholdDto dto)

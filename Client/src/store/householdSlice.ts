@@ -76,6 +76,16 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   }
 );
 
+export const getProfiles = createAsyncThunk<Profile[], number>(
+  "getProfiles",
+
+  async (id: number) => {
+    const response = await apiFetch(`Profile/GetProfilesByHousehold/${id}`);
+    let json = await response.json();
+    return json;
+  }
+)
+
 export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
   name: "household",
@@ -105,7 +115,7 @@ const householdSlice = createSlice({
     builder.addCase(fetchTransientHousehold.fulfilled, (state, action) => {
       state.transientHousehold = action.payload;
     });
-    builder.addCase(fetchProfiles.fulfilled, (state, action) => {
+    builder.addCase(getProfiles.fulfilled, (state, action) => {
       state.profiles = action.payload;
     });
     builder.addCase(addHousehold.fulfilled, (state, action) => {
