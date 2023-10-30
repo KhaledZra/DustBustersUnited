@@ -10,6 +10,7 @@ import { selectActiveAvatar, selectActiveProfile } from "../store/userSlice"
 export default function StackHeader({ options }: React.PropsWithRef<any>) {
   const activeProfileId = useAppSelector(selectActiveProfile);
   const avatar = useAppSelector(selectActiveAvatar)
+  const user = useAppSelector((state) => state.user.user);
   
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
@@ -33,7 +34,7 @@ export default function StackHeader({ options }: React.PropsWithRef<any>) {
   const menuAnchor = () => {
     return (
       <>
-        {!avatar && <IconButton icon="dots-vertical" onPress={open} />}
+        {user && !avatar && <IconButton icon="dots-vertical" onPress={open} />}
         {avatar && (
           <IconButtonAvatar
             avatar={avatar}
