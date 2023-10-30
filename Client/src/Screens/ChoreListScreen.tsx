@@ -12,6 +12,7 @@ import { selectActiveHousehold } from "../store/householdSlice";
 import { Chore } from "../Data/Chore";
 import todaysDateOnlyAsString from "../Components/GetTodaysDateOnly";
 import { ProfileChoreProps, getprofileChoreByHouseholdToday } from "../store/profileChoreSlice/thunks";
+import { selectActiveProfile } from "../store/userSlice";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -19,22 +20,15 @@ import { ProfileChoreProps, getprofileChoreByHouseholdToday } from "../store/pro
 type Props = RootStackScreenProps<"ChoreList">;
 
 export default function ChoreListScreen({ navigation, route }: Props) {
-  // TODO: Should be able to solve this with `createSelector` in store instead
-  // from here ---
-  const [profile, setProfile] = useState<Profile>();
-  const profiles = useAppSelector((state) => state.user.profiles);
-  const activeProfileId = useAppSelector((state) => state.user.activeProfileId);
-  useEffect(() => {
-    setProfile(profiles.find((p) => p.id === activeProfileId));
-  }, [profiles, activeProfileId]);
+
+  const dispatch = useAppDispatch();
+  const profile = useAppSelector(selectActiveProfile);
   const householdId = useAppSelector(selectActiveHousehold);
-  // --- to here
 
   useEffect(() => {
     navigation.setOptions({ title: profile?.household.name });
   }, [profile]);
 
-  const dispatch = useAppDispatch();
   const pcProps: ProfileChoreProps = {
     householdId: householdId,
     startDate: todaysDateOnlyAsString(),

@@ -13,3 +13,4 @@ export const avatars= [
   { id: 7, avatar: "🐻", color: "#5352ed" },
   { id: 8, avatar: "🐼", color: "#2ed573" },
 ];
+

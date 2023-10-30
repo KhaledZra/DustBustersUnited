@@ -82,6 +82,7 @@ public class ProfileController : ControllerBase
             isActive = true,
             isAdmin = dto.IsAdmin,
             isDeleted = false,
+            isRequest = true
         };
 
         _context.Profiles.Add(profile);
@@ -134,6 +135,21 @@ public class ProfileController : ControllerBase
         }
 
         foundProfile.isAdmin = !foundProfile.isAdmin;
+        _context.SaveChanges();
+        return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
+    }
+
+    [HttpPut("ToggleProfileRequest")]
+    public IActionResult ToggleProfileRequest(int profileId)
+    {
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+
+        if (foundProfile == null)
+        {
+            return NotFound("Profile not found");
+        }
+
+        foundProfile.isRequest = !foundProfile.isRequest;
         _context.SaveChanges();
         return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
     }

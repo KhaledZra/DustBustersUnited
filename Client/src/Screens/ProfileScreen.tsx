@@ -8,6 +8,7 @@ import {
   deleteProfile,
   setActiveStatus,
   setAdminStatus,
+  setRequestStatus,
 } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 
@@ -32,6 +33,9 @@ export default function ProfileScreen() {
   };
   const handelAdminHousehold = () => {
     dispatch(setAdminStatus());
+  };
+  const handelRequestHousehold = () => {
+    dispatch(setRequestStatus());
   };
 
   return (
@@ -59,6 +63,15 @@ export default function ProfileScreen() {
       >
         <Text style={[s.colWhite, s.fs20]}>
           {profile && profile.isAdmin ? "Admin" : "Not Admin"}
+        </Text>
+      </Button>
+      <View style={[s.mv10]} />
+      <Button
+        style={[s.pv3, s.bgColWhite, s.m16]}
+        onPress={() => handelRequestHousehold()}
+      >
+        <Text style={[s.colBlack, s.fs20]}>
+          {profile && profile.isRequest ? "Request" : "Not Request"}
         </Text>
       </Button>
     </View>

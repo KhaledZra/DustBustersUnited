@@ -63,6 +63,22 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
   }
 );
 
+export const setRequestStatus = createAsyncThunk<Profile[]>(
+  "setRequestStatus",
+  async (_: void, { getState, dispatch }) => {
+    const profileId = (getState() as RootState).user.activeProfileId;
+    const response: Response = await apiFetch(
+      `Profile/ToggleProfileRequest`,
+      { profileId },
+      { method: "PUT" }
+    );
+    dispatch(fetchProfiles());
+    let json = await response.json();
+    console.log(json);
+    return json;
+  }
+);
+
 export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   "createHousehold",
 
