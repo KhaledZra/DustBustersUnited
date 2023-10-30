@@ -25,6 +25,22 @@ public class ChoreController : ControllerBase
         return Ok(chores);
     }
 
+    [HttpGet("GetChoresByHousehold/{householdId}")]
+    public ActionResult<IEnumerable<Chore>> GetChoresByHousehold(int householdId)
+    {
+        var chores = _context.Chores
+            .Where(chore => chore.HouseholdId == householdId)
+            .ToList();
+
+        if (chores == null)
+        {
+            Console.WriteLine($"Code: 404, No chores found for given Id");
+            return NotFound();
+        }
+        Console.WriteLine($"Code: 200, Ok!");
+        return Ok(chores);
+    }
+
     [HttpGet("{id}")]
     public ActionResult<Chore> GetChore(int choreId)
     {
@@ -76,13 +92,13 @@ public class ChoreController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateChore(Chore incomingChore, ILogger<ChoreController> logger)
+    public async Task<IActionResult> UpdateChore(Chore incomingChore)
     {
         var currentChore = _context.Chores.FirstOrDefault(chore => chore.Id == incomingChore.Id);
 
         if (currentChore == null)
         {
-            logger.LogInformation("404: Chore not found");
+            _logger.LogInformation("404: Chore not found");
             return NotFound("Chore not found");
         }
 
@@ -90,7 +106,7 @@ public class ChoreController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        logger.LogInformation("Code: 202, Chore is updated!");
+        _logger.LogInformation("Code: 202, Chore is updated!");
         return AcceptedAtAction("GetChore", new { id = incomingChore.Id }, incomingChore);
     }
 

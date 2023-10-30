@@ -6,7 +6,6 @@ import StackHeader from "../Components/StackHeader";
 import { Chore } from "../Data/Chore";
 import { Household } from "../Data/Household";
 import AddEditHouseholdScreen from "../Screens/AddEditHouseholdScreen";
-import AddOrEditChoreScreen from "../Screens/AddOREditChoreScreen";
 import ChoreListScreen from "../Screens/ChoreListScreen";
 import ChoreViewPage from "../Screens/ChoreViewPage";
 import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
@@ -15,7 +14,7 @@ import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
-import { ProfileChore } from "../Data/ProfileChore";
+import AddOrEditChoreScreen from "../Screens/AddOREditChoreScreen";
 
 export type RootStackParamList = {
   // Auth

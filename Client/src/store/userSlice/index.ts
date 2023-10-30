@@ -1,9 +1,9 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-
 import { RootState } from "..";
 import { Chore } from "../../Data/Chore";
 import { Profile } from "../../Data/Profile";
 import { User } from "../../Data/User";
+import { avatars } from "../../constants";
 import { fetchProfiles, joinHousehold, login, register } from "./thunks";
 
 type UserState = {
@@ -89,6 +89,16 @@ export const selectProfiles = createSelector(
   (state: RootState) => state.user.profiles,
   (profiles) => profiles.filter((p) => !p.isRequest)
 );
+
+export const selectActiveProfile = (state: RootState) =>
+  state.user.profiles.find((p) => p.id === state.user.activeProfileId);
+
+export const selectActiveAvatar = (state: RootState) => {
+  const profile = state.user.profiles.find(
+    (p) => p.id === state.user.activeProfileId
+  );
+  return avatars.find((a) => a.id === profile?.avatar);
+};
 
 export const { setUser, setActiveProfile, setLoginError } = userSlice.actions;
 export default userSlice.reducer;
