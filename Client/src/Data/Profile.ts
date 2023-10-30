@@ -10,4 +10,5 @@ export interface Profile {
   isDeleted: boolean;
   user: User;
   household: Household;
+  isRequest: boolean;
 }
