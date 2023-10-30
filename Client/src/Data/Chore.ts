@@ -4,7 +4,7 @@ export interface Chore {
   description: string;
   energy: number;
   isActive: boolean;
-  deadline: string;
+  deadline: Date;
   repeatInterval: number;
   householdId: number;
 }

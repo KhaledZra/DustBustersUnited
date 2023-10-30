@@ -24,11 +24,11 @@ export const updateChore = createAsyncThunk<Chore, Chore>(
   }
 );
 
-export const getChores = createAsyncThunk<Chore[], void>(
-  "user/getChore",
-  async () => {
+export const getChoresByHousehold = createAsyncThunk<Chore[], number>(
+  "user/getChoresByHousehold",
+  async (householdId: number) => {
     const response: Response = await apiFetch(
-      `chore`,
+      `Chore/GetChoresByHousehold/` + householdId,
       {},
       {
         method: "GET",
@@ -38,20 +38,25 @@ export const getChores = createAsyncThunk<Chore[], void>(
   }
 );
 
-export const markChoreAsCompleted = createAsyncThunk<ProfileChore, number>(
+export interface MarkChoreProps {
+  choreId: number,
+  householdId: number | undefined,
+}
+
+export const markChoreAsCompleted = createAsyncThunk<ProfileChore, MarkChoreProps>(
   "chore/markAsCompleted",
-  async (choreId, { dispatch, getState }) => {
+  async (markChoreProps, { dispatch, getState }) => {
     const response: Response = await apiFetch(
       "ChoreProfile/TriggerCompletedChoreEvent",
       {
         profileId: (getState() as RootState).user.activeProfileId,
-        choreId: choreId,
+        choreId: markChoreProps.choreId,
       },
       {
         method: "PUT",
       }
     );
-    dispatch(getChores());
+    dispatch(getChoresByHousehold(markChoreProps.householdId!));
     return response.json() as Promise<ProfileChore>;
   }
 );
