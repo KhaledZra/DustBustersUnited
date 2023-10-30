@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Chore } from "../../Data/Chore";
-import { getChores, saveChoreToDb, updateChore } from "./thunks";
+import { deleteChore, getChores, saveChoreToDb, updateChore } from "./thunks";
 
 type UserState = {
   chores: Chore[];
@@ -36,6 +36,11 @@ const choreSlice = createSlice({
         state.chores[choreIndex] = updatedChore;
       }
     });
+    builder.addCase(deleteChore.fulfilled, (state, action) => {
+      state.chores = state.chores.filter(
+        (chore) => chore.id !== action.payload.id
+      );
+    })
   },
 });
 

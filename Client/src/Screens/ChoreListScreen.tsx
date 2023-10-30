@@ -1,5 +1,5 @@
-import { Dimensions, FlatList, View } from "react-native";
-import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
+import { Dimensions, FlatList, Pressable, View } from "react-native";
+import { Appbar, Button, IconButton, Surface, Text } from "react-native-paper";
 import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 
@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
 import { getChores } from "../store/choreSlice/thunks";
+import { selectIsAdmin } from "../store/userSlice";
 import s from "../utils/globalStyles";
 
 // TODO Remove this comment later:
@@ -59,7 +60,7 @@ interface displayDaysProps {
 function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   if (daysSinceDone < interval) {
     return (
-      <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
+      <View style={[s.bgColGrey, { width: 36, height: 36 }, s.brfull, s.justifyCenter]}>
         <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
@@ -76,36 +77,39 @@ function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
   }
 }
 
-type ChoreViewProps = Props & { chore: Chore };
+type ChoreViewProps = Props & { chore: Chore }
 
 function ChoreView({ navigation, chore }: ChoreViewProps) {
+  const isAdmin = useAppSelector(selectIsAdmin)
+
   return (
-    <Card
-      style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
-      mode="outlined"
+    <Pressable
       onPress={() => navigation.push("ChoreView", { chore: chore })}
     >
-      <Card.Content style={[s.flex1, s.row]}>
-        <Card.Actions style={s.h40}>
-          <IconButton
+      <Surface
+        style={[s.mh10, s.mt16, s.p12, s.row, s.alignCenter, s.justifyBetween]} // TODO lista ut vrf de finns så mycket mellanrum cards
+      >
+        <View style={[s.row, s.alignCenter]}>
+          {isAdmin &&
+            <IconButton
             icon="pencil"
-            size={15}
+            size={20}
+            style={{ margin: 0 }}
             onPress={() => navigation.navigate("AddOrEditChore", { chore })}
           />
-        </Card.Actions>
-
-        <View style={[s.flex1, s.row, s.justifyBetween]}>
+          }
           <Text variant="labelLarge">{chore.name}</Text>
-          <DisplayDaysSinceDone
-            daysSinceDone={getDaysSinceLastDone(
-              chore.deadline,
-              chore.repeatInterval
-            )}
-            interval={chore.repeatInterval}
-          />
         </View>
-      </Card.Content>
-    </Card>
+
+        <DisplayDaysSinceDone
+          daysSinceDone={getDaysSinceLastDone(
+            chore.deadline,
+            chore.repeatInterval
+          )}
+          interval={chore.repeatInterval}
+        />
+      </Surface>
+    </Pressable>
   );
 }
 
@@ -119,6 +123,9 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   const [profile, setProfile] = useState<Profile>();
   const profiles = useAppSelector((state) => state.user.profiles);
   const activeProfileId = useAppSelector((state) => state.user.activeProfileId);
+  const chores = useAppSelector((state) => state.chore.chores);
+  const isAdmin = useAppSelector(selectIsAdmin)
+
   useEffect(() => {
     setProfile(profiles.find((p) => p.id === activeProfileId));
   }, [profiles, activeProfileId]);
@@ -133,7 +140,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
     dispatch(getChores());
   }, []);
 
-  const chores = useAppSelector((state) => state.chore.chores);
+
 
   return (
     <View style={s.flex1}>
@@ -146,14 +153,16 @@ export default function ChoreListScreen({ navigation, route }: Props) {
         )}
       />
       <View style={s.alignCenter}>
-        <Button
-          mode="contained"
-          icon="plus-circle-outline"
-          onPress={() => navigation.navigate("AddOrEditChore", {})}
-          style={[s.br20, s.p6, s.mb10]}
-        >
-          Lägg till
-        </Button>
+        {isAdmin &&
+          <Button
+            mode="contained"
+            icon="plus-circle-outline"
+            onPress={() => navigation.navigate("AddOrEditChore", {})}
+            style={[s.br20, s.p6, s.mb10]}
+          >
+            Lägg till
+          </Button>
+        }
       </View>
     </View>
   );

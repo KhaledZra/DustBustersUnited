@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Chore, ChoreCreateDto } from "../../Data/Chore";
-import { apiFetch } from "../../utils/apiClient";
-import { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
+import { Chore, ChoreCreateDto } from "../../Data/Chore";
+import { ProfileChore } from "../../Data/ProfileChore";
+import { apiFetch } from "../../utils/apiClient";
 
 export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
@@ -55,3 +55,13 @@ export const markChoreAsCompleted = createAsyncThunk<ProfileChore, number>(
     return response.json() as Promise<ProfileChore>;
   }
 );
+
+export const deleteChore = createAsyncThunk<Chore, Chore>(
+  "chore/removeChore",
+  async (chore) => {
+    await apiFetch('chore', { choreId: chore.id }, {
+      method: "DELETE",
+    });
+    return chore;
+  }
+)

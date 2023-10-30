@@ -37,6 +37,7 @@ const globalStyle = StyleSheet.create({
   br4: { borderRadius: 4 },
   br10: { borderRadius: 10 },
   br20: { borderRadius: 20 },
+  brfull: { borderRadius: 999999 },
 
   bw2: { borderWidth: 2 },
 
@@ -82,6 +83,7 @@ const globalStyle = StyleSheet.create({
   m10: { margin: 10 },
 
   mv10: { marginVertical: 10 },
+  mh10: { marginHorizontal: 10 },
 
   mb7: { marginBottom: 7 },
   mb10: { marginBottom: 10 },

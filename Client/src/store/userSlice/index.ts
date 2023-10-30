@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { RootState } from "..";
+import { Chore } from "../../Data/Chore";
 import { Profile } from "../../Data/Profile";
 import { User } from "../../Data/User";
 import { fetchProfiles, joinHousehold, login, register } from "./thunks";
-import { Chore } from "../../Data/Chore";
-import { RootState } from "..";
 
 type UserState = {
   user: User | undefined;
@@ -82,3 +82,9 @@ const userSlice = createSlice({
 
 export const { setUser, setActiveProfile, setLoginError } = userSlice.actions;
 export default userSlice.reducer;
+
+export const selectActiveProfile = (state: RootState) =>
+  state.user.profiles.find((p) => p.id === state.user.activeProfileId);
+
+export const selectIsAdmin = (state: RootState) =>
+  Boolean(selectActiveProfile(state)?.isAdmin);

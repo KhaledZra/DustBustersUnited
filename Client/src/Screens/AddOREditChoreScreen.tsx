@@ -6,7 +6,7 @@ import EnergySelector from "../Components/EnergySelector";
 import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
 import { useAppDispatch, useAppSelector } from "../store";
-import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
+import { deleteChore, saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
 import { selectActiveHousehold } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 
@@ -35,8 +35,9 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
     name: "description",
   });
 
+  const handleDeleteChore = () => dispatch(deleteChore(chore!))
+
   const onSubmit = (chore: Chore) => {
-    console.log(chore);
     if (isEdit) {
       dispatch(updateChore(chore));
     } else {
@@ -76,6 +77,14 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
+        {isEdit && (
+          <Button icon="trash-can-outline" mode="contained"
+            buttonColor="red"
+            onPress={handleDeleteChore}
+          >
+            Ta bort
+          </Button>
+        )}
       </ScrollView>
       <View style={[s.row, s.gap1]}>
         <Button

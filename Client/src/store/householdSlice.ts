@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { Household } from "../Data/Household";
-import { AddHouseholdDTO } from "../Data/Household";
+import { AddHouseholdDTO, Household } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
-import { setActiveProfile } from "./userSlice";
+import { selectActiveProfile, setActiveProfile } from "./userSlice";
 import { fetchProfiles } from "./userSlice/thunks";
 
 export const fetchTransientHousehold = createAsyncThunk<Household, string>(
@@ -118,5 +117,4 @@ export const { clearTransientHousehold } = householdSlice.actions;
 export default householdSlice.reducer;
 
 export const selectActiveHousehold = (state: RootState) =>
-  state.user.profiles.find((p) => p.id === state.user.activeProfileId)
-    ?.household.id!;
+  selectActiveProfile(state)?.household.id!;
