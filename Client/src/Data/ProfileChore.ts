@@ -5,5 +5,7 @@ export interface ProfileChore {
   id: number;
   dateCompleted: string | null;
   profile: Profile;
+  profileId: number;
   chore: Chore;
+  choreId: number;
 }

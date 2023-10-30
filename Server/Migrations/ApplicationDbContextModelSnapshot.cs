@@ -47,9 +47,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HouseholdId");
-
-                    b.ToTable("Chores");
+                    b.ToTable("Chores", (string)null);
                 });
 
             modelBuilder.Entity("Model.Household", b =>
@@ -72,7 +70,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Households");
+                    b.ToTable("Households", (string)null);
                 });
 
             modelBuilder.Entity("Model.Profile", b =>
@@ -112,7 +110,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("Model.ProfileChore", b =>
@@ -132,7 +130,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProfileChores");
+                    b.ToTable("ProfileChores", (string)null);
                 });
 
             modelBuilder.Entity("Model.User", b =>
@@ -154,16 +152,7 @@ namespace Server.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Model.Chore", b =>
-                {
-                    b.HasOne("Model.Household", null)
-                        .WithMany("Chores")
-                        .HasForeignKey("HouseholdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Model.Household", b =>
@@ -196,8 +185,6 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Model.Household", b =>
                 {
-                    b.Navigation("Chores");
-
                     b.Navigation("Profiles");
                 });
 
