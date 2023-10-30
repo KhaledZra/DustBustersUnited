@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import userSlice, { setActiveProfile, setUser } from "./userSlice";
+import choreNavigationSlice from "./choreNavigationSlice";
 import householdSlice from "./householdSlice";
 import { storageKeys } from "../constants";
 import choreSlice from "./choreSlice";
@@ -12,6 +13,7 @@ const store = configureStore({
     user: userSlice,
     household: householdSlice,
     chore: choreSlice,
+    choreNavigation: choreNavigationSlice,
   },
 });
 
