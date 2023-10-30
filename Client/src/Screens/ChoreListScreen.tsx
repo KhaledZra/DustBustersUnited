@@ -1,13 +1,14 @@
-import { Dimensions, FlatList, Pressable, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
 import { Appbar, Button, IconButton, Surface, Text } from "react-native-paper";
-import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { RootStackScreenProps } from "../../types";
+import ChoreListHeaderBar from "../Components/ChoreList/ChoreListHeaderBar";
 import { Chore } from "../Data/Chore";
-import { getChores } from "../store/choreSlice/thunks";
-import { selectIsAdmin } from "../store/userSlice";
+import { getChoresByHousehold } from "../store/choreSlice/thunks";
+import { selectActiveHousehold } from "../store/householdSlice";
+import { selectActiveProfile, selectIsAdmin } from "../store/userSlice";
 import s from "../utils/globalStyles";
 
 // TODO Remove this comment later:
@@ -103,7 +104,7 @@ function ChoreView({ navigation, chore }: ChoreViewProps) {
 
         <DisplayDaysSinceDone
           daysSinceDone={getDaysSinceLastDone(
-            chore.deadline,
+            chore.deadline.toISOString(),
             chore.repeatInterval
           )}
           interval={chore.repeatInterval}
@@ -115,36 +116,29 @@ function ChoreView({ navigation, chore }: ChoreViewProps) {
 
 type Props = RootStackScreenProps<"ChoreList">;
 
-const screenDimensions = Dimensions.get("screen");
-
 export default function ChoreListScreen({ navigation, route }: Props) {
-  // TODO: Should be able to solve this with `createSelector` in store instead
-  // from here ---
-  const [profile, setProfile] = useState<Profile>();
+  const dispatch = useAppDispatch();
+  const profile = useAppSelector(selectActiveProfile);
+  const householdId = useAppSelector(selectActiveHousehold);
   const profiles = useAppSelector((state) => state.user.profiles);
   const activeProfileId = useAppSelector((state) => state.user.activeProfileId);
   const chores = useAppSelector((state) => state.chore.chores);
   const isAdmin = useAppSelector(selectIsAdmin)
 
-  useEffect(() => {
-    setProfile(profiles.find((p) => p.id === activeProfileId));
-  }, [profiles, activeProfileId]);
-  // --- to here
 
   useEffect(() => {
     navigation.setOptions({ title: profile?.household.name });
   }, [profile]);
 
-  const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getChores());
+    dispatch(getChoresByHousehold(householdId));
   }, []);
 
 
-
+  
   return (
     <View style={s.flex1}>
-      <HeaderBar />
+      <ChoreListHeaderBar />
       <FlatList
         data={chores}
         keyExtractor={(item) => item.id.toString()}

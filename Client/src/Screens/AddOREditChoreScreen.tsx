@@ -68,7 +68,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           {...register("description")}
         />
 
-        <IntervalSelector name="repeatInterval" control={control} />
+        <IntervalSelector key="" name="repeatInterval" control={control} />
 
         <EnergySelector name="energy" control={control} />
 
