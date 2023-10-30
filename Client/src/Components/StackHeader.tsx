@@ -1,23 +1,44 @@
-import { useNavigation } from "@react-navigation/native";
+import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Appbar, Divider, IconButton, Menu } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
-import { setActiveProfile } from "../store/userSlice";
+import {
+  selectActiveAvatar,
+  selectActiveProfile,
+  setActiveProfile,
+} from "../store/userSlice";
 import { logout } from "../store/userSlice/thunks";
+import { ChoreHeaderBar } from "./ChoreHeaderBar";
 import IconButtonAvatar from "./IconButtonAvatar";
-import { selectActiveAvatar, selectActiveProfile } from "../store/userSlice"
 
-export default function StackHeader({ options }: React.PropsWithRef<any>) {
-  const activeProfileId = useAppSelector(selectActiveProfile);
-  const avatar = useAppSelector(selectActiveAvatar)
+type Props = NativeStackHeaderProps & {
+  backNav?: boolean;
+  choreNav?: boolean;
+  title?: string;
+};
+
+export default function StackHeader({
+  backNav,
+  title,
+  choreNav,
+  navigation,
+}: Props) {
+  const profile = useAppSelector(selectActiveProfile);
+  const avatar = useAppSelector(selectActiveAvatar);
   const user = useAppSelector((state) => state.user.user);
-  
+
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
 
   const [menuVisible, setMenuVisible] = useState(false);
+
+  if (!title) {
+    title = profile?.household.name;
+  }
+
   const open = () => setMenuVisible(true);
   const close = () => setMenuVisible(false);
+
+  // Navigation handlers
 
   const handleChangeHousehold = () => {
     dispatch(setActiveProfile(undefined));
@@ -31,45 +52,52 @@ export default function StackHeader({ options }: React.PropsWithRef<any>) {
     navigation.navigate("Login");
   };
 
-  const menuAnchor = () => {
-    return (
-      <>
-        {user && !avatar && <IconButton icon="dots-vertical" onPress={open} />}
-        {avatar && (
-          <IconButtonAvatar
-            avatar={avatar}
-            rippleColor={avatar.color}
-            onPress={open}
-          />
-        )}
-      </>
-    );
-  };
-
   return (
-    <Appbar.Header style={{ paddingRight: 15 }}>
-      {options.backNav && (
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-      )}
-      <Appbar.Content style={{ alignItems: "center" }} title={options.title} />
-      <Menu visible={menuVisible} onDismiss={close} anchor={menuAnchor()}>
-        {activeProfileId && (
+    <>
+      <Appbar.Header style={{ paddingRight: 15 }}>
+        {backNav && <Appbar.BackAction onPress={() => navigation.goBack()} />}
+        <Appbar.Content style={{ alignItems: "center" }} title={title} />
+        <Menu
+          visible={menuVisible}
+          onDismiss={close}
+          anchor={
+            <>
+              {user && !avatar && (
+                <IconButton icon="dots-vertical" onPress={open} />
+              )}
+              {avatar && (
+                <IconButtonAvatar
+                  avatar={avatar}
+                  rippleColor={avatar.color}
+                  onPress={open}
+                />
+              )}
+            </>
+          }
+        >
+          {profile && (
+            <Menu.Item
+              onPress={handleChangeHousehold}
+              title="Byt hushåll"
+              leadingIcon="home"
+            />
+          )}
+          {profile && (
+            <Menu.Item
+              onPress={handleShowHousehold}
+              title="Hushåll info"
+              leadingIcon="home"
+            />
+          )}
+          <Divider />
           <Menu.Item
-            onPress={handleChangeHousehold}
-            title="Byt hushåll"
-            leadingIcon="home"
+            onPress={handleLogout}
+            title="Logout"
+            leadingIcon="logout"
           />
-        )}
-        {activeProfileId && (
-          <Menu.Item
-            onPress={handleShowHousehold}
-            title="Hushåll info"
-            leadingIcon="home"
-          />
-        )}
-        <Divider />
-        <Menu.Item onPress={handleLogout} title="Logout" leadingIcon="logout" />
-      </Menu>
-    </Appbar.Header>
+        </Menu>
+      </Appbar.Header>
+      {choreNav && <ChoreHeaderBar />}
+    </>
   );
 }

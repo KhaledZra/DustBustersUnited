@@ -6,6 +6,7 @@ import StackHeader from "../Components/StackHeader";
 import { Chore } from "../Data/Chore";
 import { Household } from "../Data/Household";
 import AddEditHouseholdScreen from "../Screens/AddEditHouseholdScreen";
+import AddOrEditChoreScreen from "../Screens/AddOREditChoreScreen";
 import ChoreListScreen from "../Screens/ChoreListScreen";
 import ChoreViewPage from "../Screens/ChoreViewPage";
 import HouseholdInfoScreen from "../Screens/HouseholdInfoScreen";
@@ -14,7 +15,7 @@ import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
-import AddOrEditChoreScreen from "../Screens/AddOREditChoreScreen";
+import ChoreStatisticsScreen from "../Screens/ChoreStatisticsScreen";
 
 export type RootStackParamList = {
   // Auth
@@ -29,6 +30,7 @@ export type RootStackParamList = {
   //
   ChoreList: undefined;
   ChoreView: { chore: Chore };
+ChoreStatistics: { startDate: string; endDate: string };
   AddOrEditChore: { chore?: Chore };
 };
 
@@ -38,19 +40,16 @@ export default function RootStackNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Login"
-      screenOptions={() => ({
-        header: (props) => <StackHeader {...props} />,
-      })}
+      screenOptions={() => ({ header: (props) => <StackHeader {...props} /> })}
     >
       <Stack.Screen
         name="HouseholdInfo"
         component={HouseholdInfoScreen}
-        options={
-          {
-            title: "Hushålls-info",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Hushållsinfo" />
+          ),
+        }}
       />
       <Stack.Screen
         name="Registration"
@@ -70,28 +69,35 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="JoinHousehold"
         component={JoinHousholdScreen}
-        options={
-          {
-            title: "Gå med i hushåll",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Gå med i hushåll" />
+          ),
+        }}
       />
       <Stack.Screen
         name="ChoreList"
         component={ChoreListScreen}
-        options={{ title: "Hushåll's Vy" }}
+        options={{
+          header: (props) => <StackHeader {...props} choreNav={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="ChoreStatistics"
+        component={ChoreStatisticsScreen}
+        options={{
+          header: (props) => <StackHeader {...props} choreNav={true} />,
+        }}
       />
       <Stack.Screen
         name="AddEditHoushold"
         component={AddEditHouseholdScreen}
         initialParams={{ household: undefined }}
-        options={
-          {
-            title: "Skapa hushåll",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Skapa hushåll" />
+          ),
+        }}
       />
       <Stack.Screen
         name="AddOrEditChore"
@@ -109,12 +115,11 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={
-          {
-            title: "Personens profil",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Personens profil" />
+          ),
+        }}
       />
     </Stack.Navigator>
   );

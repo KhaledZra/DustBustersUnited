@@ -1,19 +1,14 @@
+import { useEffect } from "react";
 import { FlatList, View } from "react-native";
 import { Button } from "react-native-paper";
-import { useAppDispatch, useAppSelector } from "../store";
-import { Profile } from "../Data/Profile";
 import { RootStackScreenProps } from "../../types";
-import { useEffect, useState } from "react";
-import s from "../utils/globalStyles";
-import ChoreListHeaderBar from "../Components/ChoreList/ChoreListHeaderBar";
 import ChoreView from "../Components/ChoreList/ChoreView";
+import { useAppDispatch, useAppSelector } from "../store";
 import { getChoresByHousehold } from "../store/choreSlice/thunks";
 import { selectActiveHousehold } from "../store/householdSlice";
-import { Chore } from "../Data/Chore";
 import { selectActiveProfile } from "../store/userSlice";
+import s from "../utils/globalStyles";
 
-// TODO Remove this comment later:
-// alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
 type Props = RootStackScreenProps<"ChoreList">;
 
@@ -35,7 +30,6 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   
   return (
     <View style={s.flex1}>
-      <ChoreListHeaderBar />
       <FlatList
         data={chores}
         keyExtractor={(item) => item.id.toString()}
