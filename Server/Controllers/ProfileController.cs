@@ -44,19 +44,17 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
-    [HttpGet("ByHousehold/{householdId}")]
-    public ActionResult<List<Profile>> GetUsersInHousehold(int householdId)
+    [HttpGet("GetProfilesInHousehold/{householdId}")]
+    public ActionResult<IEnumerable<Profile>> GetProfilesInHousehold(int householdId)
     {
         var profiles = _context.Profiles
-            .Include(p => p.User)
-            .Include(p => p.Household)
             .Where(p => p.HouseholdId == householdId)
             .ToList();
 
         if (profiles.Count == 0)
         {
-            Console.WriteLine("Code: 404, No users found in the household.");
-            return NotFound("No users found in the household.");
+            Console.WriteLine("Code: 404, No profiles found in the household.");
+            return NotFound("No profiles found in the household.");
         }
 
         Console.WriteLine("Code: 200, Ok!");

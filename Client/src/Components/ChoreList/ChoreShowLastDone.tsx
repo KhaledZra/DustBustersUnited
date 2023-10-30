@@ -12,7 +12,6 @@ interface displayDaysProps {
 
 export default function ChoreShowLastDone({ daysSinceDone, interval, chore }: displayDaysProps) {
   if (daysSinceDone === 0) {
-    console.log("render with avatar");
     return <ChoreAvatarRenderer {...chore}/>
   }
   else if (daysSinceDone < interval) {
