@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import s from "../../utils/globalStyles";
+import ChoreAvatarRenderer from "./ChoreAvatarRenderer";
 
 interface displayDaysProps {
   daysSinceDone: number;
@@ -8,7 +9,10 @@ interface displayDaysProps {
 }
 
 export default function ChoreShowLastDone({ daysSinceDone, interval }: displayDaysProps) {
-  if (daysSinceDone < interval) {
+  if (daysSinceDone === 0) {
+    <ChoreAvatarRenderer />
+  }
+  else if (daysSinceDone < interval) {
     return (
       <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
         <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>

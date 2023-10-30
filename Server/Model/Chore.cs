@@ -12,6 +12,8 @@ public class Chore
     public DateTime Deadline { get; set; }
     public int RepeatInterval { get; set; }
 
+    public ICollection<ProfileChore> ProfileChores { get; set; } = new List<ProfileChore>();
+
     // Foreign Key
     public int HouseholdId { get; set; }
 
