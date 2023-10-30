@@ -1,117 +1,20 @@
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
-import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
+import { FlatList, View } from "react-native";
+import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { Profile } from "../Data/Profile";
-
 import { RootStackScreenProps } from "../../types";
-import { Chore } from "../Data/Chore";
 import { useEffect, useState } from "react";
 import s from "../utils/globalStyles";
-import { getChores } from "../store/choreSlice/thunks";
+import ChoreListHeaderBar from "../Components/ChoreList/ChoreListHeaderBar";
+import ChoreView from "../Components/ChoreList/ChoreView";
+import { getChoresByHousehold } from "../store/choreSlice/thunks";
+import { selectActiveHousehold } from "../store/householdSlice";
+import { Chore } from "../Data/Chore";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
-export const getDaysSinceLastDone = (deadline: string, interval: number) => {
-  // Setup lastDone
-  const lastDone = new Date(deadline);
-  lastDone.setDate(lastDone.getDate() - interval);
-
-  // Date now
-  const dateNow = new Date(); // in the future use this to adjust the date so calender can be supported
-
-  // Calculate time difference
-  const timeDifference = dateNow.getTime() - lastDone.getTime();
-
-  // Calculate days difference by dividing total milliseconds in a day
-  const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-
-  return Math.floor(daysDifference); // Current day progress is not relevant?
-};
-
-function HeaderBar() {
-  return (
-    <Appbar.Header statusBarHeight={0}>
-      <Appbar.BackAction
-        onPress={() => {
-          console.log("day before navigation");
-        }}
-      />
-      <Appbar.Content
-        title="Day-Placeholder"
-        titleStyle={{ textAlign: "center" }}
-      />
-      <Appbar.Action
-        icon="arrow-right"
-        onPress={() => {
-          console.log("day after navigation");
-        }}
-      />
-    </Appbar.Header>
-  );
-}
-
-interface displayDaysProps {
-  daysSinceDone: number;
-  interval: number;
-}
-
-function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
-  if (daysSinceDone < interval) {
-    return (
-      <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
-        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
-          {daysSinceDone}
-        </Text>
-      </View>
-    );
-  } else {
-    return (
-      <View style={[s.bgColRed, s.w10, s.h35, s.br10]}>
-        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
-          {daysSinceDone}
-        </Text>
-      </View>
-    );
-  }
-}
-
-type ChoreViewProps = Props & { chore: Chore };
-
-function ChoreView({ navigation, chore }: ChoreViewProps) {
-  return (
-    <Card
-      style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
-      mode="outlined"
-      onPress={() => navigation.push("ChoreView", { chore: chore })}
-    >
-      <Card.Content style={[s.flex1, s.row]}>
-        <Card.Actions style={s.h40}>
-          <IconButton
-            icon="pencil"
-            size={15}
-            onPress={() => navigation.navigate("AddOrEditChore", { chore })}
-          />
-        </Card.Actions>
-
-        <View style={[s.flex1, s.row, s.justifyBetween]}>
-          <Text variant="labelLarge">{chore.name}</Text>
-          <DisplayDaysSinceDone
-            daysSinceDone={getDaysSinceLastDone(
-              chore.deadline,
-              chore.repeatInterval
-            )}
-            interval={chore.repeatInterval}
-          />
-        </View>
-      </Card.Content>
-    </Card>
-  );
-}
-
 type Props = RootStackScreenProps<"ChoreList">;
-
-const screenDimensions = Dimensions.get("screen");
 
 export default function ChoreListScreen({ navigation, route }: Props) {
   // TODO: Should be able to solve this with `createSelector` in store instead
@@ -122,6 +25,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   useEffect(() => {
     setProfile(profiles.find((p) => p.id === activeProfileId));
   }, [profiles, activeProfileId]);
+  const householdId = useAppSelector(selectActiveHousehold);
   // --- to here
 
   useEffect(() => {
@@ -130,14 +34,14 @@ export default function ChoreListScreen({ navigation, route }: Props) {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getChores());
-  });
+    dispatch(getChoresByHousehold(householdId));
+  }, []);
+  let chores = useAppSelector((state) => state.chore.chores);
 
-  const chores = useAppSelector((state) => state.chore.chores);
-
+  
   return (
     <View style={s.flex1}>
-      <HeaderBar />
+      <ChoreListHeaderBar />
       <FlatList
         data={chores}
         keyExtractor={(item) => item.id.toString()}

@@ -30,6 +30,8 @@ public class HouseholdController : ControllerBase
     public ActionResult<Household> Get(int id)
     {
         var household = _context.Households
+            .Include(household => household.Chores)
+            .Include(household => household.Profiles)
             .FirstOrDefault(h => h.Id == id);
         if (household == null)
         {
