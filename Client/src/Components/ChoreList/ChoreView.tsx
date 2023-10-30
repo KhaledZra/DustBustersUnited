@@ -34,6 +34,7 @@ export default function ChoreView({ navigation, chore }: ChoreViewProps) {
               chore.repeatInterval
             )}
             interval={chore.repeatInterval}
+            chore={chore}
           />
         </View>
       </Card.Content>

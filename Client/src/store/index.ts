@@ -7,6 +7,7 @@ import choreNavigationSlice from "./choreNavigationSlice";
 import householdSlice from "./householdSlice";
 import { storageKeys } from "../constants";
 import choreSlice from "./choreSlice";
+import profileChoreSlice from "./profileChoreSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     household: householdSlice,
     chore: choreSlice,
     choreNavigation: choreNavigationSlice,
+    profileChore: profileChoreSlice
   },
 });
 

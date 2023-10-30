@@ -3,6 +3,8 @@ import { Chore, ChoreCreateDto } from "../../Data/Chore";
 import { apiFetch } from "../../utils/apiClient";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
+import { ProfileChoreProps, getprofileChoreByHouseholdToday } from "../profileChoreSlice/thunks";
+import todaysDateOnlyAsString from "../../Components/GetTodaysDateOnly";
 
 export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
@@ -56,6 +58,12 @@ export const markChoreAsCompleted = createAsyncThunk<ProfileChore, MarkChoreProp
         method: "PUT",
       }
     );
+    const pcProps: ProfileChoreProps = {
+      householdId: markChoreProps.householdId,
+      startDate: todaysDateOnlyAsString(),
+      endDate: undefined
+    };
+    dispatch(getprofileChoreByHouseholdToday(pcProps));
     dispatch(getChoresByHousehold(markChoreProps.householdId!));
     return response.json() as Promise<ProfileChore>;
   }

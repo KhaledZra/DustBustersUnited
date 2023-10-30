@@ -44,6 +44,22 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
+    [HttpGet("GetProfilesInHousehold/{householdId}")]
+    public ActionResult<IEnumerable<Profile>> GetProfilesInHousehold(int householdId)
+    {
+        var profiles = _context.Profiles
+            .Where(p => p.HouseholdId == householdId)
+            .ToList();
+
+        if (profiles.Count == 0)
+        {
+            Console.WriteLine("Code: 404, No profiles found in the household.");
+            return NotFound("No profiles found in the household.");
+        }
+
+        Console.WriteLine("Code: 200, Ok!");
+        return Ok(profiles);
+    }
 
     [HttpPost("linkToHousehold")]
     public async Task<IActionResult> LinkToHousehold(LinkToHouseholdDto dto)

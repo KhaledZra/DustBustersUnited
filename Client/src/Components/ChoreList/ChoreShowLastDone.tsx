@@ -2,15 +2,17 @@ import { View } from "react-native";
 import { Text } from "react-native-paper";
 import s from "../../utils/globalStyles";
 import ChoreAvatarRenderer from "./ChoreAvatarRenderer";
+import { Chore } from "../../Data/Chore";
 
 interface displayDaysProps {
   daysSinceDone: number;
   interval: number;
+  chore: Chore;
 }
 
-export default function ChoreShowLastDone({ daysSinceDone, interval }: displayDaysProps) {
+export default function ChoreShowLastDone({ daysSinceDone, interval, chore }: displayDaysProps) {
   if (daysSinceDone === 0) {
-    <ChoreAvatarRenderer />
+    return <ChoreAvatarRenderer {...chore}/>
   }
   else if (daysSinceDone < interval) {
     return (

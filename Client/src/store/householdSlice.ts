@@ -7,6 +7,15 @@ import { apiFetch } from "../utils/apiClient";
 import { setActiveProfile } from "./userSlice";
 import { fetchProfiles } from "./userSlice/thunks";
 
+// Borde vara i en ny profile slice
+export const getHouseholdProfiles = createAsyncThunk<Profile[], number>(
+  "profile/getHouseholdProfiles",
+  async (householdId: number) => {
+    const response: Response = await apiFetch(`Profile/GetProfilesInHousehold/`+ householdId);
+    return response.json() as Promise<Profile[]>;
+  }
+);
+
 export const fetchTransientHousehold = createAsyncThunk<Household, string>(
   "fetchTransientHousehold",
   async (code: string) => {
@@ -99,6 +108,7 @@ const householdSlice = createSlice({
     // All households the user is a member of
     households: [] as Household[],
     profiles: [] as Profile[],
+    profilesInHousehold: [] as Profile[],
     // The household we are about to join
     transientHousehold: undefined as Household | undefined,
     avatars: Object.freeze([
@@ -118,6 +128,9 @@ const householdSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getHouseholdProfiles.fulfilled, (state, action) => {
+      state.profilesInHousehold = action.payload;
+    });
     builder.addCase(fetchTransientHousehold.fulfilled, (state, action) => {
       state.transientHousehold = action.payload;
     });
@@ -136,3 +149,6 @@ export default householdSlice.reducer;
 export const selectActiveHousehold = (state: RootState) =>
   state.user.profiles.find((p) => p.id === state.user.activeProfileId)
     ?.household.id!;
+
+export const selectHouseholdProfiles = (state: RootState) =>
+  state.household.profilesInHousehold;
