@@ -1,53 +1,64 @@
 import { FlatList, View } from "react-native";
 import { Text } from "react-native-paper";
-import { ProfileChoreProps, getprofileChoreByHouseholdToday } from "../../store/profileChoreSlice/thunks";
+import {
+  ProfileChoreProps,
+  getprofileChoreByHouseholdToday,
+} from "../../store/profileChoreSlice/thunks";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { selectActiveHousehold, selectHouseholdProfiles } from "../../store/householdSlice";
+import {
+  selectActiveHousehold,
+  selectHouseholdProfiles,
+} from "../../store/householdSlice";
 import { useEffect } from "react";
 import { selectProfileChores } from "../../store/profileChoreSlice";
 import todaysDateOnlyAsString from "../GetTodaysDateOnly";
 import s from "../../utils/globalStyles";
 import { avatars } from "../../constants";
 import { ProfileChore } from "../../Data/ProfileChore";
+import { selectActiveProfile, selectProfiles } from "../../store/userSlice";
+import { Chore } from "../../Data/Chore";
 
-export default function ChoreAvatarRenderer() {
-  const dispatch = useAppDispatch();
-  const householdid = useAppSelector(selectActiveHousehold);
-  const pcProps: ProfileChoreProps = {
-    householdId: householdid,
-    startDate: todaysDateOnlyAsString(),
-    endDate: undefined,
-  };
+export default function ChoreAvatarRenderer(chore: Chore) {
+  const profileChoresToday = useAppSelector(selectProfileChores)
+    .filter(pc => pc.choreId === chore.id);
   
-  useEffect(() => {
-    dispatch(getprofileChoreByHouseholdToday(pcProps));
-  }, [])
-  const profileChoresToday = useAppSelector(selectProfileChores);
-  
-  
-  return (
+  return profileChoresToday.length === 0 ? (
+    <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
+      <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
+        0
+      </Text>
+    </View>
+  ) : (
     <View>
       <FlatList
         data={profileChoresToday}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => (
-            <AvatarRender {...item}/>
-        )}
+        renderItem={({ item }) => <AvatarRender {...item} />}
       />
-        {/* <Text variant="labelLarge" style={[s.colBlack, s.textCenter]}>
-          gweqgqw
-        </Text> */}
     </View>
   );
 }
 
-function AvatarRender(item: ProfileChore) {
-    const profiles = useAppSelector(selectHouseholdProfiles);
-    const matchedProfile = profiles.find(profile => profile.id === item.profileId);
-    if (matchedProfile != undefined) {
-        return (<Text>{avatars[matchedProfile?.avatar].avatar}</Text>)
-    }
+// const dispatch = useAppDispatch();
+// const householdid = useAppSelector(selectActiveHousehold);
+// const pcProps: ProfileChoreProps = {
+//   householdId: householdid,
+//   startDate: todaysDateOnlyAsString(),
+//   endDate: undefined,
+// };
 
-    return (<Text>error</Text>)
-    
- }
+// dispatch(getprofileChoreByHouseholdToday(pcProps));
+
+function AvatarRender(item: ProfileChore) {
+  const profiles = useAppSelector(selectProfiles);
+  console.log(profiles.length);
+  
+  const matchedProfile = profiles.find(
+    (profile) => profile.id === item.profileId
+  );
+  if (matchedProfile != undefined) {
+    return <Text>{avatars[matchedProfile?.avatar].avatar}</Text>;
+  }
+
+  return <Text>error</Text>;
+}

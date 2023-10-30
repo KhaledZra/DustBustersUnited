@@ -7,4 +7,5 @@ export interface ProfileChore {
   profile: Profile;
   profileId: number;
   chore: Chore;
+  choreId: number;
 }
