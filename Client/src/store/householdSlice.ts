@@ -120,3 +120,6 @@ export default householdSlice.reducer;
 export const selectActiveHousehold = (state: RootState) =>
   state.user.profiles.find((p) => p.id === state.user.activeProfileId)
     ?.household.id!;
+
+export const selectHouseholdProfiles = (state: RootState) =>
+  state.household.profiles;

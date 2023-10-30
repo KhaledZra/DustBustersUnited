@@ -10,6 +10,8 @@ import ChoreView from "../Components/ChoreList/ChoreView";
 import { getChoresByHousehold } from "../store/choreSlice/thunks";
 import { selectActiveHousehold } from "../store/householdSlice";
 import { Chore } from "../Data/Chore";
+import todaysDateOnlyAsString from "../Components/GetTodaysDateOnly";
+import { ProfileChoreProps, getprofileChoreByHouseholdToday } from "../store/profileChoreSlice/thunks";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -33,8 +35,14 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   }, [profile]);
 
   const dispatch = useAppDispatch();
+  const pcProps: ProfileChoreProps = {
+    householdId: householdId,
+    startDate: todaysDateOnlyAsString(),
+    endDate: undefined,
+  };
   useEffect(() => {
     dispatch(getChoresByHousehold(householdId));
+    dispatch(getprofileChoreByHouseholdToday(pcProps));
   }, []);
   let chores = useAppSelector((state) => state.chore.chores);
 
