@@ -24,13 +24,13 @@ export type RootStackParamList = {
   // Create / Join Household
   Profile: undefined;
   PickHousehold: undefined;
-  JoinHousehold: { code: number | undefined };
+  JoinHousehold: undefined;
   HouseholdInfo: undefined;
   AddEditHoushold: { household: Household | undefined }; // undefined is used to create new
   //
   ChoreList: undefined;
   ChoreView: { chore: Chore };
-ChoreStatistics: { startDate: string; endDate: string };
+  ChoreStatistics: { startDate: string; endDate: string };
   AddOrEditChore: { chore?: Chore };
 };
 
@@ -40,7 +40,11 @@ export default function RootStackNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Login"
-      screenOptions={() => ({ header: (props) => <StackHeader {...props} /> })}
+      screenOptions={() => ({
+        header: (props) => (
+          <StackHeader {...props} title={props.options.title} />
+        ),
+      })}
     >
       <Stack.Screen
         name="HouseholdInfo"

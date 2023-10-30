@@ -75,6 +75,7 @@ const userSlice = createSlice({
       state.joinHouseholdError = action.payload as string;
     });
     builder.addCase(fetchProfiles.fulfilled, (state, action) => {
+      console.log("action.payload", action.payload );
       state.profiles = action.payload;
     });
   },

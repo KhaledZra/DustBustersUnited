@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { getChoresByHousehold } from "../store/choreSlice/thunks";
 import { getHouseholdProfiles, selectActiveHousehold } from "../store/householdSlice";
 import todaysDateOnlyAsString from "../Components/GetTodaysDateOnly";
-import { ProfileChoreProps, getprofileChoreByHouseholdToday } from "../store/profileChoreSlice/thunks";
+import { ProfileChoreProps, getProfileChoreByHousehold } from "../store/profileChoreSlice/thunks";
 import { selectActiveProfile } from "../store/userSlice";
 import s from "../utils/globalStyles";
 
@@ -31,7 +31,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   };
   useEffect(() => {
     dispatch(getChoresByHousehold(householdId));
-    dispatch(getprofileChoreByHouseholdToday(pcProps));
+    dispatch(getProfileChoreByHousehold(pcProps));
     dispatch(getHouseholdProfiles(householdId));
   }, []);
   let chores = useAppSelector((state) => state.chore.chores);

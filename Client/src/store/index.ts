@@ -8,6 +8,7 @@ import householdSlice from "./householdSlice";
 import { storageKeys } from "../constants";
 import choreSlice from "./choreSlice";
 import profileChoreSlice from "./profileChoreSlice";
+import { User } from "../Data/User";
 
 const store = configureStore({
   reducer: {
@@ -15,9 +16,13 @@ const store = configureStore({
     household: householdSlice,
     chore: choreSlice,
     choreNavigation: choreNavigationSlice,
-    profileChore: profileChoreSlice
+    profileChore: profileChoreSlice,
   },
 });
+// bekymmer med AsyncStorage? 
+//    pröva att cleara den genom att kommentera ut den här raden 1 gång 
+//    glöm inte att ändra tillbaks efter att du har reloadat appen!
+// AsyncStorage.clear();
 
 InitializeFromStorage();
 
@@ -27,9 +32,15 @@ async function InitializeFromStorage() {
     store.dispatch(setActiveProfile(parseInt(profileId)));
   }
 
-  let user = await AsyncStorage.getItem(storageKeys.LOGGED_IN_USER);
-  if (user) {
-    store.dispatch(setUser(JSON.parse(user)));
+  let userStr = await AsyncStorage.getItem(storageKeys.LOGGED_IN_USER);
+  if (!userStr) return;
+
+  // We take extra steps to ensure we have a valid user in storage
+  let user = JSON.parse(userStr) as User;
+  if (user && user.id && Number.isInteger(user.id)) {
+    store.dispatch(setUser(user));
+  } else {
+    AsyncStorage.removeItem(storageKeys.LOGGED_IN_USER);
   }
 }
 
