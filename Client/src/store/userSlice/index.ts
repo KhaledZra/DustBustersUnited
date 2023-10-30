@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
+import { RootState } from "..";
+import { Chore } from "../../Data/Chore";
 import { Profile } from "../../Data/Profile";
 import { User } from "../../Data/User";
 import { fetchProfiles, joinHousehold, login, register } from "./thunks";
-import { Chore } from "../../Data/Chore";
-import { RootState } from "..";
 
 type UserState = {
   user: User | undefined;
@@ -79,6 +79,16 @@ const userSlice = createSlice({
     });
   },
 });
+
+export const selectRequestProfiles = createSelector(
+  (state: RootState) => state.user.profiles,
+  (profiles) => profiles.filter((p) => p.isRequest)
+);
+
+export const selectProfiles = createSelector(
+  (state: RootState) => state.user.profiles,
+  (profiles) => profiles.filter((p) => !p.isRequest)
+);
 
 export const { setUser, setActiveProfile, setLoginError } = userSlice.actions;
 export default userSlice.reducer;
