@@ -1,138 +1,43 @@
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
-import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
-import { useAppSelector } from "../store";
+import { FlatList, View } from "react-native";
+import { Button } from "react-native-paper";
+import { useAppDispatch, useAppSelector } from "../store";
 import { Profile } from "../Data/Profile";
-
 import { RootStackScreenProps } from "../../types";
-import { Chore } from "../Data/Chore";
-import { mockChores } from "../Data/MockData/ChoreMockData";
 import { useEffect, useState } from "react";
 import s from "../utils/globalStyles";
+import ChoreListHeaderBar from "../Components/ChoreList/ChoreListHeaderBar";
+import ChoreView from "../Components/ChoreList/ChoreView";
+import { getChoresByHousehold } from "../store/choreSlice/thunks";
+import { selectActiveHousehold } from "../store/householdSlice";
+import { Chore } from "../Data/Chore";
+import { selectActiveProfile } from "../store/userSlice";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
 
-export const getDaysSinceLastDone = (deadline: Date, interval: number) => {
-  // Setup lastDone
-  const lastDone = new Date(deadline);
-  lastDone.setDate(deadline.getDate() - interval);
+type Props = RootStackScreenProps<"ChoreList">;
 
-  // Date now
-  const dateNow = new Date(); // in the future use this to adjust the date so calender can be supported
+export default function ChoreListScreen({ navigation, route }: Props) {
 
-  // Calculate time difference
-  const timeDifference = dateNow.getTime() - lastDone.getTime();
-
-  // Calculate days difference by dividing total milliseconds in a day
-  const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-
-  return Math.floor(daysDifference); // Current day progress is not relevant?
-};
-
-function HeaderBar() {
-  return (
-    <Appbar.Header statusBarHeight={0}>
-      <Appbar.BackAction
-        onPress={() => {
-          console.log("day before navigation");
-        }}
-      />
-      <Appbar.Content
-        title="Day-Placeholder"
-        titleStyle={{ textAlign: "center" }}
-      />
-      <Appbar.Action
-        icon="arrow-right"
-        onPress={() => {
-          console.log("day after navigation");
-        }}
-      />
-    </Appbar.Header>
-  );
-}
-
-interface displayDaysProps {
-  daysSinceDone: number;
-  interval: number;
-}
-
-function DisplayDaysSinceDone({ daysSinceDone, interval }: displayDaysProps) {
-  if (daysSinceDone < interval) {
-    return (
-      <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
-        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
-          {daysSinceDone}
-        </Text>
-      </View>
-    );
-  } else {
-    return (
-      <View style={[s.bgColRed, s.w10, s.h35, s.br10]}>
-        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
-          {daysSinceDone}
-        </Text>
-      </View>
-    );
-  }
-}
-
-type ChoreViewProps = props & { chore: Chore };
-
-function ChoreView({ navigation, chore }: ChoreViewProps) {
-  return (
-    <Card
-      style={[s.mt16, { maxHeight: "50%" }]} // TODO lista ut vrf de finns så mycket mellanrum cards
-      mode="outlined"
-      onPress={() => navigation.push('ChoreView', {chore: chore})}
-    >
-      <Card.Content style={[s.flex1, s.row]}>
-        <Card.Actions style={s.h40}>
-          <IconButton
-            icon="pencil"
-            size={15}
-            onPress={() => navigation.navigate("EditChore", { chore })}
-          />
-        </Card.Actions>
-
-        <View style={[s.flex1, s.row, s.justifyBetween]}>
-          <Text variant="labelLarge">{chore.name}</Text>
-          <DisplayDaysSinceDone
-            daysSinceDone={getDaysSinceLastDone(
-              chore.deadline,
-              chore.repeatInterval
-            )}
-            interval={chore.repeatInterval}
-          />
-        </View>
-      </Card.Content>
-    </Card>
-  );
-}
-
-type props = RootStackScreenProps<"ChoreList">;
-
-const screenDimensions = Dimensions.get("screen");
-
-export default function ChoreListScreen({ navigation, route }: props) {
-  // TODO: Should be able to solve this with `createSelector` in store instead
-  // from here ---
-  const [profile, setProfile] = useState<Profile>();
-  const profiles = useAppSelector((state) => state.user.profiles);
-  const activeProfileId = useAppSelector((state) => state.user.activeProfileId);
-  useEffect(() => {
-    setProfile(profiles.find((p) => p.id === activeProfileId));
-  }, [profiles, activeProfileId]);
-  // --- to here
+  const dispatch = useAppDispatch();
+  const profile = useAppSelector(selectActiveProfile);
+  const householdId = useAppSelector(selectActiveHousehold);
 
   useEffect(() => {
     navigation.setOptions({ title: profile?.household.name });
   }, [profile]);
 
+  useEffect(() => {
+    dispatch(getChoresByHousehold(householdId));
+  }, []);
+  let chores = useAppSelector((state) => state.chore.chores);
+
+  
   return (
     <View style={s.flex1}>
-      <HeaderBar />
+      <ChoreListHeaderBar />
       <FlatList
-        data={mockChores}
+        data={chores}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ChoreView route={route} navigation={navigation} chore={item} />
@@ -142,7 +47,7 @@ export default function ChoreListScreen({ navigation, route }: props) {
         <Button
           mode="contained"
           icon="plus-circle-outline"
-          onPress={() => navigation.navigate("AddChore")}
+          onPress={() => navigation.navigate("AddOrEditChore", {})}
           style={[s.br20, s.p6, s.mb10]}
         >
           Lägg till

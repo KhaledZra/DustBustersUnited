@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Chore } from "../../Data/Chore";
-import { saveChoreToDb, updateChore } from "./thunks";
+import { getChoresByHousehold, saveChoreToDb, updateChore } from "./thunks";
 
 type UserState = {
   chores: Chore[];
@@ -23,6 +23,9 @@ const choreSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(saveChoreToDb.fulfilled, (state, action) => {
       state.chores.push(action.payload);
+    });
+    builder.addCase(getChoresByHousehold.fulfilled, (state, action) => {
+      state.chores = action.payload;
     });
     builder.addCase(updateChore.fulfilled, (state, action) => {
       const updatedChore = action.payload;

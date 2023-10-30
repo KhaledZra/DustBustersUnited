@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231029194703_InitialCreate1234")]
+    partial class InitialCreate1234
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -46,8 +49,6 @@ namespace Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HouseholdId");
 
                     b.ToTable("Chores");
                 });
@@ -154,15 +155,6 @@ namespace Server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Model.Chore", b =>
-                {
-                    b.HasOne("Model.Household", null)
-                        .WithMany("Chores")
-                        .HasForeignKey("HouseholdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Model.Household", b =>
                 {
                     b.HasOne("Model.User", null)
@@ -193,8 +185,6 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Model.Household", b =>
                 {
-                    b.Navigation("Chores");
-
                     b.Navigation("Profiles");
                 });
 

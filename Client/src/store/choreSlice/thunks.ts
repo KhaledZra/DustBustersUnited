@@ -1,11 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Chore, ChoreDto } from "../../Data/Chore";
+import { Chore, ChoreCreateDto } from "../../Data/Chore";
 import { apiFetch } from "../../utils/apiClient";
+import { ProfileChore } from "../../Data/ProfileChore";
+import { RootState } from "..";
 
-export const saveChoreToDb = createAsyncThunk<Chore, ChoreDto>(
+export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
   async (choreDto) => {
-    const response: Response = await apiFetch(`chore/PostChore`, choreDto);
+    const response: Response = await apiFetch(`chore`, choreDto, {
+      method: "POST",
+    });
     return response.json() as Promise<Chore>;
   }
 );
@@ -17,5 +21,42 @@ export const updateChore = createAsyncThunk<Chore, Chore>(
       method: "PUT",
     });
     return response.json() as Promise<Chore>;
+  }
+);
+
+export const getChoresByHousehold = createAsyncThunk<Chore[], number>(
+  "user/getChoresByHousehold",
+  async (householdId: number) => {
+    const response: Response = await apiFetch(
+      `Chore/GetChoresByHousehold/` + householdId,
+      {},
+      {
+        method: "GET",
+      }
+    );
+    return response.json() as Promise<Chore[]>;
+  }
+);
+
+export interface MarkChoreProps {
+  choreId: number,
+  householdId: number | undefined,
+}
+
+export const markChoreAsCompleted = createAsyncThunk<ProfileChore, MarkChoreProps>(
+  "chore/markAsCompleted",
+  async (markChoreProps, { dispatch, getState }) => {
+    const response: Response = await apiFetch(
+      "ChoreProfile/TriggerCompletedChoreEvent",
+      {
+        profileId: (getState() as RootState).user.activeProfileId,
+        choreId: markChoreProps.choreId,
+      },
+      {
+        method: "PUT",
+      }
+    );
+    dispatch(getChoresByHousehold(markChoreProps.householdId!));
+    return response.json() as Promise<ProfileChore>;
   }
 );

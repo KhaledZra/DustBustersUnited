@@ -1,8 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { deleteProfile } from "../store/householdSlice";
+import s from "../utils/globalStyles";
 
 export default function HouseholdInfoScreen() {
   const profiles = useAppSelector((state) => state.user.profiles);
@@ -15,18 +17,19 @@ export default function HouseholdInfoScreen() {
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
-  }
-
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hushållsmedlemmar</Text>
+    <ScrollView contentContainerStyle={[s.flex1]}>
+      <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
+        Hushållsmedlemmar
+      </Text>
       {profiles.map((p) => {
         const profileAvatar = avatars.find((avatar) => avatar.id === p.avatar);
         return (
           <Button
-            style={styles.button}
-            labelStyle={[styles.buttonText, { fontSize: 18 }]}
+            style={[s.pv3, s.bgColWhite, s.m16]}
+            labelStyle={[s.colBlack]}
             key={p.id}
             onPress={() => navigation.navigate("Profile")}
           >
@@ -34,63 +37,22 @@ export default function HouseholdInfoScreen() {
           </Button>
         );
       })}
-      <View style={styles.centeredBox}>
-        <Text style={[styles.title, { fontSize: 20 }]}>
+      <View style={[s.flex1, s.alignCenter]}>
+        <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
           Kod för att gå med i hushåll
         </Text>
-        <Text style={styles.codeBox}>
+        <View style={[s.mv10]} />
+        <Text style={[s.pv2, s.w150, s.bgColWhite, s.br20, s.fs60, s.colBlack]}>
           {householdCode ? householdCode.code : " "}
         </Text>
       </View>
-
       <Button
-        style={styles.bottomBox}
-        labelStyle={styles.buttonText}
+        style={[s.pv2, s.bgColWhite, s.m10]}
+        labelStyle={[s.colBlack]}
         onPress={handleLeaveHousehold}
       >
         Lämna hushåll
       </Button>
-    </View>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "lightgray",
-  },
-  title: {
-    fontSize: 26,
-    marginTop: 20,
-    textAlign: "center",
-  },
-  button: {
-    paddingVertical: 10,
-    backgroundColor: "white",
-    margin: 10,
-  },
-  buttonText: {
-    color: "black",
-  },
-  arrow: {
-    color: "black",
-    fontSize: 20,
-    left: "auto",
-  },
-  codeBox: {
-    paddingVertical: 7,
-    width: 150,
-    backgroundColor: "white",
-    borderRadius: 15,
-    fontSize: 60,
-  },
-  centeredBox: {
-    flex: 1,
-    alignItems: "center",
-  },
-  bottomBox: {
-    paddingVertical: 10,
-    backgroundColor: "white",
-    margin: 10,
-  },
-});

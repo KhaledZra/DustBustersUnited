@@ -1,38 +1,49 @@
 import { useController, useForm } from "react-hook-form";
 import { ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import IntervalSelector from "../Components/IntervalSelector";
-import { Chore, ChoreDto } from "../Data/Chore";
-import s from "../utils/globalStyles";
-import EnergySelector from "../Components/EnergySelector";
 import { RootStackScreenProps } from "../../types";
-import { useAppDispatch } from "../store";
-import { updateChore } from "../store/choreSlice/thunks";
+import EnergySelector from "../Components/EnergySelector";
+import IntervalSelector from "../Components/IntervalSelector";
+import { Chore } from "../Data/Chore";
+import { useAppDispatch, useAppSelector } from "../store";
+import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
+import { selectActiveHousehold } from "../store/householdSlice";
+import s from "../utils/globalStyles";
 
-type Props = RootStackScreenProps<"EditChore">;
+type Props = RootStackScreenProps<"AddOrEditChore">;
 
-export default function AddChoreScreen({ route }: Props) {
+export default function AddOrEditChoreScreen({ route, navigation }: Props) {
+  const householdId = useAppSelector(selectActiveHousehold);
   const { chore } = route.params;
-  const choreDto: ChoreDto = {
-    description: chore.description,
-    energy: chore.energy,
-    name: chore.name,
-    repeatInterval: chore.repeatInterval,
-    householdId: chore.household.id,
-  };
+  const isEdit = Boolean(chore);
 
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control } = useForm<Chore>({
-    defaultValues: chore,
+    defaultValues: chore || {
+      description: "",
+      energy: 2,
+      name: "",
+      repeatInterval: 1,
+      householdId,
+    },
   });
 
   const { field: nameField } = useController({ control, name: "name" });
-  const { field: descriptionField } = useController({ control, name: "name" });
+  const { field: descriptionField } = useController({
+    control,
+    name: "description",
+  });
 
   const onSubmit = (chore: Chore) => {
-    dispatch(updateChore(chore));
-    console.log(choreDto);
+    console.log(chore);
+    if (isEdit) {
+      dispatch(updateChore(chore));
+    } else {
+      const newChore = { ...chore, householdId };
+      dispatch(saveChoreToDb(newChore));
+    }
+    navigation.pop();
   };
 
   return (
@@ -56,7 +67,7 @@ export default function AddChoreScreen({ route }: Props) {
           {...register("description")}
         />
 
-        <IntervalSelector name="repeatInterval" control={control} />
+        <IntervalSelector key="" name="repeatInterval" control={control} />
 
         <EnergySelector name="energy" control={control} />
 
@@ -79,6 +90,7 @@ export default function AddChoreScreen({ route }: Props) {
           icon="close-circle-outline"
           style={[s.flex1, s.radiusNone]}
           mode="contained"
+          onPress={() => navigation.pop()}
         >
           Stäng
         </Button>
