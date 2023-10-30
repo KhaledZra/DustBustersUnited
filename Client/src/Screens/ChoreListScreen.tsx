@@ -1,13 +1,13 @@
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 import { Appbar, Button, Card, IconButton, Text } from "react-native-paper";
-import { useAppDispatch, useAppSelector } from "../store";
 import { Profile } from "../Data/Profile";
+import { useAppDispatch, useAppSelector } from "../store";
 
+import { useEffect, useState } from "react";
 import { RootStackScreenProps } from "../../types";
 import { Chore } from "../Data/Chore";
-import { useEffect, useState } from "react";
-import s from "../utils/globalStyles";
 import { getChores } from "../store/choreSlice/thunks";
+import s from "../utils/globalStyles";
 
 // TODO Remove this comment later:
 // alternative soluton if appbar causes issues - https://www.npmjs.com/package/react-native-pager-view
@@ -131,7 +131,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getChores());
-  });
+  }, []);
 
   const chores = useAppSelector((state) => state.chore.chores);
 
