@@ -22,8 +22,9 @@ export default function ChoreAvatarRenderer(chore: Chore) {
       </Text>
     </View>
   ) : (
-    <View>
+    <View >
       <FlatList
+        horizontal={true}
         data={profileChoresByChoreId}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <AvatarRender {...item} />}
@@ -39,7 +40,7 @@ function AvatarRender(item: ProfileChore) {
     (profile) => profile.id === item.profileId
   );
   if (matchedProfile != undefined) {
-    return <Text>{avatars[matchedProfile?.avatar].avatar}</Text>;
+    return <Text style={[s.fs20, s.ph1]}>{avatars[matchedProfile?.avatar].avatar}</Text>;
   }
 
   return <Text>error</Text>;
