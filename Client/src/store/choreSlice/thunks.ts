@@ -71,8 +71,8 @@ export const deleteChore = createAsyncThunk<Chore, Chore>(
   "chore/removeChore",
   async (chore) => {
     await apiFetch(
-      "chore",
-      { choreId: chore.id },
+      "chore?choreId=" + chore.id,
+      {},
       {
         method: "DELETE",
       }

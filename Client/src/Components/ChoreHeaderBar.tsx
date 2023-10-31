@@ -34,7 +34,10 @@ export function ChoreHeaderBar() {
 
   return (
     <Appbar.Header statusBarHeight={0}>
-      <Appbar.BackAction onPress={() => dispatch(prevChorePage())} />
+      <Appbar.Action
+        icon="arrow-left"
+        onPress={() => dispatch(prevChorePage())}
+      />
       <Appbar.Content title={title} titleStyle={{ textAlign: "center" }} />
       <Appbar.Action
         icon="arrow-right"
