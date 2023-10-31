@@ -80,3 +80,13 @@ export const deleteChore = createAsyncThunk<Chore, Chore>(
     return chore;
   }
 );
+
+export const archiveChore = createAsyncThunk<Chore, Chore>(
+  "chore/archiveChore",
+  async (chore) => {
+    await apiFetch("Chore/ToggleActivity?choreId=" + chore.id, {
+      method: "PUT",
+    });
+    return chore;
+  }
+);
