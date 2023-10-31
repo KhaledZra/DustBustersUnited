@@ -5,21 +5,27 @@ import { RootStackScreenProps } from "../../types";
 import ChoreView from "../Components/ChoreList/ChoreView";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getChoresByHousehold } from "../store/choreSlice/thunks";
-import { getHouseholdProfiles, selectActiveHouseholdId } from "../store/householdSlice";
+import {
+  getHouseholdProfiles,
+  selectActiveHouseholdId,
+} from "../store/householdSlice";
 import todaysDateOnlyAsString from "../Components/GetTodaysDateOnly";
-import { ProfileChoreProps, getChoreCompletions } from "../store/profileChoreSlice/thunks";
-import { selectActiveProfile } from "../store/userSlice";
+import {
+  ProfileChoreProps,
+  getChoreCompletions,
+} from "../store/profileChoreSlice/thunks";
+import { selectActiveProfile, selectIsAdmin } from "../store/userSlice";
 import s from "../utils/globalStyles";
-
 
 type Props = RootStackScreenProps<"ChoreList">;
 
 export default function ChoreListScreen({ navigation, route }: Props) {
-
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectActiveProfile);
   const householdId = useAppSelector(selectActiveHouseholdId);
   const chores = useAppSelector((state) => state.chore.chores);
+  const activeProfile = useAppSelector((state) => state.user.activeProfileId);
+  const isAdmin = useAppSelector(selectIsAdmin);
 
   useEffect(() => {
     navigation.setOptions({ title: profile?.household.name });
@@ -36,7 +42,6 @@ export default function ChoreListScreen({ navigation, route }: Props) {
     dispatch(getHouseholdProfiles(householdId));
   }, []);
 
-  
   return (
     <View style={s.flex1}>
       <FlatList
@@ -47,14 +52,16 @@ export default function ChoreListScreen({ navigation, route }: Props) {
         )}
       />
       <View style={s.alignCenter}>
-        <Button
-          mode="contained"
-          icon="plus-circle-outline"
-          onPress={() => navigation.navigate("AddOrEditChore", {})}
-          style={[s.br20, s.p6, s.mb10]}
-        >
-          Lägg till
-        </Button>
+        {isAdmin && (
+          <Button
+            mode="contained"
+            icon="plus-circle-outline"
+            onPress={() => navigation.navigate("AddOrEditChore", {})}
+            style={[s.br20, s.p6, s.mb10]}
+          >
+            Lägg till
+          </Button>
+        )}
       </View>
     </View>
   );

@@ -128,7 +128,7 @@ public class ProfileController : ControllerBase
     [HttpPut("ToggleProfileActive")]
     public IActionResult ToggleProfileActive(int profileId)
     {
-        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profileId);
 
         if (foundProfile == null)
         {
@@ -137,13 +137,13 @@ public class ProfileController : ControllerBase
 
         foundProfile.isActive = !foundProfile.isActive;
         _context.SaveChanges();
-        return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
+        return Ok(foundProfile);
     }
 
     [HttpPut("ToggleProfileAdmin")]
     public IActionResult ToggleProfileAdmin(int profileId)
     {
-        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profileId);
 
         if (foundProfile == null)
         {
@@ -158,7 +158,7 @@ public class ProfileController : ControllerBase
     [HttpPut("ToggleProfileRequest")]
     public IActionResult ToggleProfileRequest(int profileId)
     {
-        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profileId);
 
         if (foundProfile == null)
         {
