@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
 import { selectActiveHouseholdId } from "../store/householdSlice";
 import s from "../utils/globalStyles";
+import { selectActiveProfile } from "../store/userSlice";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
@@ -34,6 +35,8 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
     control,
     name: "description",
   });
+
+  const handleDelete = useAppSelector(selectActiveProfile);
 
   const onSubmit = (chore: Chore) => {
     console.log(chore);
@@ -76,6 +79,12 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
+        <Button
+          icon="trash-can-outline"
+          mode="contained"
+          buttonColor="red"
+          onPress={handleDelete}
+        ></Button>
       </ScrollView>
       <View style={[s.row, s.gap1]}>
         <Button
