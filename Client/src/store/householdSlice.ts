@@ -103,6 +103,23 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   }
 );
 
+export const updateHouseholdName = createAsyncThunk<Household, Household>(
+  "updateHouseholdName",
+
+  async (payload: Household) => {
+    const response = await apiFetch("Household", payload, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const jsonResponse = await response.json();
+
+    return jsonResponse;
+  }
+)
+
 export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
   name: "household",
@@ -132,6 +149,11 @@ const householdSlice = createSlice({
     builder.addCase(addHousehold.fulfilled, (state, action) => {
       state.households.push(action.payload);
     });
+    builder.addCase(updateHouseholdName.fulfilled, (state, action) => {
+      const updatedHousehold = action.payload;
+      const index = updatedHousehold.id
+      state.households[index] = updatedHousehold;
+    })
   },
 });
 
