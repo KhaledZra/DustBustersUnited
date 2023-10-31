@@ -8,6 +8,7 @@ import {
 } from "../store/choreNavigationSlice";
 import { CHORE_PAGE_IDS } from "../constants";
 import { useEffect } from "react";
+import { subMonths } from "date-fns";
 
 export function ChoreHeaderBar() {
   const navigation = useNavigation();
@@ -27,8 +28,7 @@ export function ChoreHeaderBar() {
   // Set title with special case for "last month" which will be the month name
   let title = page.title;
   if (page.id == CHORE_PAGE_IDS.LAST_MONTH) {
-    let date = new Date();
-    date.setMonth(date.getMonth() - 1);
+    let date = subMonths(new Date(), 1);
     title = date.toLocaleString("default", { month: "long" });
   }
 

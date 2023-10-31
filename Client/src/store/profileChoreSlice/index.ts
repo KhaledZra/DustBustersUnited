@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProfileChore } from "../../Data/ProfileChore";
-import { getProfileChoreByHousehold } from "./thunks";
+import { getChoreCompletions } from "./thunks";
 import { RootState } from "..";
 
 type ProfileChoreState = {
@@ -20,12 +20,10 @@ const choreSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(getProfileChoreByHousehold.fulfilled, (state, action) => {
-        state.profileChores = action.payload;
-      });
+    builder.addCase(getChoreCompletions.fulfilled, (state, action) => {
+      state.profileChores = action.payload;
+    });
   },
 });
 
 export default choreSlice.reducer;
-
-export const selectProfileChores = (state: RootState) => state.profileChore.profileChores;

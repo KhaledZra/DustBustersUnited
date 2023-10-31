@@ -11,7 +11,7 @@ import {
   markChoreAsCompleted,
 } from "../store/choreSlice/thunks";
 import { getDaysSinceLastDone } from "../utils";
-import { selectActiveHousehold } from "../store/householdSlice";
+import { selectActiveHouseholdId } from "../store/householdSlice";
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -25,7 +25,7 @@ type Props = {
 
 export default function ChoreViewPage({ navigation, route }: Props) {
   const { chore } = route.params;
-  const householdId = useAppSelector(selectActiveHousehold);
+  const householdId = useAppSelector(selectActiveHouseholdId);
 
   useEffect(() => {
     navigation.setOptions({
