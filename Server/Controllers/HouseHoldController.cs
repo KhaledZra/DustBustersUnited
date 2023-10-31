@@ -86,8 +86,8 @@ public class HouseholdController : ControllerBase
         return CreatedAtAction("Get", new { id = household.Id }, household);
     }
 
-    [HttpPut]
-    public async Task<ActionResult<Household>> Put(int id, HouseholdDto dto)
+    [HttpPut("id")]
+    public async Task<ActionResult<Household>> Put(int id, Household householddata)
     {
         var household = await _context.Households.FindAsync(id);
 
@@ -96,7 +96,7 @@ public class HouseholdController : ControllerBase
             return NotFound();
         }
         
-        household.Name = dto.Name;
+        household.Name = householddata.Name;
         _context.Entry(household).State = EntityState.Modified;
         await _context.SaveChangesAsync();
         
