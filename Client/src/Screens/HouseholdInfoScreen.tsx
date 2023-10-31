@@ -1,32 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { deleteProfile } from "../store/householdSlice";
-import { selectProfiles, selectRequestProfiles } from "../store/userSlice";
+import { selectRequestProfiles } from "../store/userSlice";
 import s from "../utils/globalStyles";
 import { avatars } from "../constants";
 
 export default function HouseholdInfoScreen() {
-  const requests = useAppSelector(selectRequestProfiles);
-  const profiles = useAppSelector(selectProfiles);
+
   const dispatch = useAppDispatch();
+  const avatars = useAppSelector((state) => state.household.avatars);
+  const requests = useAppSelector(selectRequestProfiles);
+  const profiles = useAppSelector((state) => state.household.profilesInHousehold);
   const navigation = useNavigation();
   const householdCode = useAppSelector(
-    (state) => state.household.transientHousehold
-  );
+    (state) => state.household.transientHousehold);
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
-    navigation.navigate("PickHousehold");
+    navigation.navigate("PickHousehold"); 
   };
-
+  
   return (
     <ScrollView contentContainerStyle={[s.flex1]}>
       <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
         Hushållsmedlemmar
       </Text>
-      {profiles.map((p) => {
+      {profiles && profiles.map((p) => {
         const profileAvatar = avatars.find((avatar) => avatar.id === p.avatar);
         return (
           <Button
