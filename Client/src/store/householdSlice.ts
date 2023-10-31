@@ -7,12 +7,18 @@ import { apiFetch } from "../utils/apiClient";
 import { setActiveProfile } from "./userSlice";
 import { fetchProfiles } from "./userSlice/thunks";
 
-// Borde vara i en ny profile slice
+// Borde vara i en ny profile slice - nej
 export const getHouseholdProfiles = createAsyncThunk<Profile[], number>(
   "profile/getHouseholdProfiles",
   async (householdId: number) => {
-    const response: Response = await apiFetch(`Profile/GetProfilesInHousehold/`+ householdId);
-    return response.json() as Promise<Profile[]>;
+    try{
+      const response: Response = await apiFetch(`Profile/GetProfilesInHousehold/`+ householdId);
+      return response.json() as Promise<Profile[]>;
+    }
+    catch(error){
+      console.error("Error fetching profiles:", error);
+      return[];
+    }
   }
 );
 
@@ -101,7 +107,7 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   }
 );
 
-export const getProfiles = createAsyncThunk<Profile[], number>(
+export const getProfiles = createAsyncThunk<Profile[], number>( //TODO dublett
   "getProfiles",
 
   async (id: number) => {
