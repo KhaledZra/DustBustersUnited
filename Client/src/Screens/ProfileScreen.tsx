@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
+import { RootStackScreenProps } from "../../types";
 import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
@@ -11,25 +12,27 @@ import {
   setRequestStatus,
 } from "../store/householdSlice";
 import s from "../utils/globalStyles";
+type Props = RootStackScreenProps<"Profile">;
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ route }: Props) {
+  const profileId = route.params.profileId;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const profiles = useAppSelector((state) => state.user.profiles);
-  const profileId = useAppSelector((state) => state.user.activeProfileId);
-  const [profile, setProfile] = useState<Profile>();
-  useEffect(() => {
-    const profile = profiles.find((p) => p.id == profileId);
-    setProfile(profile);
-  }, [profileId, profiles]);
-
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
   };
-
+  const [profile, setProfile] = useState<Profile>();
+  const profiles = useAppSelector(
+    (state) => state.household.profilesInHousehold
+  );
+  useEffect(() => {
+    setProfile(profiles.find((p) => p.id == profileId));
+  }, [profiles, profileId]);
   const handelActiveHousehold = () => {
-    dispatch(setActiveStatus());
+    if (profile) {
+      dispatch(setActiveStatus(profile.id));
+    }
   };
   const handelAdminHousehold = () => {
     dispatch(setAdminStatus());

@@ -1,44 +1,49 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Button } from "react-native-paper";
+import { avatars } from "../constants";
 import { useAppDispatch, useAppSelector } from "../store";
 import { deleteProfile } from "../store/householdSlice";
 import { selectRequestProfiles } from "../store/userSlice";
 import s from "../utils/globalStyles";
-import { avatars } from "../constants";
 
 export default function HouseholdInfoScreen() {
-
   const dispatch = useAppDispatch();
   const requests = useAppSelector(selectRequestProfiles);
-  const profiles = useAppSelector((state) => state.household.profilesInHousehold);
+  const profiles = useAppSelector(
+    (state) => state.household.profilesInHousehold
+  );
   const navigation = useNavigation();
   const householdCode = useAppSelector(
-    (state) => state.household.transientHousehold);
+    (state) => state.household.transientHousehold
+  );
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
-    navigation.navigate("PickHousehold"); 
+    navigation.navigate("PickHousehold");
   };
-  
+
   return (
     <ScrollView contentContainerStyle={[s.flex1]}>
       <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
         Hushållsmedlemmar
       </Text>
-      {profiles && profiles.map((p) => {
-        const profileAvatar = avatars.find((avatar) => avatar.id === p.avatar);
-        return (
-          <Button
-            style={[s.pv3, s.bgColWhite, s.m16]}
-            labelStyle={[s.colBlack]}
-            key={p.id}
-            onPress={() => navigation.navigate("Profile")}
-          >
-            {profileAvatar ? profileAvatar.avatar : null} {p.displayName}
-          </Button>
-        );
-      })}
+      {profiles &&
+        profiles.map((p) => {
+          const profileAvatar = avatars.find(
+            (avatar) => avatar.id === p.avatar
+          );
+          return (
+            <Button
+              style={[s.pv3, s.bgColWhite, s.m16]}
+              labelStyle={[s.colBlack]}
+              key={p.id}
+              onPress={() => navigation.navigate("Profile", { profileId: p.id })}
+            >
+              {profileAvatar ? profileAvatar.avatar : null} {p.displayName}
+            </Button>
+          );
+        })}
       <View style={[s.flex1, s.alignCenter]}>
         <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
           Kod för att gå med i hushåll
@@ -58,7 +63,7 @@ export default function HouseholdInfoScreen() {
             style={[s.pv3, s.bgColWhite, s.m16]}
             labelStyle={[s.colBlack]}
             key={p.id}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { profileId: p.id })}
           >
             {profileAvatar ? profileAvatar.avatar : null} {p.displayName}
           </Button>
