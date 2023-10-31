@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { getChoreCompletions } from "../store/profileChoreSlice/thunks";
 import { useEffect, useState } from "react";
 import { Chore } from "../Data/Chore";
+import React from "react";
 
 type Props = RootStackScreenProps<"ChoreStatistics">;
 const widthAndHeight = 250;
