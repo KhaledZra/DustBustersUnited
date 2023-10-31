@@ -64,9 +64,7 @@ export default function ChoreViewPage({ navigation, route }: Props) {
             title={<Text style={s.boldText}>Värde:</Text>}
             description="Hur energiekrävande är sysslan?"
             right={(props) => (
-              <Badge style={[s.bgColGrey]}>
-                {getDaysSinceLastDone(chore.deadline, chore.energy)}
-              </Badge>
+              <Badge style={[s.bgColGrey, props.style]}>{chore.energy}</Badge>
             )}
           />
         </Card.Content>

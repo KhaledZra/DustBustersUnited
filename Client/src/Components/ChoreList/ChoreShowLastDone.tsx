@@ -10,13 +10,16 @@ interface displayDaysProps {
   chore: Chore;
 }
 
-export default function ChoreShowLastDone({ daysSinceDone, interval, chore }: displayDaysProps) {
+export default function ChoreShowLastDone({
+  daysSinceDone,
+  interval,
+  chore,
+}: displayDaysProps) {
   if (daysSinceDone === 0) {
-    return <ChoreAvatarRenderer {...chore}/>
-  }
-  else if (daysSinceDone < interval) {
+    return <ChoreAvatarRenderer {...chore} />;
+  } else if (daysSinceDone < interval) {
     return (
-      <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
+      <View style={[s.bgColGrey, s.w10, s.br10]}>
         <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
@@ -24,7 +27,7 @@ export default function ChoreShowLastDone({ daysSinceDone, interval, chore }: di
     );
   } else {
     return (
-      <View style={[s.bgColRed, s.w10, s.h35, s.br10]}>
+      <View style={[s.bgColRed, s.w10, s.br10]}>
         <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
           {daysSinceDone}
         </Text>
