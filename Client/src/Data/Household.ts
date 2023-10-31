@@ -21,3 +21,8 @@ export type JoinHouseholdDto = {
   avatar: number;
   isAdmin: boolean;
 };
+
+export interface uppdateHouseholdDTO {
+  id: number;
+  name: string;
+}

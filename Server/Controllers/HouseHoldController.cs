@@ -86,10 +86,10 @@ public class HouseholdController : ControllerBase
         return CreatedAtAction("Get", new { id = household.Id }, household);
     }
 
-    [HttpPut("id")]
-    public async Task<ActionResult<Household>> Put(int id, Household householddata)
+    [HttpPut("/update/id")]
+    public async Task<ActionResult<Household>> Put(UpdateHouseholdDto householddata)
     {
-        var household = await _context.Households.FindAsync(id);
+        var household = await _context.Households.FindAsync(householddata.Id);
 
         if (household == null)
         {

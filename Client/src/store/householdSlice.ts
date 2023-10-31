@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { Household } from "../Data/Household";
+import { Household, uppdateHouseholdDTO } from "../Data/Household";
 import { AddHouseholdDTO } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
@@ -103,20 +103,17 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   }
 );
 
-export const updateHouseholdName = createAsyncThunk<Household, Household>(
+export const updateHouseholdName = createAsyncThunk<Household, uppdateHouseholdDTO>(
   "updateHouseholdName",
 
-  async (payload: Household) => {
-    const response = await apiFetch("Household", payload, {
+  async (payload) => {
+    const response: Response = await apiFetch(`Household/update`, payload, {
       method: 'PUT',
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
     const jsonResponse = await response.json();
-
-    return jsonResponse;
+    console.log("update payload:", payload)
+    console.log("update json:", jsonResponse)
+    return jsonResponse as Promise<Household>;
   }
 )
 

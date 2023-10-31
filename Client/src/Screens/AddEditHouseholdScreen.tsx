@@ -4,8 +4,8 @@ import { View } from "react-native";
 import { RootStackScreenProps } from "../../types";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store";
-import { addHousehold } from "../store/householdSlice";
-import { AddHouseholdDTO, Household } from "../Data/Household";
+import { addHousehold, updateHouseholdName } from "../store/householdSlice";
+import { AddHouseholdDTO, Household, uppdateHouseholdDTO } from "../Data/Household";
 import { useRoute } from "@react-navigation/native";
 
 type Props = RootStackScreenProps<"AddEditHoushold">;
@@ -14,6 +14,11 @@ export default function AddEditHousholdScreen({navigation}: Props) {
   const dispatch = useAppDispatch();
   const route = useRoute();
   
+  const householddata = {
+    id: 2,
+    name: "Exempelhus",
+  };
+  console.log("householdData: ", householddata)
   const user = useAppSelector((state)=> state.user.user?.id)
   
   const {
@@ -31,6 +36,17 @@ export default function AddEditHousholdScreen({navigation}: Props) {
     const household = response.payload as Household
     const code = household.code
     navigation.navigate("JoinHousehold", { code });
+  }
+
+  const onUpdate = async () => {   //TODO check if admin
+    if (!householddata) {
+      console.log("Hushållet finns inte eller är ogiltigt.");
+      return;
+    }
+    householddata.name = "feddro"
+    const response = await dispatch(updateHouseholdName(householddata as uppdateHouseholdDTO))
+    const household = response.payload as Household
+    console.log("did it work?   ", household)
   }
   
   return (
@@ -55,6 +71,7 @@ export default function AddEditHousholdScreen({navigation}: Props) {
             }}
           />
       <Button mode="contained" onPress={handleSubmit(onSubmit)}>Skapa</Button>
+      <Button mode="contained" onPress={onUpdate}>test-uppdatera</Button>
     </View>
   );
 }
