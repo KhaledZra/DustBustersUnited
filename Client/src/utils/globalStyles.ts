@@ -78,6 +78,7 @@ const globalStyle = StyleSheet.create({
   pt16: { paddingTop: 16 },
 
   // Margin
+  m0: { margin: 0 },
   m16: { margin: 16 },
   m10: { margin: 10 },
   mh10: { marginHorizontal: 10 },
