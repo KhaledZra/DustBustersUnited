@@ -107,22 +107,21 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
-    [HttpDelete("DeleteHousehold")]
-    public IActionResult DeleteHouseholdForUser(DeleteHouseholdDto dto)
+    [HttpDelete("DeleteProfile/{profileId}")]
+    public IActionResult DeleteProfile(int profileId)
     {
-        Console.WriteLine("profileId" + dto.ProfileId);
-        var profile = _context.Profiles.FirstOrDefault(p => p.Id == dto.ProfileId);
+        var profile = _context.Profiles.FirstOrDefault(p => p.Id == profileId);
 
         if (profile != null)
         {
             _context.Profiles.Remove(profile);
             _context.SaveChanges();
-            Console.WriteLine("Code: 200, Ok! Hushållet har tagits bort från användaren.");
-            return Ok("Hushållet har tagits bort från användaren.");
+            Console.WriteLine("Code: 200, Ok! Profilen har tagits bort.");
+            return Ok("Profilen har tagits bort.");
         }
 
-        Console.WriteLine("Code: 404, Användaren har inte hushåll.");
-        return NotFound("Användaren har inte hushåll.");
+        Console.WriteLine("Code: 404, Hittar ingen Profil.");
+        return NotFound("Hittar ingen Profil.");
     }
 
     [HttpPut("ToggleProfileActive")]

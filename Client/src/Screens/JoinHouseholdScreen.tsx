@@ -29,7 +29,8 @@ export default function JoinHousholdScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const household = useAppSelector((s) => s.household.transientHousehold);
   const [selectedAvatar, setSelectedAvatar] = useState<number>();
-  const [displayName, setDisplayName] = useState<string>();
+  const user = useAppSelector((state) => state.user.user);
+  const [displayName = user?.username, setDisplayName] = useState<string>();
 
   const {
     control,
@@ -49,7 +50,6 @@ export default function JoinHousholdScreen({ navigation }: Props) {
 
   const handleChangeCode = (textinput: string | undefined) => {
     if (household) dispatch(clearTransientHousehold());
-    setDisplayName("");
     if (!textinput || textinput.length !== 4 || isNaN(parseInt(textinput)))
       return;
     dispatch(fetchTransientHousehold(textinput));
@@ -72,7 +72,6 @@ export default function JoinHousholdScreen({ navigation }: Props) {
     dispatch(joinHousehold(dto));
     navigation.navigate("ChoreList");
   };
-
   return (
     <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>
@@ -106,6 +105,7 @@ export default function JoinHousholdScreen({ navigation }: Props) {
           <View>
             <TextInput
               label="Display-namn"
+              value={displayName}
               onChangeText={(text) => setDisplayName(text)}
             />
           </View>
