@@ -67,3 +67,17 @@ export const markChoreAsCompleted = createAsyncThunk<
   dispatch(getChoresByHousehold(markChoreProps.householdId!));
   return response.json() as Promise<ProfileChore>;
 });
+
+export const deleteChore = createAsyncThunk<Chore, Chore>(
+  "chore/removeChore",
+  async (chore) => {
+    await apiFetch(
+      "chore",
+      { choreId: chore.id },
+      {
+        method: "DELETE",
+      }
+    );
+    return chore;
+  }
+);

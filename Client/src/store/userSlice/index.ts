@@ -100,5 +100,8 @@ export const selectActiveAvatar = (state: RootState) => {
   return avatars.find((a) => a.id === profile?.avatar);
 };
 
+export const selectIsAdmin = (state: RootState) =>
+  Boolean(selectActiveProfile(state)?.isAdmin);
+
 export const { setUser, setActiveProfile, setLoginError } = userSlice.actions;
 export default userSlice.reducer;
