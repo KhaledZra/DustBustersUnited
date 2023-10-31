@@ -43,20 +43,20 @@ public class ProfileController : ControllerBase
         return Ok(profile);
     }
 
-    [HttpGet("Profiles/GetProfilesByHousehold/{householdId}")]           //TODO använd denna
-    public ActionResult<List<Profile>> GetProfilesByHousehold(int householdId)
+    [HttpGet("GetProfilesInHousehold/{householdId}")]
+    public ActionResult<IEnumerable<Profile>> GetProfilesInHousehold(int householdId)
     {
         var profiles = _context.Profiles
-        .Where(p=> p.HouseholdId == householdId)
-        .ToList();
+            .Where(p => p.HouseholdId == householdId)
+            .ToList();
 
         if (profiles.Count == 0)
         {
-            Console.WriteLine("Code: 404, Household has no members!");
-            return NotFound("Household has no members!");
+            Console.WriteLine("Code: 404, No profiles found in the household.");
+            return NotFound("No profiles found in the household.");
         }
 
-        Console.WriteLine("Get PROFILES by household, Code: 200, Ok!");
+        Console.WriteLine("Code: 200, Ok!");
         return Ok(profiles);
     }
 
@@ -97,6 +97,7 @@ public class ProfileController : ControllerBase
             isActive = true,
             isAdmin = dto.IsAdmin,
             isDeleted = false,
+            isRequest = true
         };
 
         _context.Profiles.Add(profile);
@@ -149,6 +150,21 @@ public class ProfileController : ControllerBase
         }
 
         foundProfile.isAdmin = !foundProfile.isAdmin;
+        _context.SaveChanges();
+        return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
+    }
+
+    [HttpPut("ToggleProfileRequest")]
+    public IActionResult ToggleProfileRequest(int profileId)
+    {
+        var foundProfile = _context.Profiles.FirstOrDefault(profile => profile.Id == profile.Id);
+
+        if (foundProfile == null)
+        {
+            return NotFound("Profile not found");
+        }
+
+        foundProfile.isRequest = !foundProfile.isRequest;
         _context.SaveChanges();
         return AcceptedAtAction("GetProfile", new { profileId = profileId }, foundProfile);
     }

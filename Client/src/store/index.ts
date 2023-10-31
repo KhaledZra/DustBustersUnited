@@ -6,12 +6,14 @@ import userSlice, { setActiveProfile, setUser } from "./userSlice";
 import householdSlice from "./householdSlice";
 import { storageKeys } from "../constants";
 import choreSlice from "./choreSlice";
+import profileChoreSlice from "./profileChoreSlice";
 
 const store = configureStore({
   reducer: {
     user: userSlice,
     household: householdSlice,
     chore: choreSlice,
+    profileChore: profileChoreSlice
   },
 });
 

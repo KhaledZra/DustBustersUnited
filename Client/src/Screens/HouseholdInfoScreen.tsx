@@ -3,10 +3,14 @@ import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
-import householdSlice, { deleteProfile, getProfiles } from "../store/householdSlice";
+import { deleteProfile } from "../store/householdSlice";
+import { selectProfiles, selectRequestProfiles } from "../store/userSlice";
 import s from "../utils/globalStyles";
 
 export default function HouseholdInfoScreen() {
+  const avatars = useAppSelector((state) => state.household.avatars);
+  const requests = useAppSelector(selectRequestProfiles);
+  const profiles = useAppSelector(selectProfiles);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const householdId = useAppSelector((state) => state.household.transientHousehold?.id);
@@ -55,6 +59,22 @@ export default function HouseholdInfoScreen() {
           {householdCode ? householdCode.code : " "}
         </Text>
       </View>
+      <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
+        Förfrågningar
+      </Text>
+      {requests.map((p) => {
+        const profileAvatar = avatars.find((avatar) => avatar.id === p.id);
+        return (
+          <Button
+            style={[s.pv3, s.bgColWhite, s.m16]}
+            labelStyle={[s.colBlack]}
+            key={p.id}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            {profileAvatar ? profileAvatar.avatar : null} {p.displayName}
+          </Button>
+        );
+      })}
       <Button
         style={[s.pv2, s.bgColWhite, s.m10]}
         labelStyle={[s.colBlack]}
