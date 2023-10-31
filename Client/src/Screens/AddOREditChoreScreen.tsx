@@ -1,5 +1,5 @@
 import { useController, useForm } from "react-hook-form";
-import { ScrollView, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import EnergySelector from "../Components/EnergySelector";
@@ -88,8 +88,27 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
             mode="contained"
             buttonColor="red"
             onPress={() => {
-              handleDeleteChore();
-              navigation.pop();
+              Alert.alert(
+                "All statistik gällande sysslan kommer raderas. Vill du arkivera istället?",
+                "Är du säker?",
+                [
+                  {
+                    text: "Radera",
+                    onPress: () => {
+                      handleDeleteChore();
+                      navigation.pop();
+                    },
+                  },
+                  {
+                    text: "Arkivera",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Avbryt",
+                    style: "cancel",
+                  },
+                ]
+              );
             }}
           >
             Ta bort
