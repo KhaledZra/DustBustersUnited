@@ -12,6 +12,7 @@ import {
 } from "../store/choreSlice/thunks";
 import { getDaysSinceLastDone } from "../utils";
 import { selectActiveHouseholdId } from "../store/householdSlice";
+import React from "react";
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
