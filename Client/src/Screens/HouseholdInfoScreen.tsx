@@ -11,7 +11,6 @@ import { avatars } from "../constants";
 export default function HouseholdInfoScreen() {
 
   const dispatch = useAppDispatch();
-  const avatars = useAppSelector((state) => state.household.avatars);
   const requests = useAppSelector(selectRequestProfiles);
   const profiles = useAppSelector((state) => state.household.profilesInHousehold);
   const navigation = useNavigation();
