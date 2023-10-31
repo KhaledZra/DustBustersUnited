@@ -21,11 +21,11 @@ export default function ChoreView({ navigation, chore }: ChoreViewProps) {
         style={[s.mh10, s.mt16, s.p12, s.row, s.alignCenter, s.justifyBetween]}
       >
         <View style={[s.row, s.alignCenter]}>
-          {!isAdmin && (
+          {isAdmin && (
             <IconButton
               icon="pencil"
               size={20}
-              style={{ margin: 0 }}
+              style={s.m0}
               onPress={() => navigation.navigate("AddOrEditChore", { chore })}
             />
           )}
