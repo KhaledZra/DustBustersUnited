@@ -7,13 +7,13 @@ import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
 import { useAppDispatch, useAppSelector } from "../store";
 import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
-import { selectActiveHousehold } from "../store/householdSlice";
+import { selectActiveHouseholdId } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
 export default function AddOrEditChoreScreen({ route, navigation }: Props) {
-  const householdId = useAppSelector(selectActiveHousehold);
+  const householdId = useAppSelector(selectActiveHouseholdId);
   const { chore } = route.params;
   const isEdit = Boolean(chore);
 

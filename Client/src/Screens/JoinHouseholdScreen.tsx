@@ -18,11 +18,11 @@ import { RootStackScreenProps } from "../../types";
 
 type Props = RootStackScreenProps<"JoinHousehold">;
 
-export default function JoinHousholdScreen({navigation}: Props) {
-  const route = useRoute<RouteProp<RootStackParamList, 'JoinHousehold'>>();
+export default function JoinHousholdScreen({ navigation }: Props) {
+  const route = useRoute<RouteProp<RootStackParamList, "JoinHousehold">>();
   let code: number | undefined;
   if (route.params) {
-    const {code: routeCode} = route.params;
+    const { code: routeCode } = route.params;
     code = routeCode;
   }
   const codeString = code?.toString();
@@ -33,25 +33,25 @@ export default function JoinHousholdScreen({navigation}: Props) {
 
   const {
     control,
-    handleSubmit,     
-    formState: { errors },      //TODO
+    handleSubmit,
+    formState: { errors }, //TODO
   } = useForm<JoinHouseholdDto>({
-    defaultValues:{
-    code: code
-  }});
-  
+    defaultValues: {
+      code: code,
+    },
+  });
+
   useEffect(() => {
     if (code) {
       dispatch(fetchTransientHousehold(codeString || ""));
     }
   }, [codeString, dispatch, code]);
 
-  
-  
   const handleChangeCode = (textinput: string | undefined) => {
     if (household) dispatch(clearTransientHousehold());
     setDisplayName("");
-    if (!textinput || textinput.length !== 4 || isNaN(parseInt(textinput))) return;
+    if (!textinput || textinput.length !== 4 || isNaN(parseInt(textinput)))
+      return;
     dispatch(fetchTransientHousehold(textinput));
   };
 
@@ -63,31 +63,31 @@ export default function JoinHousholdScreen({navigation}: Props) {
       code: household.code,
       displayName: displayName,
       avatar: selectedAvatar,
-      isAdmin: false,         //TODO skaparen av household borde bli admin 
+      isAdmin: false, //TODO skaparen av household borde bli admin
     };
-    if(code){
+    if (code) {
       dto.isAdmin = true;
     }
 
     dispatch(joinHousehold(dto));
-    navigation.navigate("ChoreList")
+    navigation.navigate("ChoreList");
   };
 
   return (
     <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>
         <View>
-        <Controller
+          <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                label="kod:  (3091)"
-                onChangeText={(text)=> {
+                label="kod:"
+                onChangeText={(text) => {
                   onChange(text);
                   handleChangeCode(text);
                 }}
                 onBlur={onBlur}
-                value={(value || '').toString()}
+                value={(value || "").toString()}
               />
             )}
             name="code"
@@ -105,7 +105,7 @@ export default function JoinHousholdScreen({navigation}: Props) {
         {household && (
           <View>
             <TextInput
-              label="Display-namn"              
+              label="Display-namn"
               onChangeText={(text) => setDisplayName(text)}
             />
           </View>

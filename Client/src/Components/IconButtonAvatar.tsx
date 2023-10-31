@@ -170,7 +170,7 @@ const IconButtonAvatar = forwardRef<View, Props>(
           testID={testID}
           {...rest}
         >
-          <Text style={{fontSize: 20}}>{avatar.avatar}</Text>
+          <Text style={{fontSize: size}}>{avatar.avatar}</Text>
         </TouchableRipple>
       </Surface>
     );

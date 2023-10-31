@@ -14,9 +14,6 @@ export async function apiFetch(
   let isPost = Object.keys(postData).length > 0;
   if (!options.method) options.method = isPost ? "POST" : "GET";
   if (isPost) {
-    if (!options.method) {
-      options.method = "POST";
-    }
     options.body = JSON.stringify(postData, null, 2);
     options.headers = {
       ...options.headers,
@@ -30,7 +27,7 @@ export async function apiFetch(
 
   console.log("[apiClient.ts] ::", options.method, API_URL + endpoint);
   if (options.body) {
-    console.log("[POST Body] ::", options.body);
+    console.log("[Body] ::", options.body);
   }
   return Promise.race([
     fetch(API_URL + endpoint, options).catch((e) => {

@@ -3,9 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { RootStackScreenProps } from "../../types";
-import { useForm, Controller, SubmitHandler } from "react-hook-form"
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import s from "../utils/globalStyles";
-
 
 import { register } from "../store/userSlice/thunks";
 
@@ -20,7 +19,6 @@ type Inputs = {
 export default function RegistrationScreen({ navigation }: Props) {
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
-  const [password, setPassword] = React.useState("");
 
   const {
     control,
@@ -30,15 +28,13 @@ export default function RegistrationScreen({ navigation }: Props) {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await dispatch(register(data));
-    setPassword(data.password);
+    const { username, password } = data;
+    await dispatch(register({ username, password }));
   };
 
   useEffect(() => {
-    if (user?.password === password) {
-      navigation.navigate("PickHousehold");
-    }
-  }, [password]);
+    if (user) navigation.navigate("PickHousehold");
+  }, [user]);
 
   return (
     <View style={[s.m16, s.flex1]}>
@@ -112,9 +108,7 @@ export default function RegistrationScreen({ navigation }: Props) {
             }}
           />
           {errors.repeatedPassword && (
-            <Text style={s.colRed}>
-              {errors.repeatedPassword.message}
-            </Text>
+            <Text style={s.colRed}>{errors.repeatedPassword.message}</Text>
           )}
           <Button mode="contained" onPress={handleSubmit(onSubmit)}>
             Registrera dig

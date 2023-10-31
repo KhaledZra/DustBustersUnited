@@ -14,3 +14,9 @@ export const avatars= [
   { id: 8, avatar: "🐼", color: "#2ed573" },
 ];
 
+export const CHORE_PAGE_IDS = {
+  TODAY: "TODAY",
+  THIS_WEEK: "THIS_WEEK",
+  LAST_WEEK: "LAST_WEEK",
+  LAST_MONTH: "LAST_MONTH",
+};

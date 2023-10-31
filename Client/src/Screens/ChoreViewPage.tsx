@@ -6,11 +6,12 @@ import { useEffect } from "react";
 import s from "../utils/globalStyles";
 import { RouteProp } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../store";
-import { MarkChoreProps, markChoreAsCompleted } from "../store/choreSlice/thunks";
-import { getDaysSinceLastDone } from "../Components/ChoreList/GetDaysSinceLastDone";
-import { selectActiveHousehold } from "../store/householdSlice";
-
-const screenDimensions = Dimensions.get("screen");
+import {
+  MarkChoreProps,
+  markChoreAsCompleted,
+} from "../store/choreSlice/thunks";
+import { getDaysSinceLastDone } from "../utils";
+import { selectActiveHouseholdId } from "../store/householdSlice";
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -24,7 +25,7 @@ type Props = {
 
 export default function ChoreViewPage({ navigation, route }: Props) {
   const { chore } = route.params;
-  const householdId = useAppSelector(selectActiveHousehold);
+  const householdId = useAppSelector(selectActiveHouseholdId);
 
   useEffect(() => {
     navigation.setOptions({
@@ -37,8 +38,8 @@ export default function ChoreViewPage({ navigation, route }: Props) {
   const handleMarkChoreAsCompleted = () => {
     const markChoreProps: MarkChoreProps = {
       choreId: chore.id,
-      householdId: householdId
-    }
+      householdId: householdId,
+    };
     dispatch(markChoreAsCompleted(markChoreProps));
     navigation.pop();
   };
