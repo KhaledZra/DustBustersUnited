@@ -80,6 +80,7 @@ const globalStyle = StyleSheet.create({
   // Margin
   m16: { margin: 16 },
   m10: { margin: 10 },
+  mh10: { marginHorizontal: 10 },
 
   mv10: { marginVertical: 10 },
 

@@ -14,7 +14,7 @@ import {
   ProfileChoreProps,
   getChoreCompletions,
 } from "../store/profileChoreSlice/thunks";
-import { selectActiveProfile } from "../store/userSlice";
+import { selectActiveProfile, selectIsAdmin } from "../store/userSlice";
 import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"ChoreList">;
@@ -52,14 +52,16 @@ export default function ChoreListScreen({ navigation, route }: Props) {
         )}
       />
       <View style={s.alignCenter}>
-        <Button
-          mode="contained"
-          icon="plus-circle-outline"
-          onPress={() => navigation.navigate("AddOrEditChore", {})}
-          style={[s.br20, s.p6, s.mb10]}
-        >
-          Lägg till
-        </Button>
+        {isAdmin && (
+          <Button
+            mode="contained"
+            icon="plus-circle-outline"
+            onPress={() => navigation.navigate("AddOrEditChore", {})}
+            style={[s.br20, s.p6, s.mb10]}
+          >
+            Lägg till
+          </Button>
+        )}
       </View>
     </View>
   );

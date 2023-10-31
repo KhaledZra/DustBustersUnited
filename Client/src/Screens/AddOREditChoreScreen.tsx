@@ -83,14 +83,16 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
-        <Button
-          icon="trash-can-outline"
-          mode="contained"
-          buttonColor="red"
-          onPress={handleDeleteChore}
-        >
-          Ta bort
-        </Button>
+        {isEdit && (
+          <Button
+            icon="trash-can-outline"
+            mode="contained"
+            buttonColor="red"
+            onPress={handleDeleteChore}
+          >
+            Ta bort
+          </Button>
+        )}
       </ScrollView>
       <View style={[s.row, s.gap1]}>
         <Button
