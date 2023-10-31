@@ -6,15 +6,18 @@ import s from "../../utils/globalStyles";
 import { avatars } from "../../constants";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { Chore } from "../../Data/Chore";
+import { useEffect, useState } from "react";
 
 export default function ChoreAvatarRenderer(chore: Chore) {
   const profileChores = useAppSelector((s) => s.profileChore.profileChores);
-  const profileChoresByChoreId = profileChores.filter(
-    (pc) => pc.choreId === chore.id
-  );
+  const [filtered, setFiltered] = useState<ProfileChore[]>([]);
 
-  return profileChoresByChoreId.length === 0 ? (
-    <View style={[s.bgColGrey, s.w10, s.h35, s.br10]}>
+  useEffect(() => {
+    setFiltered(profileChores.filter((pc) => pc.choreId === chore.id));
+  }, [profileChores]);
+
+  return filtered.length === 0 ? (
+    <View style={[s.bgColGrey, s.w10, s.br10]}>
       <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
         0
       </Text>
@@ -23,7 +26,7 @@ export default function ChoreAvatarRenderer(chore: Chore) {
     <View>
       <FlatList
         horizontal={true}
-        data={profileChoresByChoreId}
+        data={filtered}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <AvatarRender {...item} />}
       />
@@ -38,11 +41,9 @@ function AvatarRender(item: ProfileChore) {
     (profile) => profile.id === item.profileId
   );
   if (matchedProfile != undefined) {
-    return (
-      <Text style={[s.fs20, s.ph1]}>
-        {avatars[matchedProfile?.avatar].avatar}
-      </Text>
-    );
+    let avatar = avatars.find((a) => a.id === matchedProfile.avatar);
+
+    return <Text style={[s.fs20, s.ph1]}>{avatar?.avatar}</Text>;
   }
 
   return <Text>error</Text>;

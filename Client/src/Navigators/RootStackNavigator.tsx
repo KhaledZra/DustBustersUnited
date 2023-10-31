@@ -17,15 +17,18 @@ import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import ChoreStatisticsScreen from "../Screens/ChoreStatisticsScreen";
 import { Profile } from "../Data/Profile";
+import SettingScreen from "../Screens/SettingsScreen";
 
 export type RootStackParamList = {
+  // Util
+  Settings: undefined;
   // Auth
   Registration: undefined;
   Login: undefined;
   // Create / Join Household
   Profile: { profileId: number };
   PickHousehold: undefined;
-  JoinHousehold: undefined;
+  JoinHousehold: { code: number | undefined };
   HouseholdInfo: undefined;
   AddEditHoushold: { household: Household | undefined }; // undefined is used to create new
   //
@@ -115,7 +118,16 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="ChoreView"
         component={ChoreViewPage}
-        options={{ title: "title" }}
+        options={{
+          title: "title",
+          header: (props) => (
+            <StackHeader
+              {...props}
+              backNav={true}
+              title={props.options.title}
+            />
+          ),
+        }}
       />
       <Stack.Screen
         name="Profile"
@@ -123,6 +135,15 @@ export default function RootStackNavigator() {
         options={{
           header: (props) => (
             <StackHeader {...props} backNav={true} title="Personens profil" />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Settings" />
           ),
         }}
       />

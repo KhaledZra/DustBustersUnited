@@ -13,7 +13,6 @@ import {
 } from "../store/choreSlice/thunks";
 import { selectActiveHouseholdId } from "../store/householdSlice";
 import s from "../utils/globalStyles";
-import { selectActiveProfile } from "../store/userSlice";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
@@ -88,7 +87,10 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
             icon="trash-can-outline"
             mode="contained"
             buttonColor="red"
-            onPress={handleDeleteChore}
+            onPress={() => {
+              handleDeleteChore();
+              navigation.pop();
+            }}
           >
             Ta bort
           </Button>

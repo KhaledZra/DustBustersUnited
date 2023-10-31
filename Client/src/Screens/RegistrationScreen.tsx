@@ -70,6 +70,7 @@ export default function RegistrationScreen({ navigation }: Props) {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
+                secureTextEntry={true}
               />
             )}
             name="password"
@@ -92,6 +93,7 @@ export default function RegistrationScreen({ navigation }: Props) {
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
+                secureTextEntry={true}
               />
             )}
             name="repeatedPassword"
