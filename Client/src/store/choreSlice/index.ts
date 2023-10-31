@@ -41,9 +41,9 @@ const choreSlice = createSlice({
         state.chores[choreIndex] = updatedChore;
       }
     });
-    builder.addCase(deleteChore.fulfilled, (state, acttion) => {
+    builder.addCase(deleteChore.fulfilled, (state, action) => {
       state.chores = state.chores.filter(
-        (chore) => chore.id !== acttion.payload.id
+        (chore) => chore.id !== action.payload.id
       );
     });
   },
