@@ -17,7 +17,7 @@ export default function HouseholdInfoScreen() {
     (state) => state.household.transientHousehold);
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
-    navigation.navigate("PickHousehold");
+    navigation.navigate("PickHousehold"); 
   };
   
   return (
