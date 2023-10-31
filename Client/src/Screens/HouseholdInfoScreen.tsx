@@ -69,7 +69,7 @@ export default function HouseholdInfoScreen() {
         labelStyle={[s.colBlack]}
         onPress={handleLeaveHousehold}
       >
-        Lämna hushåll
+         Lämna hushåll
       </Button>
     </ScrollView>
   );
