@@ -44,7 +44,7 @@ public class UserController : ControllerBase
     {
         var newUser = DtoToUser(user);
         var dupeUserCheck = _context.Users.FirstOrDefault(u => u.Username == user.Username);
-        if (dupeUserCheck == null)
+        if (dupeUserCheck != null)
         {
             Console.WriteLine("Code: 400, Username is taken!");
             return BadRequest("Username is taken!");
