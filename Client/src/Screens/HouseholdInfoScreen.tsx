@@ -15,26 +15,43 @@ export default function HouseholdInfoScreen() {
   const dispatch = useAppDispatch();
   const requests = useAppSelector(selectRequestProfiles);
   const profiles = useAppSelector(
-    
     (state) => state.household.profilesInHousehold
-  
   );
   const navigation = useNavigation();
   const householdCode = useAppSelector(
     (state) => state.household.transientHousehold
-  
   );
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
   };
 
-
   return (
-    <ScrollView contentContainerStyle={[s.flex1]}>
+    <ScrollView>
       <Text style={[s.fs26, s.mt16, s.textCenter]}>Hushållsmedlemmar</Text>
-      <RenderHouseholdProfiles {...profiles}/>
-
+      <View>
+        {profiles ? (
+          profiles.length > 0 ? (
+            profiles.map((p) => {
+              const profileAvatar = avatars.find((avatar) => avatar.id === p.avatar);
+              return (
+                <Button
+                  style={[s.pv3, s.bgColWhite, s.m16]}
+                  labelStyle={[s.colBlack]}
+                  key={p.id}
+                  onPress={() => navigation.navigate("Profile", { profileId: p.id })}
+                >
+                  {profileAvatar ? profileAvatar.avatar : null} {p.displayName}
+                </Button>
+              );
+              })) : (
+            false
+          )
+        ) : (
+          false
+        )}
+      </View>
+      
       <View style={[s.flex1, s.alignCenter]}>
         <Text style={[s.fs26, s.mt16, s.textCenter]}>
           Kod för att gå med i hushåll
@@ -46,7 +63,28 @@ export default function HouseholdInfoScreen() {
       </View>
 
       <Text style={[s.fs26, s.mt16, s.textCenter]}>Förfrågningar</Text>
-      <RenderHouseholdProfiles {...requests}/>
+      <View>
+        {requests ? (
+          requests.length > 0 ? (
+            requests.map((p) => {
+              const profileAvatar = avatars.find((avatar) => avatar.id === p.avatar);
+              return (
+                <Button
+                  style={[s.pv3, s.bgColWhite, s.m16]}
+                  labelStyle={[s.colBlack]}
+                  key={p.id}
+                  onPress={() => navigation.navigate("Profile", { profileId: p.id })}
+                >
+                  {profileAvatar ? profileAvatar.avatar : null} {p.displayName}
+                </Button>
+              );
+              })) : (
+            false
+          )
+        ) : (
+          false
+        )}
+      </View>
 
       <Button
         style={[s.pv2, s.bgColWhite, s.m10]}
