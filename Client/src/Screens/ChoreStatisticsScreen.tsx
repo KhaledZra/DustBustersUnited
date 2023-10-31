@@ -75,7 +75,7 @@ type ChoreWithStats = { chore: Chore; stats: ChoreStats };
 export default function ChoreStatisticsScreen({ route }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((s) => s.chore.chores);
-  const profiles = useAppSelector((s) => s.household.profiles);
+  const profiles = useAppSelector((s) => s.household.profilesInHousehold);
   const completions = useAppSelector((s) => s.profileChore.profileChores);
   const widthAndHeight = Dimensions.get("window").width - 64;
   const [series, setSeries] = useState<number[]>([]);
@@ -93,12 +93,14 @@ export default function ChoreStatisticsScreen({ route }: Props) {
   useEffect(() => {
     setChoresWithStats(
       chores.map((chore) => {
-        const stats: ChoreStats = profiles.map((profile) => ({
-          completions: completions?.filter(
-            (c) => c.choreId === chore.id && c.profileId === profile.id
-          ).length,
-          avatar: avatars.find((a) => a.id == profile.avatar),
-        }));
+        const stats: ChoreStats = profiles
+          .map((profile) => ({
+            completions: completions?.filter(
+              (c) => c.choreId === chore.id && c.profileId === profile.id
+            ).length,
+            avatar: avatars.find((a) => a.id == profile.avatar),
+          }))
+          .filter((s) => s.completions > 0);
 
         return { chore, stats };
       })
@@ -135,7 +137,7 @@ export default function ChoreStatisticsScreen({ route }: Props) {
       [0]
     );
     const centers = edges.map((e, i) => ((e + edges[i - 1]) / 2) * 3.6);
-    setAngles(centers.slice(1));    
+    setAngles(centers.slice(1));
   }, [series]);
 
   return (
@@ -181,11 +183,15 @@ export default function ChoreStatisticsScreen({ route }: Props) {
             >
               {choresWithStats.map((cs) => (
                 <Surface style={[s.br10, s.p8]} key={cs.chore.id}>
-                  <PieChart
-                    widthAndHeight={(widthAndHeight - 16) / 2}
-                    series={cs.stats.map((s) => s.completions)}
-                    sliceColor={cs.stats.map((s) => s.avatar?.color || "black")}
-                  />
+                  {cs.stats.length > 0 && (
+                    <PieChart
+                      widthAndHeight={(widthAndHeight - 16) / 2}
+                      series={cs.stats.map((s) => s.completions)}
+                      sliceColor={cs.stats.map(
+                        (s) => s.avatar?.color || "black"
+                      )}
+                    />
+                  )}
                   <View style={[s.alignCenter, { marginTop: 20 }]}>
                     <Text style={[s.boldText, s.fs20]}>{cs.chore.name}</Text>
                   </View>
