@@ -52,7 +52,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
         )}
       />
       <View style={s.alignCenter}>
-        {isAdmin && (
+        {!isAdmin && (
           <Button
             mode="contained"
             icon="plus-circle-outline"
