@@ -47,6 +47,9 @@ export default function StackHeader({
   const handleShowHousehold = () => {
     navigation.navigate("HouseholdInfo");
   };
+  const handleSetting = () => {
+    navigation.navigate("Settings");
+  };
   const handleLogout = () => {
     dispatch(logout());
     navigation.navigate("Login");
@@ -90,6 +93,11 @@ export default function StackHeader({
             />
           )}
           <Divider />
+          <Menu.Item
+            onPress={handleSetting}
+            title="Settings"
+            leadingIcon="cog"
+          />
           <Menu.Item
             onPress={handleLogout}
             title="Logout"

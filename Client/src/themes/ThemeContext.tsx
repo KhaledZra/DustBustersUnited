@@ -12,11 +12,12 @@ import { PaperProvider } from "react-native-paper";
 import { AppDarkTheme, AppLightTheme } from "./appThemes";
 import { ThemeProp } from "react-native-paper/src/types";
 
-type ColorScheme = "light" | "dark" | "auto";
+export type ColorScheme = "light" | "dark" | "auto";
 
 type ThemeContextValue = {
   setColorScheme: (scheme: ColorScheme) => void;
   theme: ThemeProp;
+  colorScheme: ColorScheme;
 };
 
 const ThemeContext = createContext<ThemeContextValue>({} as ThemeContextValue);
@@ -37,7 +38,7 @@ export default function ThemeProvider({ children }: PropsWithChildren) {
   });
 
   return (
-    <ThemeContext.Provider value={{ theme, setColorScheme }}>
+    <ThemeContext.Provider value={{ theme, setColorScheme, colorScheme }}>
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>{children}</NavigationContainer>
       </PaperProvider>
