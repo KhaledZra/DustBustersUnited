@@ -43,9 +43,15 @@ public class UserController : ControllerBase
     public ActionResult<User> Post(UserAccountDto user)
     {
         var newUser = DtoToUser(user);
+        var dupeUserCheck = _context.Users.FirstOrDefault(u => u.Username == user.Username);
+        if (dupeUserCheck == null)
+        {
+            Console.WriteLine("Code: 400, Username is taken!");
+            return BadRequest("Username is taken!");
+        }
         _context.Users.Add(newUser);
         _context.SaveChanges();
-        
+
         Console.WriteLine("Code: 201, Created new user!");
         return CreatedAtAction("Get", new { id = newUser.Id }, newUser);
     }
