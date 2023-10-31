@@ -35,10 +35,14 @@ export default function ProfileScreen({ route }: Props) {
     }
   };
   const handelAdminHousehold = () => {
-    dispatch(setAdminStatus());
+    if(profile){
+      dispatch(setAdminStatus(profile.id));
+    }
   };
   const handelRequestHousehold = () => {
-    dispatch(setRequestStatus());
+    if(profile){
+      dispatch(setRequestStatus(profile.id));
+    }
   };
 
   return (

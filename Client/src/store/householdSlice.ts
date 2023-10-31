@@ -30,28 +30,25 @@ export const setActiveStatus = createAsyncThunk<Profile[], number>(
   async (profileId, { dispatch }) => {
     const response: Response = await apiFetch(
       `Profile/ToggleProfileActive?profileId=${profileId}`,
-      { },
+      {},
       { method: "PUT" }
     );
     dispatch(getHouseholdProfiles());
     let json = await response.json();
-    console.log(json);
     return json;
   }
 );
 
-export const setAdminStatus = createAsyncThunk<Profile[]>(
+export const setAdminStatus = createAsyncThunk<Profile[], number>(
   "setAdminStatus",
-  async (_: void, { getState, dispatch }) => {
-    const profileId = (getState() as RootState).user.activeProfileId;
+  async (profileId, { dispatch }) => {
     const response: Response = await apiFetch(
-      `Profile/ToggleProfileAdmin`,
-      { profileId },
+      `Profile/ToggleProfileAdmin?profileId=${profileId}`,
+      {},
       { method: "PUT" }
     );
     dispatch(getHouseholdProfiles());
     let json = await response.json();
-    console.log(json);
     return json;
   }
 );
@@ -72,13 +69,12 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
   }
 );
 
-export const setRequestStatus = createAsyncThunk<Profile[]>(
+export const setRequestStatus = createAsyncThunk<Profile[], number>(
   "setRequestStatus",
-  async (_: void, { getState, dispatch }) => {
-    const profileId = (getState() as RootState).user.activeProfileId;
+  async (profileId, { dispatch }) => {
     const response: Response = await apiFetch(
-      `Profile/ToggleProfileRequest`,
-      { profileId },
+      `Profile/ToggleProfileRequest?profileId=${profileId}`,
+      {},
       { method: "PUT" }
     );
     dispatch(getHouseholdProfiles());
