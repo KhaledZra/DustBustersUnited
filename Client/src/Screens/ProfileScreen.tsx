@@ -6,7 +6,7 @@ import { RootStackScreenProps } from "../../types";
 import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
-  deleteProfile,
+  adminDeleteProfile,
   setActiveStatus,
   setAdminStatus,
   setRequestStatus,
@@ -18,17 +18,17 @@ export default function ProfileScreen({ route }: Props) {
   const profileId = route.params.profileId;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const handleLeaveHousehold = () => {
-    dispatch(deleteProfile());
-    navigation.navigate("PickHousehold");
-  };
   const [profile, setProfile] = useState<Profile>();
   const profiles = useAppSelector(
     (state) => state.household.profilesInHousehold
-  );
-  useEffect(() => {
-    setProfile(profiles.find((p) => p.id == profileId));
-  }, [profiles, profileId]);
+    );
+    useEffect(() => {
+      setProfile(profiles.find((p) => p.id == profileId));
+    }, [profiles, profileId]);
+    const handleLeaveHousehold = () => {
+      dispatch(adminDeleteProfile(profile!.id));
+      navigation.navigate("PickHousehold");
+    };
   const handelActiveHousehold = () => {
     if (profile) {
       dispatch(setActiveStatus(profile.id));

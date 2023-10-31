@@ -69,6 +69,21 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
   }
 );
 
+export const adminDeleteProfile = createAsyncThunk<Profile[], number>(
+  "adminDeleteProfile",
+  async (profileId, { dispatch }) => {
+    const response: Response = await apiFetch(
+      `Profile/DeleteHousehold?profileId=${profileId}`,
+      {},
+      { method: "DELETE" }
+    );
+    dispatch(setActiveProfile(undefined));
+    dispatch(getHouseholdProfiles());
+    let json = await response.json();
+    return json;
+  }
+);
+
 export const setRequestStatus = createAsyncThunk<Profile[], number>(
   "setRequestStatus",
   async (profileId, { dispatch }) => {
