@@ -6,8 +6,10 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { deleteProfile } from "../store/householdSlice";
 import { selectRequestProfiles } from "../store/userSlice";
 import s from "../utils/globalStyles";
+import { avatars } from "../constants";
 
 export default function HouseholdInfoScreen() {
+
   const dispatch = useAppDispatch();
   const avatars = useAppSelector((state) => state.household.avatars);
   const requests = useAppSelector(selectRequestProfiles);
