@@ -59,7 +59,6 @@ export const markChoreAsCompleted = createAsyncThunk<
     }
   );
   const pcProps: ProfileChoreProps = {
-    householdId: markChoreProps.householdId,
     startDate: todaysDateOnlyAsString(),
     endDate: undefined,
   };

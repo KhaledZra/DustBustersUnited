@@ -3,7 +3,7 @@ export const storageKeys = {
   LOGGED_IN_USER: "LOGGED_IN_USER",
 };
 
-export const avatars= [
+export const avatars = [
   { id: 1, avatar: "🐱", color: "#ffb02e" },
   { id: 2, avatar: "🐶", color: "#ff7f50" },
   { id: 3, avatar: "🐭", color: "#ff6b81" },
