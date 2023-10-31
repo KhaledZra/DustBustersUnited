@@ -16,8 +16,11 @@ import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import ChoreStatisticsScreen from "../Screens/ChoreStatisticsScreen";
+import SettingScreen from "../Screens/SettingsScreen";
 
 export type RootStackParamList = {
+  // Util
+  Settings: undefined;
   // Auth
   Registration: undefined;
   Login: undefined;
@@ -122,6 +125,15 @@ export default function RootStackNavigator() {
         options={{
           header: (props) => (
             <StackHeader {...props} backNav={true} title="Personens profil" />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Settings" />
           ),
         }}
       />
