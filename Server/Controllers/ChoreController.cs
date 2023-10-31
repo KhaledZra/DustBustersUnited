@@ -111,9 +111,10 @@ public class ChoreController : ControllerBase
     }
 
     [HttpDelete]
-    public IActionResult DeleteChore(int choreId)
+    public async Task<IActionResult> DeleteChore(int choreId)
     {
-        var chore = _context.Chores.FirstOrDefault(chore => chore.Id == choreId);
+        var chore = _context.Chores.Include("ProfileChores")
+        .FirstOrDefault(chore => chore.Id == choreId);
 
         if (chore == null)
         {
@@ -121,9 +122,13 @@ public class ChoreController : ControllerBase
             return NotFound("Chore not found");
         }
 
+        _context.ProfileChores.RemoveRange(chore.ProfileChores);
+
         _context.Chores.Remove(chore);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
+
         Console.WriteLine("Code: 200, Chore was deleted!");
+
         return Ok($"ChoreId: {choreId}, was deleted");
     }
 
