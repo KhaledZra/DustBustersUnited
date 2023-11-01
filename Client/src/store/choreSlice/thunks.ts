@@ -86,6 +86,7 @@ export const archiveChore = createAsyncThunk<Chore, Chore>(
   async (chore) => {
     const response: Response = await apiFetch(
       "Chore/ToggleActivity?choreId=" + chore.id,
+      {},
       {
         method: "PUT",
       }

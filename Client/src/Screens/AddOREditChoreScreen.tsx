@@ -88,7 +88,6 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           <Button
             icon="trash-can-outline"
             mode="contained"
-            buttonColor="red"
             onPress={() => {
               Alert.alert(
                 "All statistik gällande sysslan kommer raderas. Vill du arkivera istället?",
