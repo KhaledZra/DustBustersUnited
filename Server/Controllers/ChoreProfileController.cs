@@ -73,12 +73,6 @@ public class ChoreProfileController : ControllerBase
                 .ToList();
         }
 
-        if (profileChores.Count < 1)
-        {
-            Console.WriteLine("Code 404. No ProfileChores found");
-            return NotFound("No ProfileChores found");
-        }
-
         Console.WriteLine($"Code: 200, Ok!");
         return Ok(profileChores);
     }
