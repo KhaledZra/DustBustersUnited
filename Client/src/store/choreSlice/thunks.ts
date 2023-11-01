@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Chore, ChoreCreateDto } from "../../Data/Chore";
 import { apiFetch } from "../../utils/apiClient";
 import { ProfileChore } from "../../Data/ProfileChore";
@@ -8,6 +8,7 @@ import {
   getChoreCompletions,
 } from "../profileChoreSlice/thunks";
 import todaysDateOnlyAsString from "../../Components/GetTodaysDateOnly";
+import { ImagePickerAsset } from "expo-image-picker";
 
 export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
@@ -19,6 +20,33 @@ export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   }
 );
 
+type ChoreImageProps = { choreDto: ChoreCreateDto; image: ImagePickerAsset };
+export const saveChoreWithImageToDb = createAsyncThunk<Chore, ChoreImageProps>(
+  "user/addChore",
+  async ({ choreDto, image }, { dispatch }) => {
+    const { payload: chore } = (await dispatch(
+      saveChoreToDb(choreDto)
+    )) as PayloadAction<Chore>;
+    const choreId = chore.id;
+    const formData = new FormData();
+
+    formData.append("file", image.uri);
+
+    const endpoint = "ChoreProfile/SaveChoreImage";
+    const url = `${endpoint}/${choreId}`;
+    const response: Response = await apiFetch(url, formData, {
+      headers: { "content-type": "multipart/form-data" },
+      method: "POST",
+    });
+
+    console.log("response.status", response.status);
+
+    let json = await response.json();
+    console.log("json", json);
+
+    return chore;
+  }
+);
 export const updateChore = createAsyncThunk<Chore, Chore>(
   "user/editChore",
   async (chore) => {

@@ -14,6 +14,9 @@ public class Chore
 
     public ICollection<ProfileChore> ProfileChores { get; set; } = new List<ProfileChore>();
 
+    public string ChoreImageBytesString { get; set; } = string.Empty;
+    public string ChoreAudioBytesString { get; set; } = string.Empty;
+
     // Foreign Key
     public int HouseholdId { get; set; }
 

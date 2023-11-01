@@ -10,20 +10,23 @@ import {
   archiveChore,
   deleteChore,
   saveChoreToDb,
+  saveChoreWithImageToDb,
   updateChore,
 } from "../store/choreSlice/thunks";
 import { selectActiveHouseholdId } from "../store/householdSlice";
 import s from "../utils/globalStyles";
+import ImageSelector from "../Components/ImageSelector";
+import { useState } from "react";
+import { ImagePickerAsset } from "expo-image-picker";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
 export default function AddOrEditChoreScreen({ route, navigation }: Props) {
+  const [image, setImage] = useState<ImagePickerAsset>();
   const householdId = useAppSelector(selectActiveHouseholdId);
   const { chore } = route.params;
   const isEdit = Boolean(chore);
-
   const dispatch = useAppDispatch();
-
   const { handleSubmit, register, control } = useForm<Chore>({
     defaultValues: chore || {
       description: "",
@@ -49,7 +52,11 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
       dispatch(updateChore(chore));
     } else {
       const newChore = { ...chore, householdId };
-      dispatch(saveChoreToDb(newChore));
+      if (image) {
+        dispatch(saveChoreWithImageToDb({ choreDto: newChore, image }));
+      } else {
+        dispatch(saveChoreToDb(newChore));
+      }
     }
     navigation.pop();
   };
@@ -84,6 +91,8 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
+        <ImageSelector onImageSelected={(img) => setImage(img)} />
+
         {isEdit && (
           <Button
             icon="trash-can-outline"
