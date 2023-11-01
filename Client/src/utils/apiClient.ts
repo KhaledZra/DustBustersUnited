@@ -16,9 +16,9 @@ export async function apiFetch(
   if (isPost) {
     options.body = JSON.stringify(postData, null, 2);
     options.headers = {
-      ...options.headers,
       Accept: "application/json",
       "Content-Type": "application/json",
+      ...options.headers,
     };
   }
   // if Endpoint doesn't begin with /, and the API_URL doesn't end with /, add a / in between!

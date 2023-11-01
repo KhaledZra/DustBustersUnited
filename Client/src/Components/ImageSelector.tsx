@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button, Image, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-export default function ImageSelector() {
+type Props = { onImageSelected: (image: ImagePicker.ImagePickerAsset) => void };
+export default function ImageSelector({ onImageSelected }: Props) {
   const [image, setImage] = useState<string>();
 
   const pickImage = async () => {
@@ -16,8 +17,9 @@ export default function ImageSelector() {
 
     console.log(result);
 
-    if (!result.canceled) {
+    if (result.assets && result.assets.length > 0) {
       setImage(result.assets[0].uri);
+      onImageSelected(result.assets[0]);
     }
   };
 
