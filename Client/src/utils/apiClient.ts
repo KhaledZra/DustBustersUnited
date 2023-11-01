@@ -30,9 +30,19 @@ export async function apiFetch(
     console.log("[Body] ::", options.body);
   }
   return Promise.race([
-    fetch(API_URL + endpoint, options).catch((e) => {
-      console.log("[apiClient.ts] Error: ", e);
-    }),
+    fetch(API_URL + endpoint, options)
+      .then((response) => {
+        if (response.status >= 400)
+          throw new Error(
+            `\n endpoint:\t ${(options.method, endpoint)}` +
+              `\n status:\t ${response.status}` +
+              `\n statusText:\t ${response.statusText}\n`
+          );
+        return response;
+      })
+      .catch((e) => {
+        console.log("[apiClient.ts]", e);
+      }),
     new Promise((_, reject) =>
       setTimeout(
         () => reject(new Error(`timeout ${API_URL + endpoint}`)),
