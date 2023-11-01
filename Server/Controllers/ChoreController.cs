@@ -84,8 +84,8 @@ public class ChoreController : ControllerBase
         var fileName = Path.GetFileName(request.Form.Files[0].FileName);
         Console.WriteLine("### " + fileName);
 
-        var sep = Path.DirectorySeparatorChar;
-        var filePath = Directory.GetCurrentDirectory() + sep + "upload" + sep + "images" + sep + fileName;
+        
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "upload", "images", fileName);
         using (var stream = System.IO.File.Create(filePath))
         {
             await file.CopyToAsync(stream);
