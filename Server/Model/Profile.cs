@@ -8,6 +8,7 @@ public class Profile
     public bool isAdmin { get; set; }
     public bool isActive { get; set; }
     public bool isDeleted { get; set; }
+    public bool isRequest { get; set; }
 
     public int UserId { get; set; }
     public User? User { get; set; }

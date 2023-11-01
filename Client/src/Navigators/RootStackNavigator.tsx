@@ -15,14 +15,18 @@ import LoginScreen from "../Screens/LoginScreen";
 import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
-import { ProfileChore } from "../Data/ProfileChore";
+import ChoreStatisticsScreen from "../Screens/ChoreStatisticsScreen";
+import { Profile } from "../Data/Profile";
+import SettingScreen from "../Screens/SettingsScreen";
 
 export type RootStackParamList = {
+  // Util
+  Settings: undefined;
   // Auth
   Registration: undefined;
   Login: undefined;
   // Create / Join Household
-  Profile: undefined;
+  Profile: { profileId: number };
   PickHousehold: undefined;
   JoinHousehold: { code: number | undefined };
   HouseholdInfo: undefined;
@@ -30,6 +34,7 @@ export type RootStackParamList = {
   //
   ChoreList: undefined;
   ChoreView: { chore: Chore };
+  ChoreStatistics: { startDate: string; endDate: string };
   AddOrEditChore: { chore?: Chore };
 };
 
@@ -40,18 +45,19 @@ export default function RootStackNavigator() {
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={() => ({
-        header: (props) => <StackHeader {...props} />,
+        header: (props) => (
+          <StackHeader {...props} title={props.options.title} />
+        ),
       })}
     >
       <Stack.Screen
         name="HouseholdInfo"
         component={HouseholdInfoScreen}
-        options={
-          {
-            title: "Hushålls-info",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Hushållsinfo" />
+          ),
+        }}
       />
       <Stack.Screen
         name="Registration"
@@ -71,28 +77,35 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="JoinHousehold"
         component={JoinHousholdScreen}
-        options={
-          {
-            title: "Gå med i hushåll",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Gå med i hushåll" />
+          ),
+        }}
       />
       <Stack.Screen
         name="ChoreList"
         component={ChoreListScreen}
-        options={{ title: "Hushåll's Vy" }}
+        options={{
+          header: (props) => <StackHeader {...props} choreNav={true} />,
+        }}
+      />
+      <Stack.Screen
+        name="ChoreStatistics"
+        component={ChoreStatisticsScreen}
+        options={{
+          header: (props) => <StackHeader {...props} choreNav={true} />,
+        }}
       />
       <Stack.Screen
         name="AddEditHoushold"
         component={AddEditHouseholdScreen}
         initialParams={{ household: undefined }}
-        options={
-          {
-            title: "Skapa hushåll",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Skapa hushåll" />
+          ),
+        }}
       />
       <Stack.Screen
         name="AddOrEditChore"
@@ -105,17 +118,34 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="ChoreView"
         component={ChoreViewPage}
-        options={{ title: "title" }}
+        options={{
+          title: "title",
+          header: (props) => (
+            <StackHeader
+              {...props}
+              backNav={true}
+              title={props.options.title}
+            />
+          ),
+        }}
       />
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={
-          {
-            title: "Personens profil",
-            backNav: true,
-          } as NativeStackNavigationOptions
-        }
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Personens profil" />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          header: (props) => (
+            <StackHeader {...props} backNav={true} title="Settings" />
+          ),
+        }}
       />
     </Stack.Navigator>
   );

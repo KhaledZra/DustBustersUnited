@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
+import { Chore } from "../../Data/Chore";
 import { Profile } from "../../Data/Profile";
 import { User } from "../../Data/User";
+import { avatars } from "../../constants";
 import { fetchProfiles, joinHousehold, login, register } from "./thunks";
-import { Chore } from "../../Data/Chore";
-import { RootState } from "..";
 
 type UserState = {
   user: User | undefined;
@@ -79,6 +79,19 @@ const userSlice = createSlice({
     });
   },
 });
+
+export const selectActiveProfile = (state: RootState) =>
+  state.user.profiles.find((p) => p.id === state.user.activeProfileId);
+
+export const selectActiveAvatar = (state: RootState) => {
+  const profile = state.user.profiles.find(
+    (p) => p.id === state.user.activeProfileId
+  );
+  return avatars.find((a) => a.id === profile?.avatar);
+};
+
+export const selectIsAdmin = (state: RootState) =>
+  Boolean(selectActiveProfile(state)?.isAdmin);
 
 export const { setUser, setActiveProfile, setLoginError } = userSlice.actions;
 export default userSlice.reducer;

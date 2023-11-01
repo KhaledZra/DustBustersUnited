@@ -1,15 +1,18 @@
 import { View, Dimensions } from "react-native";
 import { Badge, Button, Card, List, Text } from "react-native-paper";
-import { getDaysSinceLastDone } from "./ChoreListScreen";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import s from "../utils/globalStyles";
 import { RouteProp } from "@react-navigation/native";
-import { useAppDispatch } from "../store";
-import { markChoreAsCompleted } from "../store/choreSlice/thunks";
-
-const screenDimensions = Dimensions.get("screen");
+import { useAppDispatch, useAppSelector } from "../store";
+import {
+  MarkChoreProps,
+  markChoreAsCompleted,
+} from "../store/choreSlice/thunks";
+import { getDaysSinceLastDone } from "../utils";
+import { selectActiveHouseholdId } from "../store/householdSlice";
+import React from "react";
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -23,6 +26,7 @@ type Props = {
 
 export default function ChoreViewPage({ navigation, route }: Props) {
   const { chore } = route.params;
+  const householdId = useAppSelector(selectActiveHouseholdId);
 
   useEffect(() => {
     navigation.setOptions({
@@ -33,7 +37,11 @@ export default function ChoreViewPage({ navigation, route }: Props) {
   const dispatch = useAppDispatch();
 
   const handleMarkChoreAsCompleted = () => {
-    dispatch(markChoreAsCompleted(chore.id));
+    const markChoreProps: MarkChoreProps = {
+      choreId: chore.id,
+      householdId: householdId,
+    };
+    dispatch(markChoreAsCompleted(markChoreProps));
     navigation.pop();
   };
 
@@ -56,9 +64,7 @@ export default function ChoreViewPage({ navigation, route }: Props) {
             title={<Text style={s.boldText}>Värde:</Text>}
             description="Hur energiekrävande är sysslan?"
             right={(props) => (
-              <Badge style={[s.bgColGrey]}>
-                {getDaysSinceLastDone(chore.deadline, chore.energy)}
-              </Badge>
+              <Badge style={[s.bgColGrey, props.style]}>{chore.energy}</Badge>
             )}
           />
         </Card.Content>

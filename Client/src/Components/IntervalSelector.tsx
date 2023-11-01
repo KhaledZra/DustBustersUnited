@@ -40,7 +40,7 @@ export default function IntervalSelector({ name, control }: Props) {
     <Card>
       <ScrollView horizontal contentContainerStyle={[s.row, s.p16, s.gap4]}>
         {Array.from(Array(31)).map((_, index) => (
-          <Text onPress={() => handleClick(index + 1)}>{index + 1}</Text>
+          <Text key={index} onPress={() => handleClick(index + 1)}>{index + 1}</Text>
         ))}
       </ScrollView>
     </Card>

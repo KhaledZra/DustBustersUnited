@@ -12,6 +12,8 @@ public class Chore
     public DateTime Deadline { get; set; }
     public int RepeatInterval { get; set; }
 
+    public ICollection<ProfileChore> ProfileChores { get; set; } = new List<ProfileChore>();
+
     public string ChoreImageBytesString { get; set; } = string.Empty;
     public string ChoreAudioBytesString { get; set; } = string.Empty;
 

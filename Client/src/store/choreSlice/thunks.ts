@@ -3,6 +3,11 @@ import { Chore, ChoreCreateDto } from "../../Data/Chore";
 import { apiFetch } from "../../utils/apiClient";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
+import {
+  ProfileChoreProps,
+  getChoreCompletions,
+} from "../profileChoreSlice/thunks";
+import todaysDateOnlyAsString from "../../Components/GetTodaysDateOnly";
 
 export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
@@ -24,34 +29,68 @@ export const updateChore = createAsyncThunk<Chore, Chore>(
   }
 );
 
-export const getChores = createAsyncThunk<Chore[], void>(
-  "user/getChore",
-  async () => {
+export const getChoresByHousehold = createAsyncThunk<Chore[], number>(
+  "user/getChoresByHousehold",
+  async (householdId: number) => {
     const response: Response = await apiFetch(
-      `chore`,
-      {},
-      {
-        method: "GET",
-      }
+      `Chore/GetChoresByHousehold/` + householdId
     );
     return response.json() as Promise<Chore[]>;
   }
 );
 
-export const markChoreAsCompleted = createAsyncThunk<ProfileChore, number>(
-  "chore/markAsCompleted",
-  async (choreId, { dispatch, getState }) => {
+export interface MarkChoreProps {
+  choreId: number;
+  householdId: number | undefined;
+}
+
+export const markChoreAsCompleted = createAsyncThunk<
+  ProfileChore,
+  MarkChoreProps
+>("chore/markAsCompleted", async (markChoreProps, { dispatch, getState }) => {
+  const response: Response = await apiFetch(
+    "ChoreProfile/TriggerCompletedChoreEvent",
+    {
+      profileId: (getState() as RootState).user.activeProfileId,
+      choreId: markChoreProps.choreId,
+    },
+    {
+      method: "PUT",
+    }
+  );
+  const pcProps: ProfileChoreProps = {
+    startDate: todaysDateOnlyAsString(),
+    endDate: undefined,
+  };
+  dispatch(getChoreCompletions(pcProps));
+  dispatch(getChoresByHousehold(markChoreProps.householdId!));
+  return response.json() as Promise<ProfileChore>;
+});
+
+export const deleteChore = createAsyncThunk<number, Chore>(
+  "chore/removeChore",
+  async (chore) => {
     const response: Response = await apiFetch(
-      "ChoreProfile/TriggerCompletedChoreEvent",
+      "chore?choreId=" + chore.id,
+      {},
       {
-        profileId: (getState() as RootState).user.activeProfileId,
-        choreId: choreId,
-      },
+        method: "DELETE",
+      }
+    );
+    return chore.id;
+  }
+);
+
+export const archiveChore = createAsyncThunk<Chore, Chore>(
+  "chore/archiveChore",
+  async (chore) => {
+    const response: Response = await apiFetch(
+      "Chore/ToggleActivity?choreId=" + chore.id,
+      {},
       {
         method: "PUT",
       }
     );
-    dispatch(getChores());
-    return response.json() as Promise<ProfileChore>;
+    return response.json() as Promise<Chore>;
   }
 );

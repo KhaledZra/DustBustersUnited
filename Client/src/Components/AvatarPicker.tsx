@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Household } from "../Data/Household";
-import { View, StyleSheet } from "react-native";
-import { useAppSelector } from "../store";
+import { View } from "react-native";
 import { Surface, Text, TouchableRipple } from "react-native-paper";
+import { Household } from "../Data/Household";
+import { avatars } from "../constants";
 import s from "../utils/globalStyles";
 
 type AvatarPickerProps = {
@@ -16,7 +15,7 @@ export default function AvatarPicker({
   selected,
   onSelect,
 }: AvatarPickerProps) {
-  const avatars = useAppSelector((state) => state.household.avatars);
+  
   const isAvailable = (avatarId: number) => {
     return household && household.availableAvatars && household.availableAvatars.includes(avatarId);
   };

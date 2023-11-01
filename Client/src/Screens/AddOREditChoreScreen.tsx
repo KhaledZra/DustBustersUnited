@@ -1,19 +1,24 @@
 import { useController, useForm } from "react-hook-form";
-import { ScrollView, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import EnergySelector from "../Components/EnergySelector";
 import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
 import { useAppDispatch, useAppSelector } from "../store";
-import { saveChoreToDb, updateChore } from "../store/choreSlice/thunks";
-import { selectActiveHousehold } from "../store/householdSlice";
+import {
+  archiveChore,
+  deleteChore,
+  saveChoreToDb,
+  updateChore,
+} from "../store/choreSlice/thunks";
+import { selectActiveHouseholdId } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
 export default function AddOrEditChoreScreen({ route, navigation }: Props) {
-  const householdId = useAppSelector(selectActiveHousehold);
+  const householdId = useAppSelector(selectActiveHouseholdId);
   const { chore } = route.params;
   const isEdit = Boolean(chore);
 
@@ -34,6 +39,9 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
     control,
     name: "description",
   });
+
+  const handleDeleteChore = () => dispatch(deleteChore(chore!));
+  const handleArchiveChore = () => dispatch(archiveChore(chore!));
 
   const onSubmit = (chore: Chore) => {
     console.log(chore);
@@ -67,7 +75,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           {...register("description")}
         />
 
-        <IntervalSelector name="repeatInterval" control={control} />
+        <IntervalSelector key="" name="repeatInterval" control={control} />
 
         <EnergySelector name="energy" control={control} />
 
@@ -76,6 +84,40 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
+        {isEdit && (
+          <Button
+            icon="trash-can-outline"
+            mode="contained"
+            onPress={() => {
+              Alert.alert(
+                "All statistik gällande sysslan kommer raderas. Vill du arkivera istället?",
+                "Är du säker?",
+                [
+                  {
+                    text: "Radera",
+                    onPress: () => {
+                      handleDeleteChore();
+                      navigation.pop();
+                    },
+                  },
+                  {
+                    text: "Arkivera",
+                    onPress: () => {
+                      handleArchiveChore();
+                      navigation.pop();
+                    },
+                  },
+                  {
+                    text: "Avbryt",
+                    style: "cancel",
+                  },
+                ]
+              );
+            }}
+          >
+            Ta bort
+          </Button>
+        )}
       </ScrollView>
       <View style={[s.row, s.gap1]}>
         <Button

@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Chore } from "../../Data/Chore";
-import { getChores, saveChoreToDb, updateChore } from "./thunks";
+import {
+  archiveChore,
+  deleteChore,
+  getChoresByHousehold,
+  saveChoreToDb,
+  updateChore,
+} from "./thunks";
 
 type UserState = {
   chores: Chore[];
@@ -24,8 +30,8 @@ const choreSlice = createSlice({
     builder.addCase(saveChoreToDb.fulfilled, (state, action) => {
       state.chores.push(action.payload);
     });
-    builder.addCase(getChores.fulfilled, (state, action) => {
-      state.chores = [...action.payload];
+    builder.addCase(getChoresByHousehold.fulfilled, (state, action) => {
+      state.chores = action.payload;
     });
     builder.addCase(updateChore.fulfilled, (state, action) => {
       const updatedChore = action.payload;
@@ -35,6 +41,16 @@ const choreSlice = createSlice({
       if (choreIndex !== -1) {
         state.chores[choreIndex] = updatedChore;
       }
+    });
+    builder.addCase(deleteChore.fulfilled, (state, action) => {
+      state.chores = state.chores.filter(
+        (chore) => chore.id !== action.payload
+      );
+    });
+    builder.addCase(archiveChore.fulfilled, (state, action) => {
+      state.chores = state.chores.filter(
+        (chore) => chore.id !== action.payload.id
+      );
     });
   },
 });

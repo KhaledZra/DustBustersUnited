@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231030092208_IsRequest")]
+    partial class IsRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -21,14 +24,6 @@ namespace Server.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("ChoreAudioBytesString")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ChoreImageBytesString")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("TEXT");
@@ -55,7 +50,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chores", (string)null);
+                    b.ToTable("Chores");
                 });
 
             modelBuilder.Entity("Model.Household", b =>
@@ -78,7 +73,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Households", (string)null);
+                    b.ToTable("Households");
                 });
 
             modelBuilder.Entity("Model.Profile", b =>
@@ -118,7 +113,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("Model.ProfileChore", b =>
@@ -138,7 +133,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProfileChores", (string)null);
+                    b.ToTable("ProfileChores");
                 });
 
             modelBuilder.Entity("Model.User", b =>
@@ -160,7 +155,7 @@ namespace Server.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Model.Household", b =>
