@@ -16,6 +16,7 @@ import PickHouseholdScreen from "../Screens/PickHouseholdScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import ChoreStatisticsScreen from "../Screens/ChoreStatisticsScreen";
+import { Profile } from "../Data/Profile";
 import SettingScreen from "../Screens/SettingsScreen";
 
 export type RootStackParamList = {
@@ -25,7 +26,7 @@ export type RootStackParamList = {
   Registration: undefined;
   Login: undefined;
   // Create / Join Household
-  Profile: undefined;
+  Profile: { profileId: number };
   PickHousehold: undefined;
   JoinHousehold: { code: number | undefined };
   HouseholdInfo: undefined;
