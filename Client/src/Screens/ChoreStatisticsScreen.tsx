@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { Avatar } from "../store/householdSlice";
 import { getChoreCompletions } from "../store/profileChoreSlice/thunks";
 import s from "../utils/globalStyles";
+import { nextChorePage } from "../store/choreNavigationSlice";
 
 type Props = RootStackScreenProps<"ChoreStatistics">;
 const widthAndHeight = 250;
@@ -71,7 +72,7 @@ type ChoreStats = {
 
 type ChoreWithStats = { chore: Chore; stats: ChoreStats };
 
-export default function ChoreStatisticsScreen({ route }: Props) {
+export default function ChoreStatisticsScreen({ route, navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((s) => s.chore.chores);
   const profiles = useAppSelector((s) => s.household.profilesInHousehold);
@@ -87,6 +88,11 @@ export default function ChoreStatisticsScreen({ route }: Props) {
   useEffect(() => {
     dispatch(getChoreCompletions(route.params));
   }, [route.params]);
+
+  // Skippar denna sidan ("vyn"?) om det inte finns några chores
+  useEffect(() => {
+    if (completions.length === 0) dispatch(nextChorePage());
+  }, [completions]);
 
   // Smaller pies
   useEffect(() => {
