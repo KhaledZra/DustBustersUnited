@@ -117,7 +117,7 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   }
 );
 
-export const updateHouseholdName = createAsyncThunk<Household, uppdateHouseholdDTO>(
+export const updateHouseholdName = createAsyncThunk<Household, Household>(
   "updateHouseholdName",
 
   async (payload) => {
