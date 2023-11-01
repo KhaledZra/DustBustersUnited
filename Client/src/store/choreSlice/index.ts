@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Chore } from "../../Data/Chore";
 import {
+  archiveChore,
   deleteChore,
   getChoresByHousehold,
   saveChoreToDb,
@@ -42,6 +43,11 @@ const choreSlice = createSlice({
       }
     });
     builder.addCase(deleteChore.fulfilled, (state, action) => {
+      state.chores = state.chores.filter(
+        (chore) => chore.id !== action.payload
+      );
+    });
+    builder.addCase(archiveChore.fulfilled, (state, action) => {
       state.chores = state.chores.filter(
         (chore) => chore.id !== action.payload.id
       );

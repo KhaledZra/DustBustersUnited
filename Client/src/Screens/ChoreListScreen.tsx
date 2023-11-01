@@ -23,7 +23,9 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectActiveProfile);
   const householdId = useAppSelector(selectActiveHouseholdId);
-  const chores = useAppSelector((state) => state.chore.chores);
+  const chores = useAppSelector((state) => state.chore.chores).filter(
+    (c) => c.isActive !== false
+  );
   const activeProfile = useAppSelector((state) => state.user.activeProfileId);
   const isAdmin = useAppSelector(selectIsAdmin);
 

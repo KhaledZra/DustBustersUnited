@@ -67,26 +67,29 @@ export const markChoreAsCompleted = createAsyncThunk<
   return response.json() as Promise<ProfileChore>;
 });
 
-export const deleteChore = createAsyncThunk<Chore, Chore>(
+export const deleteChore = createAsyncThunk<number, Chore>(
   "chore/removeChore",
   async (chore) => {
-    await apiFetch(
+    const response: Response = await apiFetch(
       "chore?choreId=" + chore.id,
       {},
       {
         method: "DELETE",
       }
     );
-    return chore;
+    return chore.id;
   }
 );
 
 export const archiveChore = createAsyncThunk<Chore, Chore>(
   "chore/archiveChore",
   async (chore) => {
-    await apiFetch("Chore/ToggleActivity?choreId=" + chore.id, {
-      method: "PUT",
-    });
-    return chore;
+    const response: Response = await apiFetch(
+      "Chore/ToggleActivity?choreId=" + chore.id,
+      {
+        method: "PUT",
+      }
+    );
+    return response.json() as Promise<Chore>;
   }
 );

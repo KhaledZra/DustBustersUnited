@@ -7,6 +7,7 @@ import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
+  archiveChore,
   deleteChore,
   saveChoreToDb,
   updateChore,
@@ -40,6 +41,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
   });
 
   const handleDeleteChore = () => dispatch(deleteChore(chore!));
+  const handleArchiveChore = () => dispatch(archiveChore(chore!));
 
   const onSubmit = (chore: Chore) => {
     console.log(chore);
@@ -101,7 +103,10 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
                   },
                   {
                     text: "Arkivera",
-                    style: "cancel",
+                    onPress: () => {
+                      handleArchiveChore();
+                      navigation.pop();
+                    },
                   },
                   {
                     text: "Avbryt",
