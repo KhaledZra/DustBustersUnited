@@ -4,8 +4,8 @@ import { View } from "react-native";
 import { RootStackScreenProps } from "../../types";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store";
-import { addHousehold, updateHouseholdName } from "../store/householdSlice";
-import { AddHouseholdDTO, Household, uppdateHouseholdDTO } from "../Data/Household";
+import { addHousehold } from "../store/householdSlice";
+import { AddHouseholdDTO, Household} from "../Data/Household";
 import { useRoute } from "@react-navigation/native";
 
 type Props = RootStackScreenProps<"AddEditHoushold">;
@@ -14,11 +14,6 @@ export default function AddEditHousholdScreen({navigation}: Props) {
   const dispatch = useAppDispatch();
   const route = useRoute();
   
-  const householddata = {
-    id: 2,
-    name: "Exempelhus",
-  };
-  console.log("householdData: ", householddata)
   const user = useAppSelector((state)=> state.user.user?.id)
   
   const {
