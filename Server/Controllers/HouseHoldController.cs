@@ -86,8 +86,8 @@ public class HouseholdController : ControllerBase
         return CreatedAtAction("Get", new { id = household.Id }, household);
     }
 
-    [HttpPut("/update/id")]
-    public async Task<ActionResult<Household>> Put(UpdateHouseholdDto householddata)
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateHousehold([FromBody] UpdateHouseholdDto householddata)
     {
         var household = await _context.Households.FindAsync(householddata.Id);
 

@@ -37,17 +37,6 @@ export default function AddEditHousholdScreen({navigation}: Props) {
     const code = household.code
     navigation.navigate("JoinHousehold", { code });
   }
-
-  const onUpdate = async () => {   //TODO check if admin
-    if (!householddata) {
-      console.log("Hushållet finns inte eller är ogiltigt.");
-      return;
-    }
-    householddata.name = "feddro"
-    const response = await dispatch(updateHouseholdName(householddata as uppdateHouseholdDTO))
-    const household = response.payload as Household
-    console.log("did it work?   ", household)
-  }
   
   return (
     <View style={{ padding: 16, gap: 16 }}>
@@ -71,7 +60,6 @@ export default function AddEditHousholdScreen({navigation}: Props) {
             }}
           />
       <Button mode="contained" onPress={handleSubmit(onSubmit)}>Skapa</Button>
-      <Button mode="contained" onPress={onUpdate}>test-uppdatera</Button>
     </View>
   );
 }
