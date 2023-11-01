@@ -12,10 +12,6 @@ import {
   selectRequestProfiles,
 } from "../store/householdSlice";
 import s from "../utils/globalStyles";
-import { avatars } from "../constants";
-import { Profile } from "../Data/Profile";
-import ProfileButtonRender from "../Components/HouseholdInfo/ProfileButtonRender";
-import RenderHouseholdProfiles from "../Components/HouseholdInfo/RenderHouseholdProfiles";
 import { selectIsAdmin } from "../store/userSlice";
 import { RootStackScreenProps } from "../../types";
 
@@ -65,7 +61,14 @@ export default function HouseholdInfoScreen({ navigation }:  props ) {
           requests.length > 0 &&
           requests.map((p) => <ProfileView profile={p} key={p.id}/>)}
       </View>
-
+      {isAdmin && (
+      <Button
+        style={[s.pv2, s.bgColWhite, s.m10]}
+        labelStyle={[s.colBlack]}
+        onPress={() => navigation.navigate("AddEditHoushold", { household })}
+      >
+        Redigera namn
+      </Button>)}
       <Button
         style={[s.pv2, s.bgColWhite, s.m10]}
         labelStyle={[s.colBlack]}
