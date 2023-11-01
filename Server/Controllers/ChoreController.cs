@@ -38,6 +38,7 @@ public class ChoreController : ControllerBase
             Console.WriteLine($"Code: 404, No chores found for given Id");
             return NotFound();
         }
+
         Console.WriteLine($"Code: 200, Ok!");
         return Ok(chores);
     }
@@ -53,6 +54,7 @@ public class ChoreController : ControllerBase
             Console.WriteLine($"Code: 404, Chore not found!");
             return NotFound();
         }
+
         Console.WriteLine($"Code: 200, Ok!");
         return Ok(chore);
     }
@@ -75,24 +77,22 @@ public class ChoreController : ControllerBase
         return CreatedAtAction("GetChore", new { id = chore.Id }, chore);
     }
 
-    [HttpPost]
-    [Route(nameof(SaveChoreImage))]
-    public async Task<IActionResult> SaveChoreImage()
+    [HttpPost("SaveChoreMedia/{category}/{choreId}")]
+    public async Task<IActionResult> SaveChoreMedia(string category, int choreId)
     {
         var request = HttpContext.Request;
         var file = request.Form.Files[0];
-        var fileName = Path.GetFileName(request.Form.Files[0].FileName);
+        var fileFormat = Path.GetFileName(request.Form.Files[0].FileName).Split(".")[1];
+        var fileName = $"chore-{choreId}." + fileFormat;
         Console.WriteLine("### " + fileName);
-
         
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "upload", "images", fileName);
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "upload", category, fileName);
         using (var stream = System.IO.File.Create(filePath))
         {
             await file.CopyToAsync(stream);
         }
 
-        return Ok(new { url = "https://dustbusters.space/images/" + fileName });
-
+        return Ok(new { url = $"https://dustbusters.space/{category}/" + fileName });
     }
 
 
