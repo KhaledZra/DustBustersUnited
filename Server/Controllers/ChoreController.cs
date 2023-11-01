@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using DTO;
 using Microsoft.EntityFrameworkCore;
 using Model;
-using System.IO;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -183,34 +182,5 @@ public class ChoreController : ControllerBase
         chore.Deadline = DateTime.Now.AddDays(chore.RepeatInterval);
         await context.SaveChangesAsync();
         return true;
-    }
-
-    enum FileCategories
-    {
-        Image,
-        Audio
-    }
-
-    private async Task SaveMediaToFile(string potentialFile, int choreId, FileCategories fileCategories)
-    {
-        if (string.IsNullOrWhiteSpace(potentialFile)) return;
-
-        string filePath = String.Empty;
-
-        if (fileCategories == FileCategories.Image) filePath = $"images/chore-{choreId}.jpg";
-        else if (fileCategories == FileCategories.Audio) filePath = $"audios/chore-{choreId}.mp3";
-
-        await System.IO.File.WriteAllBytesAsync(filePath, Convert.FromBase64String(potentialFile));
-    }
-
-    private void DeleteMediaInFiles(int choreId, FileCategories fileCategories)
-    {
-        string filePath = String.Empty;
-
-        if (fileCategories == FileCategories.Image) filePath = $"images/chore-{choreId}.jpg";
-        else if (fileCategories == FileCategories.Audio) filePath = $"audio/chore-{choreId}.mp3";
-
-        if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
-        else Console.WriteLine($"{fileCategories} with id {choreId} does not exist");
     }
 }
