@@ -14,16 +14,17 @@ import {
 } from "../store/choreSlice/thunks";
 import { selectActiveHouseholdId } from "../store/householdSlice";
 import s from "../utils/globalStyles";
+import ImageSelector from "../Components/ImageSelector";
+import * as ImagePicker from "expo-image-picker";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
 export default function AddOrEditChoreScreen({ route, navigation }: Props) {
-  const householdId = useAppSelector(selectActiveHouseholdId);
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
+    const householdId = useAppSelector(selectActiveHouseholdId);
   const { chore } = route.params;
   const isEdit = Boolean(chore);
-
   const dispatch = useAppDispatch();
-
   const { handleSubmit, register, control } = useForm<Chore>({
     defaultValues: chore || {
       description: "",
@@ -84,6 +85,8 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           label="Tilldela till anvädare: "
           underlineColor="transparent"
         />
+        <ImageSelector />
+
         {isEdit && (
           <Button
             icon="trash-can-outline"
