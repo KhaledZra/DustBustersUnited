@@ -2,52 +2,67 @@ import { Button, TextInput } from "react-native-paper";
 import { View } from "react-native";
 
 import { RootStackScreenProps } from "../../types";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useController, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store";
-import { addHousehold } from "../store/householdSlice";
+import { addHousehold, updateHouseholdName } from "../store/householdSlice";
 import { AddHouseholdDTO, Household} from "../Data/Household";
-import { useRoute } from "@react-navigation/native";
 
 type Props = RootStackScreenProps<"AddEditHoushold">;
+type HouseholdForm = Omit<Household, "id" | "code" | "availableAvatars"> & {id?:number}
 
-export default function AddEditHousholdScreen({ navigation }: Props) {
+export default function AddEditHousholdScreen({ route, navigation }: Props) {
   const dispatch = useAppDispatch();
-  const route = useRoute();
+  const { household } = route.params;
+  const isEdit = Boolean(household);
+  const user = useAppSelector((state) => state.user.user);
+  let initialHousehold : HouseholdForm =  {
+    id: undefined,
+    owner: user!,
+    name: "",
+  }
 
-  const user = useAppSelector((state) => state.user.user?.id);
-
+  if(household){
+    initialHousehold = {...household}
+  }
+  
   const {
     control,
     handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<AddHouseholdDTO>();
-
-  const onSubmit: SubmitHandler<AddHouseholdDTO> = async (data) => {
-    if (user) {
-      data.OwnerId = user;
+  } = useForm<Household>({
+    defaultValues: initialHousehold
+  });
+  const { field: nameField } = useController({ control, name: "name"})
+  const onSubmit: SubmitHandler<Household> = async (data) => {
+    
+    if (isEdit) {
+      data.id = household!.id;
+      dispatch(updateHouseholdName(data))
+      navigation.navigate("ChoreList");
     } else {
-      return;
+      const addHouseholdDto: AddHouseholdDTO = {
+        Name: data.name,
+        OwnerId: data.owner.id,
+      };
+      const response = await dispatch(addHousehold(addHouseholdDto));
+      const householdResponce = response.payload as Household;
+      const code = householdResponce.code;
+      navigation.navigate("JoinHousehold", { code });
     }
-    const response = await dispatch(addHousehold(data));
-    const household = response.payload as Household;
-    const code = household.code;
-    navigation.navigate("JoinHousehold", { code });
   };
 
   return (
     <View style={{ padding: 16, gap: 16 }}>
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onBlur } }) => (
           <TextInput
             label="Hushållets namn"
-            value={value}
-            onChangeText={onChange}
+            value={nameField.value}
+            onChangeText={nameField.onChange}
             onBlur={onBlur}
           />
         )}
-        name="Name"
+        name="name"
         rules={{
           required: "Namn är obligatoriskt",
           minLength: {
@@ -57,7 +72,7 @@ export default function AddEditHousholdScreen({ navigation }: Props) {
         }}
       />
       <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-        Skapa
+      {isEdit ? "Uppdatera namn" : "Skapa"}
       </Button>
     </View>
   );

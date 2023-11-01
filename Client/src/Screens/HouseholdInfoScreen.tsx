@@ -10,15 +10,19 @@ import { avatars } from "../constants";
 import { Profile } from "../Data/Profile";
 import ProfileButtonRender from "../Components/HouseholdInfo/ProfileButtonRender";
 import RenderHouseholdProfiles from "../Components/HouseholdInfo/RenderHouseholdProfiles";
+import { selectIsAdmin } from "../store/userSlice";
+import { RootStackScreenProps } from "../../types";
 
-export default function HouseholdInfoScreen() {
+type props = RootStackScreenProps<"HouseholdInfo">;
+
+export default function HouseholdInfoScreen({ navigation }:  props ) {
   const dispatch = useAppDispatch();
   const requests = useAppSelector(selectRequestProfiles);
+  const isAdmin = useAppSelector(selectIsAdmin);
   const profiles = useAppSelector(
     (state) => state.household.profilesInHousehold
   );
-  const navigation = useNavigation();
-  const householdCode = useAppSelector(
+  const household = useAppSelector(
     (state) => state.household.transientHousehold
   );
   const handleLeaveHousehold = () => {
@@ -37,13 +41,20 @@ export default function HouseholdInfoScreen() {
         </Text>
         <View style={[s.mv10]} />
         <Text style={[s.pv2, s.w150, s.bgColWhite, s.br20, s.fs60]}>
-          {householdCode ? householdCode.code : " "}
+          {household ? household.code : " "}
         </Text>
       </View>
 
       <Text style={[s.fs26, s.mt16, s.textCenter]}>Förfrågningar</Text>
       <RenderHouseholdProfiles {...requests}/>
-
+      {isAdmin && (
+      <Button
+        style={[s.pv2, s.bgColWhite, s.m10]}
+        labelStyle={[s.colBlack]}
+        onPress={() => navigation.navigate("AddEditHoushold", { household })}
+      >
+        Redigera namn
+      </Button>)}
       <Button
         style={[s.pv2, s.bgColWhite, s.m10]}
         labelStyle={[s.colBlack]}
