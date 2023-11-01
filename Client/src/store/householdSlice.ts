@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { AddHouseholdDTO, Household } from "../Data/Household";
 import { Profile } from "../Data/Profile";
@@ -118,7 +122,6 @@ const householdSlice = createSlice({
   initialState: {
     // All households the user is a member of
     households: [] as Household[],
-    profiles: [] as Profile[],
     profilesInHousehold: [] as Profile[],
     // The household we are about to join
     transientHousehold: undefined as Household | undefined,
@@ -148,5 +151,19 @@ export const selectActiveHouseholdId = (state: RootState) =>
   state.user.profiles.find((p) => p.id === state.user.activeProfileId)
     ?.household.id!;
 
+export const selectActiveHousehold = (state: RootState) =>
+  state.user.profiles.find((p) => p.id === state.user.activeProfileId)
+    ?.household;
+
 export const selectHouseholdProfiles = (state: RootState) =>
   state.household.profilesInHousehold;
+
+export const selectRequestProfiles = createSelector(
+  (state: RootState) => state.household.profilesInHousehold,
+  (profiles) => profiles.filter((p) => p.isRequest)
+);
+
+export const selectProfiles = createSelector(
+  (state: RootState) => state.household.profilesInHousehold,
+  (profiles) => profiles.filter((p) => !p.isRequest)
+);

@@ -21,27 +21,27 @@ export default function ProfileScreen({ route }: Props) {
   const [profile, setProfile] = useState<Profile>();
   const profiles = useAppSelector(
     (state) => state.household.profilesInHousehold
-    );
-    useEffect(() => {
-      setProfile(profiles.find((p) => p.id == profileId));
-    }, [profiles, profileId]);
-    const handleLeaveHousehold = () => {
-      dispatch(adminDeleteProfile(profile!.id));
-      navigation.navigate("PickHousehold");
-    };
+  );
+  useEffect(() => {
+    setProfile(profiles.find((p) => p.id == profileId));
+  }, [profiles, profileId]);
+  const handleLeaveHousehold = () => {
+    dispatch(adminDeleteProfile(profile!.id));
+    navigation.navigate("PickHousehold");
+  };
   const handelActiveHousehold = () => {
     if (profile) {
       dispatch(setActiveStatus(profile.id));
     }
   };
   const handelAdminHousehold = () => {
-    if(profile){
+    if (profile) {
       dispatch(setAdminStatus(profile.id));
     }
   };
   const handelRequestHousehold = () => {
-    if(profile){
-      dispatch(setRequestStatus(profile.id));
+    if (profile) {
+      dispatch(setRequestStatus(profile.id))
     }
   };
 
@@ -73,14 +73,16 @@ export default function ProfileScreen({ route }: Props) {
         </Text>
       </Button>
       <View style={[s.mv10]} />
+      {profile && profile.isRequest &&
       <Button
         style={[s.pv3, s.bgColWhite, s.m16]}
         onPress={() => handelRequestHousehold()}
       >
-        <Text style={[s.colBlack, s.fs20]}>
-          {profile && profile.isRequest ? "Request" : "Not Request"}
+        <Text style={[s.colBlack]}>
+          Acceptera förfrågan att gå med i hushållet
         </Text>
       </Button>
+      }
     </View>
   );
 }

@@ -1,16 +1,15 @@
+import React, { useEffect, useState } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import { Surface, Text } from "react-native-paper";
 import PieChart from "react-native-pie-chart";
 import { RootStackScreenProps } from "../../types";
-import s from "../utils/globalStyles";
 import IconButtonAvatar from "../Components/IconButtonAvatar";
-import { Avatar } from "../store/householdSlice";
+import { Chore } from "../Data/Chore";
 import { avatars } from "../constants";
 import { useAppDispatch, useAppSelector } from "../store";
+import { Avatar } from "../store/householdSlice";
 import { getChoreCompletions } from "../store/profileChoreSlice/thunks";
-import { useEffect, useState } from "react";
-import { Chore } from "../Data/Chore";
-import React from "react";
+import s from "../utils/globalStyles";
 
 type Props = RootStackScreenProps<"ChoreStatistics">;
 const widthAndHeight = 250;

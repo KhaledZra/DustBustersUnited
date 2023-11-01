@@ -39,7 +39,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   useEffect(() => {
     dispatch(getChoresByHousehold(householdId));
     dispatch(getChoreCompletions(pcProps));
-    dispatch(getHouseholdProfiles(householdId));
+    dispatch(getHouseholdProfiles());
   }, []);
 
   return (
