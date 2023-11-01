@@ -120,6 +120,8 @@ public class ChoreController : ControllerBase
             Energy = dto.Energy,
             RepeatInterval = dto.RepeatInterval,
             HouseholdId = dto.HouseholdId,
+            ChoreImageBytesString = dto.ChoreImageBytesString,
+            ChoreAudioBytesString = dto.ChoreAudioBytesString,
 
             // Defaults
             IsActive = true,
@@ -138,4 +140,5 @@ public class ChoreController : ControllerBase
         await context.SaveChangesAsync();
         return true;
     }
+    
 }
