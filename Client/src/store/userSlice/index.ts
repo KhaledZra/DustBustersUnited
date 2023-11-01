@@ -80,16 +80,6 @@ const userSlice = createSlice({
   },
 });
 
-export const selectRequestProfiles = createSelector(
-  (state: RootState) => state.user.profiles,
-  (profiles) => profiles.filter((p) => p.isRequest)
-);
-
-export const selectProfiles = createSelector(
-  (state: RootState) => state.user.profiles,
-  (profiles) => profiles.filter((p) => !p.isRequest)
-);
-
 export const selectActiveProfile = (state: RootState) =>
   state.user.profiles.find((p) => p.id === state.user.activeProfileId);
 

@@ -2,40 +2,47 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
+import { RootStackScreenProps } from "../../types";
 import { Profile } from "../Data/Profile";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
-  deleteProfile,
+  adminDeleteProfile,
   setActiveStatus,
   setAdminStatus,
   setRequestStatus,
 } from "../store/householdSlice";
 import s from "../utils/globalStyles";
+type Props = RootStackScreenProps<"Profile">;
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ route }: Props) {
+  const profileId = route.params.profileId;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const profiles = useAppSelector((state) => state.user.profiles);
-  const profileId = useAppSelector((state) => state.user.activeProfileId);
   const [profile, setProfile] = useState<Profile>();
+  const profiles = useAppSelector(
+    (state) => state.household.profilesInHousehold
+  );
   useEffect(() => {
-    const profile = profiles.find((p) => p.id == profileId);
-    setProfile(profile);
-  }, [profileId, profiles]);
-
+    setProfile(profiles.find((p) => p.id == profileId));
+  }, [profiles, profileId]);
   const handleLeaveHousehold = () => {
-    dispatch(deleteProfile());
+    dispatch(adminDeleteProfile(profile!.id));
     navigation.navigate("PickHousehold");
   };
-
   const handelActiveHousehold = () => {
-    dispatch(setActiveStatus());
+    if (profile) {
+      dispatch(setActiveStatus(profile.id));
+    }
   };
   const handelAdminHousehold = () => {
-    dispatch(setAdminStatus());
+    if (profile) {
+      dispatch(setAdminStatus(profile.id));
+    }
   };
   const handelRequestHousehold = () => {
-    dispatch(setRequestStatus());
+    if (profile) {
+      dispatch(setRequestStatus(profile.id))
+    }
   };
 
   return (
@@ -66,14 +73,16 @@ export default function ProfileScreen() {
         </Text>
       </Button>
       <View style={[s.mv10]} />
+      {profile && profile.isRequest &&
       <Button
         style={[s.pv3, s.bgColWhite, s.m16]}
         onPress={() => handelRequestHousehold()}
       >
-        <Text style={[s.colBlack, s.fs20]}>
-          {profile && profile.isRequest ? "Request" : "Not Request"}
+        <Text style={[s.colBlack]}>
+          Acceptera förfrågan att gå med i hushållet
         </Text>
       </Button>
+      }
     </View>
   );
 }
