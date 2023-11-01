@@ -1,5 +1,5 @@
 import { useController, useForm } from "react-hook-form";
-import { ScrollView, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import EnergySelector from "../Components/EnergySelector";
@@ -7,6 +7,7 @@ import IntervalSelector from "../Components/IntervalSelector";
 import { Chore } from "../Data/Chore";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
+  archiveChore,
   deleteChore,
   saveChoreToDb,
   updateChore,
@@ -40,6 +41,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
   });
 
   const handleDeleteChore = () => dispatch(deleteChore(chore!));
+  const handleArchiveChore = () => dispatch(archiveChore(chore!));
 
   const onSubmit = (chore: Chore) => {
     console.log(chore);
@@ -86,10 +88,31 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           <Button
             icon="trash-can-outline"
             mode="contained"
-            buttonColor="red"
             onPress={() => {
-              handleDeleteChore();
-              navigation.pop();
+              Alert.alert(
+                "All statistik gällande sysslan kommer raderas. Vill du arkivera istället?",
+                "Är du säker?",
+                [
+                  {
+                    text: "Radera",
+                    onPress: () => {
+                      handleDeleteChore();
+                      navigation.pop();
+                    },
+                  },
+                  {
+                    text: "Arkivera",
+                    onPress: () => {
+                      handleArchiveChore();
+                      navigation.pop();
+                    },
+                  },
+                  {
+                    text: "Avbryt",
+                    style: "cancel",
+                  },
+                ]
+              );
             }}
           >
             Ta bort

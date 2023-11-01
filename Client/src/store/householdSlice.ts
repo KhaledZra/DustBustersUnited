@@ -4,7 +4,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { AddHouseholdDTO, Household } from "../Data/Household";
+import { Household, uppdateHouseholdDTO } from "../Data/Household";
+import { AddHouseholdDTO } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
 import { setActiveProfile } from "./userSlice";
@@ -116,6 +117,20 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   }
 );
 
+export const updateHouseholdName = createAsyncThunk<Household, uppdateHouseholdDTO>(
+  "updateHouseholdName",
+
+  async (payload) => {
+    const response: Response = await apiFetch(`Household/update`, payload, {
+      method: 'PUT',
+    });
+    const jsonResponse = await response.json();
+    console.log("update payload:", payload)
+    console.log("update json:", jsonResponse)
+    return jsonResponse as Promise<Household>;
+  }
+)
+
 export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
   name: "household",
@@ -141,6 +156,11 @@ const householdSlice = createSlice({
     builder.addCase(addHousehold.fulfilled, (state, action) => {
       state.households.push(action.payload);
     });
+    builder.addCase(updateHouseholdName.fulfilled, (state, action) => {
+      const updatedHousehold = action.payload;
+      const index = updatedHousehold.id
+      state.households[index] = updatedHousehold;
+    })
   },
 });
 

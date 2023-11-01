@@ -85,6 +85,24 @@ public class HouseholdController : ControllerBase
         Console.WriteLine("Code: 201, Logged in!");
         return CreatedAtAction("Get", new { id = household.Id }, household);
     }
+
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateHousehold([FromBody] UpdateHouseholdDto householddata)
+    {
+        var household = await _context.Households.FindAsync(householddata.Id);
+
+        if (household == null)
+        {
+            return NotFound();
+        }
+        
+        household.Name = householddata.Name;
+        _context.Entry(household).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+        
+
+        return Ok(household);
+    }
     
     // Service method
     public static async Task<bool> ConfirmHouseholdId(int householdId, ApplicationDbContext context)
