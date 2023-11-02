@@ -35,7 +35,7 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setActiveProfile: (state, action: { payload: number | undefined }) => {
+    setActiveProfileId: (state, action: { payload: number | undefined }) => {
       state.activeProfileId = action.payload;
     },
     setLoginError: (state, action) => {
@@ -66,7 +66,7 @@ const userSlice = createSlice({
     // household/profiles
     builder.addCase(joinHousehold.fulfilled, (state, action) => {
       let profile = action.payload as Profile;
-      setActiveProfile(profile.id);
+      setActiveProfileId(profile.id);
     });
     builder.addCase(joinHousehold.pending, (state, action) => {
       state.joinHouseholdError = undefined;
@@ -93,5 +93,5 @@ export const selectActiveAvatar = (state: RootState) => {
 export const selectIsAdmin = (state: RootState) =>
   Boolean(selectActiveProfile(state)?.isAdmin);
 
-export const { setUser, setActiveProfile, setLoginError } = userSlice.actions;
+export const { setUser, setActiveProfileId, setLoginError } = userSlice.actions;
 export default userSlice.reducer;

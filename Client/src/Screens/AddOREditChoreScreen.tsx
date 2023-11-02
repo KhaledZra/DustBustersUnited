@@ -15,11 +15,12 @@ import {
   saveChoreWithImageToDb,
   updateChore,
 } from "../store/choreSlice/thunks";
-import { selectActiveHouseholdId } from "../store/householdSlice";
+
 import s from "../utils/globalStyles";
 import ImageSelector from "../Components/ImageSelector";
 import { useState } from "react";
 import { ImagePickerAsset } from "expo-image-picker";
+import { selectActiveHouseholdId } from "../store/householdSlice/selectors";
 import AudioHandler from "../Components/AudioHandler";
 import { Audio } from "expo-av";
 
@@ -57,13 +58,20 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
     } else {
       const newChore = { ...chore, householdId };
       if (image && recordingUri) {
-        dispatch(saveChoreWithFilesToDb({ choreDto: newChore, image: image, audioUri: recordingUri}));
+        dispatch(
+          saveChoreWithFilesToDb({
+            choreDto: newChore,
+            image: image,
+            audioUri: recordingUri,
+          })
+        );
       } else if (image) {
-        dispatch(saveChoreWithImageToDb({ choreDto: newChore, image}));
+        dispatch(saveChoreWithImageToDb({ choreDto: newChore, image }));
       } else if (recordingUri) {
-        dispatch(saveChoreWithAudioToDb({ choreDto: newChore, audioUri: recordingUri}));
-      } 
-      else {
+        dispatch(
+          saveChoreWithAudioToDb({ choreDto: newChore, audioUri: recordingUri })
+        );
+      } else {
         dispatch(saveChoreToDb(newChore));
       }
     }
@@ -75,6 +83,12 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
       <ScrollView
         contentContainerStyle={[s.pt15, s.ph15, s.flex1, s.gap20, s.mb10]}
       >
+        <ImageSelector onImageSelected={(img) => setImage(img)} />
+
+        <AudioHandler
+          onAudioSelected={(audioUri) => setRecordingUri(audioUri)}
+        />
+
         <TextInput
           style={[s.overflowHidden, s.br10, s.boldText]}
           label="Titel"
@@ -97,10 +111,6 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
         <IntervalSelector key="" name="repeatInterval" control={control} />
 
         <EnergySelector name="energy" control={control} />
-
-        <ImageSelector onImageSelected={(img) => setImage(img)} />
-
-        <AudioHandler onAudioSelected={(audioUri) => setRecordingUri(audioUri)} />
 
         {isEdit && (
           <Button

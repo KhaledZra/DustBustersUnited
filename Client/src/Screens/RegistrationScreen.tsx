@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
 import { RootStackScreenProps } from "../../types";

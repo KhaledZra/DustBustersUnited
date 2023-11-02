@@ -7,6 +7,8 @@ import type { Profile } from "../../Data/Profile";
 import type { User } from "../../Data/User";
 import { storageKeys } from "../../constants";
 import { apiFetch } from "../../utils/apiClient";
+import { clearChoreProfiles } from "../profileChoreSlice";
+import { clearChores } from "../choreSlice";
 
 type LoginPayload = { username: string; password: string };
 export const login = createAsyncThunk<User, LoginPayload>(
@@ -35,7 +37,7 @@ export const logout = createAsyncThunk(
     AsyncStorage.removeItem(storageKeys.LOGGED_IN_USER);
     AsyncStorage.removeItem(storageKeys.ACTIVE_PROFILE_ID);
     dispatch({ type: "user/setUser", payload: undefined });
-    dispatch({ type: "user/setActiveProfile", payload: undefined });
+    dispatch(setActiveProfile(undefined));
   }
 );
 
@@ -75,11 +77,25 @@ export const joinHousehold = createAsyncThunk<
     if (response.status >= 400) {
       return rejectWithValue("Kunde inte gå med i hushållet.");
     }
-
+    
     let profile = (await response.json()) as Profile;
-    dispatch(fetchProfiles());
-    dispatch({ type: "user/setActiveProfile", payload: profile.id });
-    AsyncStorage.setItem(storageKeys.ACTIVE_PROFILE_ID, profile.id.toString());
+    dispatch(setActiveProfile(profile.id));
+    
+    await dispatch(fetchProfiles());
+
     return profile;
+  }
+);
+
+// When we change profile, we clear all chores and ChoreProfiles
+export const setActiveProfile = createAsyncThunk(
+  "user/setActiveProfile",
+  async (profileId: number | undefined, { dispatch, getState }) => {
+    dispatch(clearChoreProfiles());
+    dispatch(clearChores());
+    await dispatch({ type: "user/setActiveProfileId", payload: profileId });
+    if (profileId) {
+      AsyncStorage.setItem(storageKeys.ACTIVE_PROFILE_ID, profileId.toString());
+    }
   }
 );

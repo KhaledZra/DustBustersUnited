@@ -3,13 +3,13 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { RootState } from ".";
-import { Household } from "../Data/Household";
-import { AddHouseholdDTO } from "../Data/Household";
-import { Profile } from "../Data/Profile";
-import { apiFetch } from "../utils/apiClient";
-import { setActiveProfile } from "./userSlice";
-import { fetchProfiles } from "./userSlice/thunks";
+import { RootState } from "..";
+import { Household } from "../../Data/Household";
+import { AddHouseholdDTO } from "../../Data/Household";
+import { Profile } from "../../Data/Profile";
+import { apiFetch } from "../../utils/apiClient";
+import { fetchProfiles, setActiveProfile } from "../userSlice/thunks";
+import { selectActiveHouseholdId } from "./selectors";
 
 // Borde vara i en ny profile slice
 export const getHouseholdProfiles = createAsyncThunk<Profile[], void>(
@@ -69,7 +69,7 @@ export const deleteProfile = createAsyncThunk<Profile[]>(
       { method: "DELETE" }
     );
     dispatch(setActiveProfile(undefined));
-    dispatch(getHouseholdProfiles());
+    await dispatch(getHouseholdProfiles());
     let json = await response.json();
     return json;
   }
@@ -83,8 +83,7 @@ export const adminDeleteProfile = createAsyncThunk<Profile[], number>(
       {},
       { method: "DELETE" }
     );
-    dispatch(setActiveProfile(undefined));
-    dispatch(getHouseholdProfiles());
+    await dispatch(getHouseholdProfiles());
     let json = await response.json();
     return json;
   }
@@ -157,23 +156,3 @@ const householdSlice = createSlice({
 export const { clearTransientHousehold } = householdSlice.actions;
 export default householdSlice.reducer;
 
-export const selectActiveHouseholdId = (state: RootState) =>
-  state.user.profiles.find((p) => p.id === state.user.activeProfileId)
-    ?.household.id!;
-
-export const selectActiveHousehold = (state: RootState) =>
-  state.user.profiles.find((p) => p.id === state.user.activeProfileId)
-    ?.household;
-
-export const selectHouseholdProfiles = (state: RootState) =>
-  state.household.profilesInHousehold;
-
-export const selectRequestProfiles = createSelector(
-  (state: RootState) => state.household.profilesInHousehold,
-  (profiles) => profiles.filter((p) => p.isRequest)
-);
-
-export const selectProfiles = createSelector(
-  (state: RootState) => state.household.profilesInHousehold,
-  (profiles) => profiles.filter((p) => !p.isRequest)
-);

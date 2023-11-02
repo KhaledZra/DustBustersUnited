@@ -6,6 +6,7 @@ import { RootState } from "..";
 import { getChoreCompletions } from "../profileChoreSlice/thunks";
 import todaysDateOnlyAsString from "../../Components/GetTodaysDateOnly";
 import { ImagePickerAsset } from "expo-image-picker";
+import { selectActiveHouseholdId } from "../householdSlice/selectors";
 
 export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   "user/addChore",
@@ -103,9 +104,11 @@ export const updateChore = createAsyncThunk<Chore, Chore>(
   }
 );
 
-export const getChoresByHousehold = createAsyncThunk<Chore[], number>(
+export const getChoresByHousehold = createAsyncThunk<Chore[]>(
   "user/getChoresByHousehold",
-  async (householdId: number) => {
+  async (_: void, { getState }) => {
+    const householdId = selectActiveHouseholdId(getState() as RootState);
+    console.log("user/getChoresByHousehold -- householdId: ", householdId);
     const response: Response = await apiFetch(
       `Chore/GetChoresByHousehold/` + householdId
     );
@@ -138,18 +141,14 @@ export const markChoreAsCompleted = createAsyncThunk<
       endDate: undefined,
     })
   );
-  dispatch(getChoresByHousehold(markChoreProps.householdId!));
+  dispatch(getChoresByHousehold());
   return response.json();
 });
 
 export const deleteChore = createAsyncThunk<number, Chore>(
   "chore/removeChore",
   async (chore) => {
-    const response: Response = await apiFetch(
-      "chore?choreId=" + chore.id,
-      {},
-      { method: "DELETE" }
-    );
+    await apiFetch("chore?choreId=" + chore.id, {}, { method: "DELETE" });
     return chore.id;
   }
 );

@@ -19,7 +19,11 @@ const initialState: UserState = {
 const choreSlice = createSlice({
   name: "chore",
   initialState,
-  reducers: {},
+  reducers: {
+    clearChores: (state) => {
+      state.chores = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(saveChoreToDb.fulfilled, (state, action) => {
       const chore = action.payload;
@@ -55,4 +59,5 @@ const choreSlice = createSlice({
   },
 });
 
+export const { clearChores } = choreSlice.actions;
 export default choreSlice.reducer;
