@@ -43,9 +43,11 @@ export default function ChoreListScreen({ navigation, route }: Props) {
     dispatch(getHouseholdProfiles());
   }, []);
 
+  console.log(profile);
+
   return (
-    <View>
-      {profile && !profile.isRequest && (
+    <View style={s.flex1}>
+      {profile && profile.isRequest && (
         <View style={s.flex1}>
           <FlatList
             data={chores}
@@ -54,6 +56,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
               <ChoreView route={route} navigation={navigation} chore={item} />
             )}
           />
+
           <View style={s.alignCenter}>
             {isAdmin && (
               <Button
@@ -69,11 +72,11 @@ export default function ChoreListScreen({ navigation, route }: Props) {
         </View>
       )}
 
-      {profile && profile.isRequest && (
-        <View>
-          <Text>Väntar på att bli accepterad</Text>
-        </View>)}
-
+      {profile && !profile.isRequest && (
+        <View style={[s.flex1, s.alignCenter, s.justifyCenter]}>
+          <Text style={[s.boldText, s.fs26]}>Väntar på att bli accepterad</Text>
+        </View>
+      )}
     </View>
   );
 }

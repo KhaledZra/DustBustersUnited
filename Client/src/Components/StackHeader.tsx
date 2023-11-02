@@ -88,8 +88,8 @@ export default function StackHeader({
           {profile && (
             <Menu.Item
               onPress={handleShowHousehold}
-              title="Hushåll info"
-              leadingIcon="home"
+              title="Hushållsinfo"
+              leadingIcon="information-outline"
             />
           )}
           <Divider />

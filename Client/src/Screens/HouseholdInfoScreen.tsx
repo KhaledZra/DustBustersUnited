@@ -14,6 +14,7 @@ import {
 import s from "../utils/globalStyles";
 import { selectIsAdmin } from "../store/userSlice";
 import { RootStackScreenProps } from "../../types";
+import { useThemeContext } from "../themes/ThemeContext";
 
 type props = RootStackScreenProps<"HouseholdInfo">;
 
@@ -24,6 +25,8 @@ export default function HouseholdInfoScreen({ navigation }: props) {
 
   const profiles = useAppSelector(selectProfiles);
   const household = useAppSelector(selectActiveHousehold);
+
+  const {theme} = useThemeContext();
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
@@ -35,7 +38,7 @@ export default function HouseholdInfoScreen({ navigation }: props) {
   return (
     <View style={[s.flex1]}>
       <ScrollView>
-        <View>
+        <View style={[s.mb7]}>
           <Text style={[s.fs26, s.mt16, s.textCenter]}>Hushållsmedlemmar</Text>
           <View>
             {profiles &&
@@ -52,10 +55,11 @@ export default function HouseholdInfoScreen({ navigation }: props) {
               style={[
                 s.pv2,
                 s.w150,
-                s.bgColWhite,
+                {backgroundColor: theme.colors?.primary},
                 s.br20,
                 s.fs60,
                 s.textCenter,
+                {color: theme.colors?.onSurface}
               ]}
             >
               {household?.code}
