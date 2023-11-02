@@ -4,11 +4,12 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { Household, uppdateHouseholdDTO } from "../Data/Household";
+import { Household } from "../Data/Household";
 import { AddHouseholdDTO } from "../Data/Household";
 import { Profile } from "../Data/Profile";
 import { apiFetch } from "../utils/apiClient";
 import { setActiveProfile } from "./userSlice";
+import { fetchProfiles } from "./userSlice/thunks";
 
 // Borde vara i en ny profile slice
 export const getHouseholdProfiles = createAsyncThunk<Profile[], void>(
@@ -18,7 +19,7 @@ export const getHouseholdProfiles = createAsyncThunk<Profile[], void>(
     const response: Response = await apiFetch(
       `Profile/GetProfilesInHousehold/` + householdId
     );
-    return response.json() as Promise<Profile[]>;
+    return response.json();
   }
 );
 
@@ -99,7 +100,7 @@ export const setRequestStatus = createAsyncThunk<Profile[], number>(
     );
     dispatch(getHouseholdProfiles());
     let json = await response.json();
-    console.log(json);
+    console.log("setRequestStatus", json);
     return json;
   }
 );
@@ -108,28 +109,22 @@ export const addHousehold = createAsyncThunk<Household, AddHouseholdDTO>(
   "createHousehold",
 
   async (payload: AddHouseholdDTO) => {
-    console.log("DTO ", payload);
     const response = await apiFetch("Household", payload);
     const jsonResponse = await response.json();
-    console.log("response", jsonResponse);
-
     return jsonResponse;
   }
 );
 
 export const updateHouseholdName = createAsyncThunk<Household, Household>(
   "updateHouseholdName",
-
-  async (payload) => {
+  async (payload, { dispatch }) => {
     const response: Response = await apiFetch(`Household/update`, payload, {
-      method: 'PUT',
+      method: "PUT",
     });
-    const jsonResponse = await response.json();
-    console.log("update payload:", payload)
-    console.log("update json:", jsonResponse)
-    return jsonResponse as Promise<Household>;
+    dispatch(fetchProfiles());
+    return response.json();
   }
-)
+);
 
 export type Avatar = { id: number; avatar: string; color: string };
 const householdSlice = createSlice({
@@ -156,11 +151,6 @@ const householdSlice = createSlice({
     builder.addCase(addHousehold.fulfilled, (state, action) => {
       state.households.push(action.payload);
     });
-    builder.addCase(updateHouseholdName.fulfilled, (state, action) => {
-      const updatedHousehold = action.payload;
-      const index = updatedHousehold.id
-      state.households[index] = updatedHousehold;
-    })
   },
 });
 

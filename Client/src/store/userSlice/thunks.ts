@@ -42,8 +42,10 @@ export const logout = createAsyncThunk(
 export const register = createAsyncThunk<User, LoginPayload>(
   "user/register",
   async (payload: LoginPayload) => {
-    const response = await apiFetch("User", payload);
-    return response.json();
+    const response: Response = await apiFetch("User", payload);
+    const user = (await response.json()) as User;
+    AsyncStorage.setItem(storageKeys.LOGGED_IN_USER, JSON.stringify(user));
+    return user;
   }
 );
 
@@ -53,7 +55,7 @@ export const fetchProfiles = createAsyncThunk<Profile[]>(
     const user = (getState() as RootState).user.user;
     if (!user) return [];
     const response: Response = await apiFetch(`Profile/ByUser/${user.id}`);
-    return response.json() as Promise<Profile[]>;
+    return response.json();
   }
 );
 
@@ -65,14 +67,19 @@ export const joinHousehold = createAsyncThunk<
   async (dto: JoinHouseholdDto, { dispatch, getState, rejectWithValue }) => {
     const user = (getState() as RootState).user.user;
     if (!user) return;
+
     dto.userId = user.id;
+
     const response: Response = await apiFetch(`Profile/linkToHousehold`, dto);
+
     if (response.status >= 400) {
       return rejectWithValue("Kunde inte gå med i hushållet.");
     }
+
     let profile = (await response.json()) as Profile;
     dispatch(fetchProfiles());
     dispatch({ type: "user/setActiveProfile", payload: profile.id });
-    return response.json() as Promise<Profile>;
+
+    return profile;
   }
 );

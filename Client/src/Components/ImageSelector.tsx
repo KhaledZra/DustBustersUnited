@@ -15,8 +15,6 @@ export default function ImageSelector({ onImageSelected }: Props) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (result.assets && result.assets.length > 0) {
       setImage(result.assets[0].uri);
       onImageSelected(result.assets[0]);

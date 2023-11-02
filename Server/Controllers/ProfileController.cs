@@ -98,7 +98,7 @@ public class ProfileController : ControllerBase
             isActive = true,
             isAdmin = dto.IsAdmin,
             isDeleted = false,
-            isRequest = true
+            isRequest = dto.IsAdmin
         };
 
         _context.Profiles.Add(profile);

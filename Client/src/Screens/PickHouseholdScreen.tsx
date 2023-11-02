@@ -19,11 +19,6 @@ export default function PickHouseholdScreen({ navigation }: Props) {
     dispatch(fetchProfiles());
   }, [profileId]);
 
-  // const handleProfileClick = (profile: Profile) => {
-  //   dispatch(setActiveProfile(profile.id));
-  //   navigation.navigate("ChoreList");
-  // };
-
   return (
     <View style={[s.flex1, s.justifyBetween, s.p16]}>
       <View>

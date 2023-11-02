@@ -20,11 +20,6 @@ const store = configureStore({
   },
 });
 
-// bekymmer med AsyncStorage? 
-//    pröva att cleara den genom att kommentera ut den här raden 1 gång 
-//    glöm inte att ändra tillbaks efter att du har reloadat appen!
-// AsyncStorage.clear();
-
 InitializeFromStorage();
 
 async function InitializeFromStorage() {
