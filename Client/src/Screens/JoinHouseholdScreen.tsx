@@ -61,7 +61,7 @@ export default function JoinHousholdScreen({ navigation }: Props) {
     dispatch(fetchTransientHousehold(textinput));
   };
 
-  const handleJoinPress = () => {
+  const handleJoinPress = async () => {
     if (!household || !displayName || !selectedAvatar) return;
     let dto: JoinHouseholdDto = {
       userId: 0, // we'll let the thunk figure this out from current state
@@ -75,7 +75,7 @@ export default function JoinHousholdScreen({ navigation }: Props) {
       dto.isAdmin = true;
     }
 
-    dispatch(joinHousehold(dto));
+    await dispatch(joinHousehold(dto));
     navigation.navigate("ChoreList");
   };
   return (

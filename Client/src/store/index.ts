@@ -2,13 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import userSlice, { setActiveProfile, setUser } from "./userSlice";
+import userSlice, { setUser } from "./userSlice";
 import choreNavigationSlice from "./choreNavigationSlice";
 import householdSlice from "./householdSlice";
 import { storageKeys } from "../constants";
 import choreSlice from "./choreSlice";
 import profileChoreSlice from "./profileChoreSlice";
 import { User } from "../Data/User";
+import { setActiveProfile } from "./userSlice/thunks";
 
 const store = configureStore({
   reducer: {

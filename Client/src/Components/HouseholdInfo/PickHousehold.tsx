@@ -4,8 +4,9 @@ import { Pressable, View } from "react-native";
 import { Surface, Text } from "react-native-paper";
 import { Profile } from "../../Data/Profile";
 import { useAppDispatch } from "../../store";
-import { setActiveProfile } from "../../store/userSlice";
+
 import s from "../../utils/globalStyles";
+import { setActiveProfile } from "../../store/userSlice/thunks";
 
 type Props = { profile: Profile };
 

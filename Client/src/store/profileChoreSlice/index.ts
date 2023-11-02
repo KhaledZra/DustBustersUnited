@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProfileChore } from "../../Data/ProfileChore";
+import type { ProfileChore } from "../../Data/ProfileChore";
 import { getChoreCompletions } from "./thunks";
 
 type ProfileChoreState = {
@@ -13,7 +13,11 @@ const initialState: ProfileChoreState = {
 const choreSlice = createSlice({
   name: "chore",
   initialState,
-  reducers: {},
+  reducers: {
+    clearChoreProfiles: (state) => {
+      state.profileChores = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getChoreCompletions.fulfilled, (state, action) => {
       state.profileChores = action.payload;
@@ -21,4 +25,5 @@ const choreSlice = createSlice({
   },
 });
 
+export const { clearChoreProfiles } = choreSlice.actions;
 export default choreSlice.reducer;

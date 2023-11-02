@@ -4,17 +4,16 @@ import { ScrollView, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import ProfileView from "../Components/HouseholdInfo/ProfileView";
 import { useAppDispatch, useAppSelector } from "../store";
-import {
-  deleteProfile,
-  getHouseholdProfiles,
-  selectActiveHousehold,
-  selectProfiles,
-  selectRequestProfiles,
-} from "../store/householdSlice";
+import { deleteProfile, getHouseholdProfiles } from "../store/householdSlice";
 import s from "../utils/globalStyles";
 import { selectIsAdmin } from "../store/userSlice";
 import { RootStackScreenProps } from "../../types";
 import { useThemeContext } from "../themes/ThemeContext";
+import {
+  selectActiveHousehold,
+  selectProfiles,
+  selectRequestProfiles,
+} from "../store/householdSlice/selectors";
 
 type props = RootStackScreenProps<"HouseholdInfo">;
 
@@ -22,11 +21,10 @@ export default function HouseholdInfoScreen({ navigation }: props) {
   const dispatch = useAppDispatch();
   const requests = useAppSelector(selectRequestProfiles);
   const isAdmin = useAppSelector(selectIsAdmin);
-
   const profiles = useAppSelector(selectProfiles);
   const household = useAppSelector(selectActiveHousehold);
 
-  const {theme} = useThemeContext();
+  const { theme } = useThemeContext();
   const handleLeaveHousehold = () => {
     dispatch(deleteProfile());
     navigation.navigate("PickHousehold");
@@ -55,11 +53,11 @@ export default function HouseholdInfoScreen({ navigation }: props) {
               style={[
                 s.pv2,
                 s.w150,
-                {backgroundColor: theme.colors?.primary},
+                { backgroundColor: theme.colors?.primary },
                 s.br20,
                 s.fs60,
                 s.textCenter,
-                {color: theme.colors?.onSurface}
+                { color: theme.colors?.onSurface },
               ]}
             >
               {household?.code}
