@@ -13,10 +13,12 @@ import {
 } from "../store/profileChoreSlice/thunks";
 import { selectActiveProfile, selectIsAdmin } from "../store/userSlice";
 import s from "../utils/globalStyles";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 type Props = RootStackScreenProps<"ChoreList">;
 
 export default function ChoreListScreen({ navigation, route }: Props) {
+  const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectActiveProfile);
   const chores = useAppSelector((state) => state.chore.chores).filter(
@@ -32,12 +34,12 @@ export default function ChoreListScreen({ navigation, route }: Props) {
     startDate: todaysDateOnlyAsString(),
     endDate: undefined,
   };
-
+  
   useEffect(() => {
     dispatch(getChoresByHousehold());
     dispatch(getChoreCompletions(pcProps));
     dispatch(getHouseholdProfiles());
-  }, []);
+  }, [isFocused]);
 
   return (
     <View style={[s.flex1]}>

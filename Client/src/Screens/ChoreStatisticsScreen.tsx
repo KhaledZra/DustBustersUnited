@@ -108,7 +108,7 @@ export default function ChoreStatisticsScreen({ route, navigation }: Props) {
           .filter((s) => s.completions > 0);
 
         return { chore, stats };
-      })
+      }).filter((c) => c.stats.some((s) => s.completions > 0))
     );
   }, [completions, chores, profiles]);
 
@@ -187,7 +187,7 @@ export default function ChoreStatisticsScreen({ route, navigation }: Props) {
               ]}
             >
               {choresWithStats.map((cs) => (
-                <Surface style={[s.br10, s.p8]} key={cs.chore.id}>
+                <Surface style={[s.br10, s.p8]} key={cs.chore.id}>                  
                   {cs.stats.length > 0 && (
                     <PieChart
                       widthAndHeight={(widthAndHeight - 16) / 2}
