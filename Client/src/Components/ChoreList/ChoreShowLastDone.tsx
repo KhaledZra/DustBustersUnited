@@ -19,8 +19,8 @@ export default function ChoreShowLastDone({
     return <ChoreAvatarRenderer {...chore} />;
   } else if (daysSinceDone < interval) {
     return (
-      <View style={[s.bgColGrey, s.w10, s.br10]}>
-        <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
+      <View style={[s.bgColFigmaGrey, s.w10, s.br10]}>
+        <Text variant="labelLarge" style={[s.textCenter]}>
           {daysSinceDone}
         </Text>
       </View>

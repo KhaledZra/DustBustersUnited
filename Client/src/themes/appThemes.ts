@@ -11,6 +11,7 @@ export const AppLightTheme = {
     background: "#F2F2F2",
     primary: "#fff",
     onPrimary: "#000",
+    surface: "#fff"
   },
 };
 

@@ -8,7 +8,7 @@ export default function SettingsScreen() {
     
   return (
     <View style={[s.flex1, s.alignCenter, s.justifyCenter]}>
-        <Text style={[s.fs20]}>Ändra tema!</Text>
+        <Text style={[s.fs20, s.p16]}>Ändra tema!</Text>
       <ToggleButton.Row
         onValueChange={value => setColorScheme(value as ColorScheme)}
         value={colorScheme}
@@ -17,7 +17,7 @@ export default function SettingsScreen() {
         <ToggleButton icon="white-balance-sunny" value="light" />
         <ToggleButton icon="moon-waning-crescent" value="dark" />
       </ToggleButton.Row>
-      <Text style={[s.fs20]}>Nuvarande läge: {colorScheme}</Text>
+      <Text style={[s.fs20, s.p16]}>Nuvarande läge: {colorScheme}</Text>
     </View>
   );
 }

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { getChoreCompletions } from "./thunks";
-import { RootState } from "..";
 
 type ProfileChoreState = {
   profileChores: ProfileChore[];

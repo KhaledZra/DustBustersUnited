@@ -48,6 +48,12 @@ export default function JoinHousholdScreen({ navigation }: Props) {
     }
   }, [codeString, dispatch, code]);
 
+  useEffect(() => {
+    if (!route.params.code) {
+      dispatch(clearTransientHousehold());
+    }
+  }, []);
+
   const handleChangeCode = (textinput: string | undefined) => {
     if (household) dispatch(clearTransientHousehold());
     if (!textinput || textinput.length !== 4 || isNaN(parseInt(textinput)))

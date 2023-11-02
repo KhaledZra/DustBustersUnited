@@ -18,13 +18,14 @@ export const getChoreCompletions = createAsyncThunk<
     let endpoint = "ChoreProfile/GetProfileChoresForHousehold";
     let householdId = selectActiveHouseholdId(getState() as RootState);
     let query = startDate || endDate ? "?" : "";
+
     if (startDate) query += `startDate=${startDate}`;
     if (startDate && endDate) query += "&";
     if (endDate) query += `endDate=${endDate}`;
 
     const url = `${endpoint}/${householdId}${query}`;
-
     const response: Response = await apiFetch(url);
-    return response.json() as Promise<ProfileChore[]>;
+
+    return response.json();
   }
 );

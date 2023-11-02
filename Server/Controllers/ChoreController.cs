@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using DTO;
 using Microsoft.EntityFrameworkCore;
 using Model;
-using System.IO;
-using System.Numerics;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -39,6 +37,7 @@ public class ChoreController : ControllerBase
             Console.WriteLine($"Code: 404, No chores found for given Id");
             return NotFound();
         }
+
         Console.WriteLine($"Code: 200, Ok!");
         return Ok(chores);
     }
@@ -54,6 +53,7 @@ public class ChoreController : ControllerBase
             Console.WriteLine($"Code: 404, Chore not found!");
             return NotFound();
         }
+
         Console.WriteLine($"Code: 200, Ok!");
         return Ok(chore);
     }
@@ -76,19 +76,22 @@ public class ChoreController : ControllerBase
         return CreatedAtAction("GetChore", new { id = chore.Id }, chore);
     }
 
-    [HttpPost]
-    [Route(nameof(SaveChoreImage))]
-    public async Task<IActionResult> SaveChoreImage(int choreId)
+    [HttpPost("SaveChoreMedia/{category}/{choreId}")]
+    public async Task<IActionResult> SaveChoreMedia(string category, int choreId)
     {
         var request = HttpContext.Request;
         var file = request.Form.Files[0];
-        var fileName = "chore-" + choreId + ".jpg";
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "upload", "images", fileName);
+        var fileFormat = Path.GetFileName(request.Form.Files[0].FileName).Split(".")[1];
+        var fileName = $"chore-{choreId}." + fileFormat;
+        Console.WriteLine("### " + fileName);
+        
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "upload", category, fileName);
         using (var stream = System.IO.File.Create(filePath))
         {
             await file.CopyToAsync(stream);
         }
-        return Ok(new { url = "https://dustbusters.space/images/" + fileName });
+
+        return Ok(new { url = $"https://dustbusters.space/{category}/" + fileName });
     }
 
 
@@ -179,34 +182,5 @@ public class ChoreController : ControllerBase
         chore.Deadline = DateTime.Now.AddDays(chore.RepeatInterval);
         await context.SaveChangesAsync();
         return true;
-    }
-
-    enum FileCategories
-    {
-        Image,
-        Audio
-    }
-
-    private async Task SaveMediaToFile(string potentialFile, int choreId, FileCategories fileCategories)
-    {
-        if (string.IsNullOrWhiteSpace(potentialFile)) return;
-
-        string filePath = String.Empty;
-
-        if (fileCategories == FileCategories.Image) filePath = $"images/chore-{choreId}.jpg";
-        else if (fileCategories == FileCategories.Audio) filePath = $"audios/chore-{choreId}.mp3";
-
-        await System.IO.File.WriteAllBytesAsync(filePath, Convert.FromBase64String(potentialFile));
-    }
-
-    private void DeleteMediaInFiles(int choreId, FileCategories fileCategories)
-    {
-        string filePath = String.Empty;
-
-        if (fileCategories == FileCategories.Image) filePath = $"images/chore-{choreId}.jpg";
-        else if (fileCategories == FileCategories.Audio) filePath = $"audio/chore-{choreId}.mp3";
-
-        if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
-        else Console.WriteLine($"{fileCategories} with id {choreId} does not exist");
     }
 }

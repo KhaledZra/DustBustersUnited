@@ -71,7 +71,7 @@ export default function RootStackNavigator() {
       <Stack.Screen
         name="PickHousehold"
         component={PickHouseholdScreen}
-        options={{ title: "Skapa/Gå med i hushåll" }}
+        options={{ title: "Dina Hushåll" }}
       />
       <Stack.Screen
         name="JoinHousehold"
