@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Chore, ChoreCreateDto } from "../../Data/Chore";
-import { apiFetch, apiSendFile } from "../../utils/apiClient";
+import { apiFetch, apiSendAudio, apiSendImage } from "../../utils/apiClient";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
 import { getChoreCompletions } from "../profileChoreSlice/thunks";
@@ -17,18 +17,71 @@ export const saveChoreToDb = createAsyncThunk<Chore, ChoreCreateDto>(
   }
 );
 
+type ChoreFilesProps = { choreDto: ChoreCreateDto; image: ImagePickerAsset, audioUri: string };
+export const saveChoreWithFilesToDb = createAsyncThunk<Chore, ChoreFilesProps>(
+  "user/addChoreWithFiles",
+  async ({ choreDto, image, audioUri }, { dispatch }) => {
+    // Save to Db, retrieve Id
+    const { payload: chore } = (await dispatch(
+      saveChoreToDb(choreDto)
+    )) as PayloadAction<Chore>;
+
+    // Handle image
+    const imageResponse: Response = await apiSendImage(
+      `Chore/SaveChoreMedia/images/${chore.id}`,
+      image
+    );
+    console.log("response.status", imageResponse.status);
+    let imageJson = await imageResponse.json();
+    console.log("imageJson", imageJson);
+
+    // Handle Audio
+    const audioResponse: Response = await apiSendAudio(
+      `Chore/SaveChoreMedia/audio/${chore.id}`,
+      audioUri
+    );
+    console.log("response.status", audioResponse.status);
+    let audioJson = await audioResponse.json();
+    console.log("audioJson", audioJson);
+
+    return chore;
+  }
+);
+
 type ChoreImageProps = { choreDto: ChoreCreateDto; image: ImagePickerAsset };
 export const saveChoreWithImageToDb = createAsyncThunk<Chore, ChoreImageProps>(
-  "user/addChore",
+  "user/addChoreWithImage",
   async ({ choreDto, image }, { dispatch }) => {
     // Save to Db, retrieve Id
     const { payload: chore } = (await dispatch(
       saveChoreToDb(choreDto)
     )) as PayloadAction<Chore>;
 
-    const response: Response = await apiSendFile(
+    // Handle image
+    const imageResponse: Response = await apiSendImage(
       `Chore/SaveChoreMedia/images/${chore.id}`,
       image
+    );
+    console.log("response.status", imageResponse.status);
+    let imageJson = await imageResponse.json();
+    console.log("imageJson", imageJson);
+
+    return chore;
+  }
+);
+
+type ChoreAudioProps = { choreDto: ChoreCreateDto; audioUri: string };
+export const saveChoreWithAudioToDb = createAsyncThunk<Chore, ChoreAudioProps>(
+  "user/addChoreWithAudio",
+  async ({ choreDto, audioUri }, { dispatch }) => {
+    // Save to Db, retrieve Id
+    const { payload: chore } = (await dispatch(
+      saveChoreToDb(choreDto)
+    )) as PayloadAction<Chore>;
+
+    const response: Response = await apiSendAudio(
+      `Chore/SaveChoreMedia/audio/${chore.id}`,
+      audioUri
     );
 
     console.log("response.status", response.status);
@@ -39,6 +92,7 @@ export const saveChoreWithImageToDb = createAsyncThunk<Chore, ChoreImageProps>(
     return chore;
   }
 );
+
 export const updateChore = createAsyncThunk<Chore, Chore>(
   "user/editChore",
   async (chore) => {

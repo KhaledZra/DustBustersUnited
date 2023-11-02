@@ -21,6 +21,7 @@ import { getDaysSinceLastDone } from "../utils";
 import s from "../utils/globalStyles";
 
 const IMAGES_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/images");
+const AUDIO_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/audio");
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

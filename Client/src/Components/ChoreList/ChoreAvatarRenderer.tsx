@@ -22,7 +22,7 @@ export default function ChoreAvatarRenderer(chore: Chore) {
 
   return filtered.length === 0 ? (
     <View style={[s.bgColFigmaGrey, s.w10, s.br10]}>
-      <Text variant="labelLarge" style={[s.textCenter]}>
+      <Text variant="labelLarge" style={[s.textCenter, s.colBlack]}>
         0
       </Text>
     </View>

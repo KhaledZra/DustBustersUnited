@@ -1,5 +1,4 @@
 import { registerRootComponent } from "expo";
-import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 
@@ -8,19 +7,20 @@ import RootStackNavigator from "./Navigators/RootStackNavigator";
 import store from "./store";
 import ThemeProvider from "./themes/ThemeContext";
 import s from "./utils/globalStyles";
+import { StatusBar } from "react-native";
 
 export default function App() {
   return (
-      <SafeAreaProvider>
-        <StatusBar style="auto" />
-        <SafeAreaView style={s.flex1} edges={["bottom"]}>
-          <Provider store={store}>
-            <ThemeProvider>
-              <RootStackNavigator />
-            </ThemeProvider>
-          </Provider>
-        </SafeAreaView>
-      </SafeAreaProvider>
+    <SafeAreaProvider>
+      <SafeAreaView style={s.flex1} edges={["bottom"]}>
+          <StatusBar />
+        <Provider store={store}>
+          <ThemeProvider>
+            <RootStackNavigator />
+          </ThemeProvider>
+        </Provider>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

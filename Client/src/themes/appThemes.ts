@@ -11,7 +11,7 @@ export const AppLightTheme = {
     background: "#F2F2F2",
     primary: "#fff",
     onPrimary: "#000",
-    surface: "#fff"
+    surface: "#fff",
   },
 };
 
@@ -22,7 +22,7 @@ export const AppDarkTheme = {
     ...DarkTheme.colors,
     ...MD3DarkTheme.colors,
     primary: "rgb(255, 45, 85)",
-    onPrimary: "white"
-
+    onPrimary: "white",
+    surface: "#26232B",
   },
 };

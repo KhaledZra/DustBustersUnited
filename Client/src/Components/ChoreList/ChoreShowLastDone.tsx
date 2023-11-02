@@ -3,6 +3,7 @@ import { Text } from "react-native-paper";
 import s from "../../utils/globalStyles";
 import ChoreAvatarRenderer from "./ChoreAvatarRenderer";
 import { Chore } from "../../Data/Chore";
+import { useThemeContext } from "../../themes/ThemeContext";
 
 interface displayDaysProps {
   daysSinceDone: number;
@@ -15,12 +16,13 @@ export default function ChoreShowLastDone({
   interval,
   chore,
 }: displayDaysProps) {
+  const { theme } = useThemeContext();
   if (daysSinceDone === 0) {
     return <ChoreAvatarRenderer {...chore} />;
   } else if (daysSinceDone < interval) {
     return (
       <View style={[s.bgColFigmaGrey, s.w10, s.br10]}>
-        <Text variant="labelLarge" style={[s.textCenter]}>
+        <Text variant="labelLarge" style={[s.textCenter, s.colBlack]}>
           {daysSinceDone}
         </Text>
       </View>

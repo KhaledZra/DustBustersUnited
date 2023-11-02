@@ -10,6 +10,8 @@ import {
   archiveChore,
   deleteChore,
   saveChoreToDb,
+  saveChoreWithAudioToDb,
+  saveChoreWithFilesToDb,
   saveChoreWithImageToDb,
   updateChore,
 } from "../store/choreSlice/thunks";
@@ -18,11 +20,14 @@ import s from "../utils/globalStyles";
 import ImageSelector from "../Components/ImageSelector";
 import { useState } from "react";
 import { ImagePickerAsset } from "expo-image-picker";
+import AudioHandler from "../Components/AudioHandler";
+import { Audio } from "expo-av";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 
 export default function AddOrEditChoreScreen({ route, navigation }: Props) {
   const [image, setImage] = useState<ImagePickerAsset>();
+  const [recordingUri, setRecordingUri] = useState<string>();
   const householdId = useAppSelector(selectActiveHouseholdId);
   const { chore } = route.params;
   const isEdit = Boolean(chore);
@@ -51,9 +56,14 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
       dispatch(updateChore(chore));
     } else {
       const newChore = { ...chore, householdId };
-      if (image) {
-        dispatch(saveChoreWithImageToDb({ choreDto: newChore, image }));
-      } else {
+      if (image && recordingUri) {
+        dispatch(saveChoreWithFilesToDb({ choreDto: newChore, image: image, audioUri: recordingUri}));
+      } else if (image) {
+        dispatch(saveChoreWithImageToDb({ choreDto: newChore, image}));
+      } else if (recordingUri) {
+        dispatch(saveChoreWithAudioToDb({ choreDto: newChore, audioUri: recordingUri}));
+      } 
+      else {
         dispatch(saveChoreToDb(newChore));
       }
     }
@@ -89,6 +99,8 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
         <EnergySelector name="energy" control={control} />
 
         <ImageSelector onImageSelected={(img) => setImage(img)} />
+
+        <AudioHandler onAudioSelected={(audioUri) => setRecordingUri(audioUri)} />
 
         {isEdit && (
           <Button
