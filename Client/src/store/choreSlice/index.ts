@@ -19,16 +19,16 @@ const initialState: UserState = {
 const choreSlice = createSlice({
   name: "chore",
   initialState,
-  reducers: {
-    setChore: (state, action) => {
-      state.chores = action.payload;
-    },
-    updateChore: (state, action) => {},
-  },
-
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(saveChoreToDb.fulfilled, (state, action) => {
-      state.chores.push(action.payload);
+      const chore = action.payload;
+      const choreIndex = state.chores.findIndex(
+        (chore) => chore.id === action.payload.id
+      );
+      if (choreIndex === -1) {
+        state.chores.push(chore);
+      }
     });
     builder.addCase(getChoresByHousehold.fulfilled, (state, action) => {
       state.chores = action.payload;

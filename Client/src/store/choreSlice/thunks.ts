@@ -1,12 +1,9 @@
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Chore, ChoreCreateDto } from "../../Data/Chore";
-import { apiFetch, apiSendImage } from "../../utils/apiClient";
+import { apiFetch, apiSendFile } from "../../utils/apiClient";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
-import {
-  ProfileChoreProps,
-  getChoreCompletions,
-} from "../profileChoreSlice/thunks";
+import { getChoreCompletions } from "../profileChoreSlice/thunks";
 import todaysDateOnlyAsString from "../../Components/GetTodaysDateOnly";
 import { ImagePickerAsset } from "expo-image-picker";
 
@@ -29,7 +26,7 @@ export const saveChoreWithImageToDb = createAsyncThunk<Chore, ChoreImageProps>(
       saveChoreToDb(choreDto)
     )) as PayloadAction<Chore>;
 
-    const response: Response = await apiSendImage(
+    const response: Response = await apiSendFile(
       `Chore/SaveChoreMedia/images/${chore.id}`,
       image
     );

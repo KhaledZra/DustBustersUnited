@@ -1,18 +1,26 @@
-import { View, Dimensions } from "react-native";
-import { Badge, Button, Card, List, Text } from "react-native-paper";
-import { RootStackParamList } from "../Navigators/RootStackNavigator";
+import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
-import s from "../utils/globalStyles";
-import { RouteProp } from "@react-navigation/native";
+import { Image, View } from "react-native";
+import {
+  Badge,
+  Button,
+  Card,
+  List,
+  Surface,
+  Text
+} from "react-native-paper";
+import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
   MarkChoreProps,
   markChoreAsCompleted,
 } from "../store/choreSlice/thunks";
-import { getDaysSinceLastDone } from "../utils";
 import { selectActiveHouseholdId } from "../store/householdSlice";
-import React from "react";
+import { getDaysSinceLastDone } from "../utils";
+import s from "../utils/globalStyles";
+
+const IMAGES_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/images");
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -67,6 +75,12 @@ export default function ChoreViewPage({ navigation, route }: Props) {
               <Badge style={[s.bgColGrey, props.style]}>{chore.energy}</Badge>
             )}
           />
+          <Surface elevation={5}>
+            <Image
+              source={{ uri: `${IMAGES_URL}/chore-${chore.id}.jpg` }}
+              style={[s.w80, s.ar43, s.br10]}
+            />
+          </Surface>
         </Card.Content>
       </Card>
 

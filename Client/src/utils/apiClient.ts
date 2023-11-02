@@ -55,12 +55,10 @@ export async function apiFetch(
   ]);
 }
 
-export async function apiSendImage(
+export async function apiSendFile(
   endpoint: string,
   image: ImagePickerAsset
 ): Promise<any> {
-  const url = API_URL + endpoint;
-
   // Add a slash if needed
   // This allows you to mess up both the API_URL and the endpoint, and still get a valid URL :p
   if (endpoint[0] !== "/" && API_URL![API_URL!.length - 1] !== "/")
@@ -76,7 +74,7 @@ export async function apiSendImage(
     type: "image/jpeg",
   } as any);
 
-  console.log("[apiClient.ts] ::", method, url);
+  console.log("[apiClient.ts] ::", method, endpoint);
   console.log("[Body] ::", body);
-  return fetch(url, { method, body, headers });
+  return fetch(API_URL + endpoint, { method, body, headers });
 }
