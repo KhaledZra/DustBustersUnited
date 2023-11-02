@@ -43,8 +43,6 @@ export default function ChoreListScreen({ navigation, route }: Props) {
     dispatch(getHouseholdProfiles());
   }, []);
 
-  console.log(profile);
-
   return (
     <View style={[s.flex1]}>
       {profile && !profile.isRequest && (

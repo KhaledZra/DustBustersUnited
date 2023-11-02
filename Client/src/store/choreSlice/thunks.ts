@@ -63,7 +63,7 @@ export const getChoresByHousehold = createAsyncThunk<Chore[], number>(
     const response: Response = await apiFetch(
       `Chore/GetChoresByHousehold/` + householdId
     );
-    return response.json() as Promise<Chore[]>;
+    return response.json();
   }
 );
 
@@ -86,13 +86,14 @@ export const markChoreAsCompleted = createAsyncThunk<
       method: "PUT",
     }
   );
-  const pcProps: ProfileChoreProps = {
-    startDate: todaysDateOnlyAsString(),
-    endDate: undefined,
-  };
-  dispatch(getChoreCompletions(pcProps));
+  dispatch(
+    getChoreCompletions({
+      startDate: todaysDateOnlyAsString(),
+      endDate: undefined,
+    })
+  );
   dispatch(getChoresByHousehold(markChoreProps.householdId!));
-  return response.json() as Promise<ProfileChore>;
+  return response.json();
 });
 
 export const deleteChore = createAsyncThunk<number, Chore>(
@@ -101,9 +102,7 @@ export const deleteChore = createAsyncThunk<number, Chore>(
     const response: Response = await apiFetch(
       "chore?choreId=" + chore.id,
       {},
-      {
-        method: "DELETE",
-      }
+      { method: "DELETE" }
     );
     return chore.id;
   }
@@ -115,10 +114,8 @@ export const archiveChore = createAsyncThunk<Chore, Chore>(
     const response: Response = await apiFetch(
       "Chore/ToggleActivity?choreId=" + chore.id,
       {},
-      {
-        method: "PUT",
-      }
+      { method: "PUT" }
     );
-    return response.json() as Promise<Chore>;
+    return response.json();
   }
 );

@@ -47,7 +47,6 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
   const handleArchiveChore = () => dispatch(archiveChore(chore!));
 
   const onSubmit = (chore: Chore) => {
-    console.log(chore);
     if (isEdit) {
       dispatch(updateChore(chore));
     } else {
@@ -63,7 +62,9 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
 
   return (
     <View style={s.flex1}>
-      <ScrollView contentContainerStyle={[s.pt15, s.ph15, s.flex1, s.gap20, s.mb10]}>
+      <ScrollView
+        contentContainerStyle={[s.pt15, s.ph15, s.flex1, s.gap20, s.mb10]}
+      >
         <TextInput
           style={[s.overflowHidden, s.br10, s.boldText]}
           label="Titel"
@@ -71,7 +72,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           multiline
           value={nameField.value}
           onChangeText={nameField.onChange}
-          {...register("name", {required: true})}
+          {...register("name", { required: true })}
         />
         <TextInput
           style={[s.overflowHidden, s.br10, s.boldText]}
@@ -80,7 +81,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           multiline
           value={descriptionField.value}
           onChangeText={descriptionField.onChange}
-          {...register("description", {required: true})}
+          {...register("description", { required: true })}
         />
 
         <IntervalSelector key="" name="repeatInterval" control={control} />
@@ -130,10 +131,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           style={[s.flex1, s.radiusNone]}
           mode="contained"
           onPress={handleSubmit(onSubmit)}
-          disabled={
-            !nameField.value ||
-            !descriptionField.value
-          }
+          disabled={!nameField.value || !descriptionField.value}
         >
           Spara
         </Button>

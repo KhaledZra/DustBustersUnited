@@ -11,7 +11,7 @@ import {
 import { JoinHouseholdDto } from "../Data/Household";
 import { joinHousehold } from "../store/userSlice/thunks";
 import s from "../utils/globalStyles";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { RootStackScreenProps } from "../../types";
@@ -47,6 +47,12 @@ export default function JoinHousholdScreen({ navigation }: Props) {
       dispatch(fetchTransientHousehold(codeString || ""));
     }
   }, [codeString, dispatch, code]);
+
+  useEffect(() => {
+    if (!route.params.code) {
+      dispatch(clearTransientHousehold());
+    }
+  }, []);
 
   const handleChangeCode = (textinput: string | undefined) => {
     if (household) dispatch(clearTransientHousehold());

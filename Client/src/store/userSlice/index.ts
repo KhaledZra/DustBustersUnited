@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import { Chore } from "../../Data/Chore";
 import { Profile } from "../../Data/Profile";
