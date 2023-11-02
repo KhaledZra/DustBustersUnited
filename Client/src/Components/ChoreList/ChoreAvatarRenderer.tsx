@@ -1,12 +1,12 @@
 import { FlatList, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useAppSelector } from "../../store";
-import { selectHouseholdProfiles } from "../../store/householdSlice";
 import s from "../../utils/globalStyles";
 import { avatars } from "../../constants";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { Chore } from "../../Data/Chore";
 import { useEffect, useState } from "react";
+import { selectHouseholdProfiles } from "../../store/householdSlice/selectors";
 
 export default function ChoreAvatarRenderer(chore: Chore) {
   const profileChores = useAppSelector((s) => s.profileChore.profileChores);

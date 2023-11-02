@@ -16,9 +16,9 @@ import {
   MarkChoreProps,
   markChoreAsCompleted,
 } from "../store/choreSlice/thunks";
-import { selectActiveHouseholdId } from "../store/householdSlice";
 import { getDaysSinceLastDone } from "../utils";
 import s from "../utils/globalStyles";
+import { selectActiveHouseholdId } from "../store/householdSlice/selectors";
 
 const IMAGES_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/images");
 

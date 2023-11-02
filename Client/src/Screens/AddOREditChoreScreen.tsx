@@ -13,11 +13,12 @@ import {
   saveChoreWithImageToDb,
   updateChore,
 } from "../store/choreSlice/thunks";
-import { selectActiveHouseholdId } from "../store/householdSlice";
+
 import s from "../utils/globalStyles";
 import ImageSelector from "../Components/ImageSelector";
 import { useState } from "react";
 import { ImagePickerAsset } from "expo-image-picker";
+import { selectActiveHouseholdId } from "../store/householdSlice/selectors";
 
 type Props = RootStackScreenProps<"AddOrEditChore">;
 

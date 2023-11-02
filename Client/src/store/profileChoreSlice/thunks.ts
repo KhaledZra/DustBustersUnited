@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiFetch } from "../../utils/apiClient";
-import { ProfileChore } from "../../Data/ProfileChore";
-import { selectActiveHouseholdId } from "../householdSlice";
+import type { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
+import { selectActiveHouseholdId } from "../householdSlice/selectors";
 
 export interface ProfileChoreProps {
   startDate: String | undefined;
@@ -16,7 +16,9 @@ export const getChoreCompletions = createAsyncThunk<
   "profileChore/getByHousehold",
   async ({ startDate, endDate }, { getState }) => {
     let endpoint = "ChoreProfile/GetProfileChoresForHousehold";
+
     let householdId = selectActiveHouseholdId(getState() as RootState);
+
     let query = startDate || endDate ? "?" : "";
 
     if (startDate) query += `startDate=${startDate}`;

@@ -2,15 +2,11 @@ import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Appbar, Divider, IconButton, Menu } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../store";
-import {
-  selectActiveAvatar,
-  selectActiveProfile,
-  setActiveProfile,
-} from "../store/userSlice";
+import { selectActiveAvatar, selectActiveProfile } from "../store/userSlice";
 import { logout } from "../store/userSlice/thunks";
+import s from "../utils/globalStyles";
 import { ChoreHeaderBar } from "./ChoreHeaderBar";
 import IconButtonAvatar from "./IconButtonAvatar";
-import s from "../utils/globalStyles";
 
 type Props = NativeStackHeaderProps & {
   backNav?: boolean;
@@ -42,7 +38,6 @@ export default function StackHeader({
   // Navigation handlers
 
   const handleChangeHousehold = () => {
-    dispatch(setActiveProfile(undefined));
     navigation.navigate("PickHousehold");
   };
   const handleShowHousehold = () => {
@@ -60,7 +55,7 @@ export default function StackHeader({
     <>
       <Appbar.Header style={{ paddingRight: 15 }}>
         {backNav && <Appbar.BackAction onPress={() => navigation.goBack()} />}
-        {!backNav && <Appbar.Action icon= ""/>}
+        {!backNav && <Appbar.Action icon="" />}
         <Appbar.Content style={[s.alignCenter]} title={title} />
         <Menu
           visible={menuVisible}
