@@ -36,7 +36,7 @@ export default function AudioHandler(audioProps: Props) {
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
     });
-    {recording && recording.getURI && audioProps.onAudioSelected(recording.getURI.toString())}
+    {recording && recording.getURI && audioProps.onAudioSelected(recording.getURI()!.toString())}
     const uri = recording!.getURI();
     console.log("uri:", uri);
   }
