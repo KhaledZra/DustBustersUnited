@@ -1,6 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, View } from "react-native";
 import {
   Badge,
@@ -19,6 +19,7 @@ import {
 import { selectActiveHouseholdId } from "../store/householdSlice";
 import { getDaysSinceLastDone } from "../utils";
 import s from "../utils/globalStyles";
+import AudioPlayer from "../Components/AudioPlayer";
 
 const IMAGES_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/images");
 const AUDIO_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/audio");
@@ -82,6 +83,8 @@ export default function ChoreViewPage({ navigation, route }: Props) {
               style={[s.w80, s.ar43, s.br10]}
             />
           </Surface>
+
+          <AudioPlayer audioUri={AUDIO_URL!} choreId={chore.id} />
         </Card.Content>
       </Card>
 
