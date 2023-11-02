@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Button, Image, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import React, { useState } from "react";
+import { Image, View } from "react-native";
+import { Button } from "react-native-paper";
+import s from "../utils/globalStyles";
 
 type Props = { onImageSelected: (image: ImagePicker.ImagePickerAsset) => void };
 export default function ImageSelector({ onImageSelected }: Props) {
@@ -23,7 +25,15 @@ export default function ImageSelector({ onImageSelected }: Props) {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
+      <Button
+        mode="contained"
+        icon="plus-circle-outline"
+        onPress={pickImage}
+        style={[s.br20, s.p6, s.mb10]}
+      >
+        Lägg till en bild
+      </Button>
+
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}

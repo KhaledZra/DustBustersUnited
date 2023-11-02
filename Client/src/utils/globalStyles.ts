@@ -109,6 +109,7 @@ const globalStyle = StyleSheet.create({
 
   // Aspect Ratio
   ar1: { aspectRatio: 1 },
+  ar43: { aspectRatio: 4 / 3 },
 
   // Elevation
   e4: { elevation: 4 },

@@ -13,11 +13,7 @@ const initialState: ProfileChoreState = {
 const choreSlice = createSlice({
   name: "chore",
   initialState,
-  reducers: {
-    setChore: (state, action) => {},
-    updateChore: (state, action) => {},
-  },
-
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getChoreCompletions.fulfilled, (state, action) => {
       state.profileChores = action.payload;

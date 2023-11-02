@@ -79,7 +79,7 @@ export const joinHousehold = createAsyncThunk<
     let profile = (await response.json()) as Profile;
     dispatch(fetchProfiles());
     dispatch({ type: "user/setActiveProfile", payload: profile.id });
-
+    AsyncStorage.setItem(storageKeys.ACTIVE_PROFILE_ID, profile.id.toString());
     return profile;
   }
 );
