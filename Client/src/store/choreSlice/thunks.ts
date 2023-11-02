@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Chore, ChoreCreateDto } from "../../Data/Chore";
-import { apiFetch } from "../../utils/apiClient";
+import { apiFetch, apiSendImage } from "../../utils/apiClient";
 import { ProfileChore } from "../../Data/ProfileChore";
 import { RootState } from "..";
 import {
@@ -24,20 +24,15 @@ type ChoreImageProps = { choreDto: ChoreCreateDto; image: ImagePickerAsset };
 export const saveChoreWithImageToDb = createAsyncThunk<Chore, ChoreImageProps>(
   "user/addChore",
   async ({ choreDto, image }, { dispatch }) => {
+    // Save to Db, retrieve Id
     const { payload: chore } = (await dispatch(
       saveChoreToDb(choreDto)
     )) as PayloadAction<Chore>;
-    const choreId = chore.id;
-    const formData = new FormData();
 
-    formData.append("file", image.uri);
-
-    const endpoint = "ChoreProfile/SaveChoreImage";
-    const url = `${endpoint}/${choreId}`;
-    const response: Response = await apiFetch(url, formData, {
-      headers: { "content-type": "multipart/form-data" },
-      method: "POST",
-    });
+    const response: Response = await apiSendImage(
+      `Chore/SaveChoreMedia/images/${chore.id}`,
+      image
+    );
 
     console.log("response.status", response.status);
 

@@ -3,6 +3,7 @@ using DTO;
 using Microsoft.EntityFrameworkCore;
 using Model;
 using System.IO;
+using System.Numerics;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -77,22 +78,17 @@ public class ChoreController : ControllerBase
 
     [HttpPost]
     [Route(nameof(SaveChoreImage))]
-    public async Task<IActionResult> SaveChoreImage()
+    public async Task<IActionResult> SaveChoreImage(int choreId)
     {
         var request = HttpContext.Request;
         var file = request.Form.Files[0];
-        var fileName = Path.GetFileName(request.Form.Files[0].FileName);
-        Console.WriteLine("### " + fileName);
-
-        
+        var fileName = "chore-" + choreId + ".jpg";
         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "upload", "images", fileName);
         using (var stream = System.IO.File.Create(filePath))
         {
             await file.CopyToAsync(stream);
         }
-
         return Ok(new { url = "https://dustbusters.space/images/" + fileName });
-
     }
 
 

@@ -1,3 +1,6 @@
+
+import { ImagePickerAsset } from "expo-image-picker";
+
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 if (!API_URL) {
   throw new Error(
@@ -21,7 +24,8 @@ export async function apiFetch(
       ...options.headers,
     };
   }
-  // if Endpoint doesn't begin with /, and the API_URL doesn't end with /, add a / in between!
+  // Add a slash if needed
+  // This allows you to mess up both the API_URL and the endpoint, and still get a valid URL :p
   if (endpoint[0] !== "/" && API_URL![API_URL!.length - 1] !== "/")
     endpoint = "/" + endpoint;
 
@@ -50,4 +54,28 @@ export async function apiFetch(
       )
     ),
   ]);
+}
+
+export async function apiSendImage(
+  endpoint: string,
+  image: ImagePickerAsset
+): Promise<any> {
+//   const url = API_URL + endpoint;
+
+//   // Add a slash if needed
+//   // This allows you to mess up both the API_URL and the endpoint, and still get a valid URL :p
+//   if (endpoint[0] !== "/" && API_URL![API_URL!.length - 1] !== "/")
+//     endpoint = "/" + endpoint;
+
+//   return RNFetchBlob.fetch(
+//     "POST",
+//     url,
+//     { "Content-Type": "multipart/form-data" },
+//     {
+//       name: "photo",
+//       filename: "photo.jpeg",
+//       type: "image/jpeg",
+//       data: RNFetchBlob.wrap(image.uri),
+//     }
+//   );
 }
