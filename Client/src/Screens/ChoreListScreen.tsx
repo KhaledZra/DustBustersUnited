@@ -47,7 +47,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
 
   return (
     <View style={s.flex1}>
-      {profile && profile.isRequest && (
+      {profile && !profile.isRequest && (
         <View style={s.flex1}>
           <FlatList
             data={chores}
@@ -72,7 +72,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
         </View>
       )}
 
-      {profile && !profile.isRequest && (
+      {profile && profile.isRequest && (
         <View style={[s.flex1, s.alignCenter, s.justifyCenter]}>
           <Text style={[s.boldText, s.fs26]}>Väntar på att bli accepterad</Text>
         </View>
