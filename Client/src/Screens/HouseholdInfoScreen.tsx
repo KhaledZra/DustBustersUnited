@@ -17,11 +17,11 @@ import { RootStackScreenProps } from "../../types";
 
 type props = RootStackScreenProps<"HouseholdInfo">;
 
-export default function HouseholdInfoScreen({ navigation }:  props ) {
+export default function HouseholdInfoScreen({ navigation }: props) {
   const dispatch = useAppDispatch();
   const requests = useAppSelector(selectRequestProfiles);
   const isAdmin = useAppSelector(selectIsAdmin);
-  
+
   const profiles = useAppSelector(selectProfiles);
   const household = useAppSelector(selectActiveHousehold);
   const handleLeaveHousehold = () => {
@@ -33,42 +33,54 @@ export default function HouseholdInfoScreen({ navigation }:  props ) {
   }, []);
 
   return (
-    <ScrollView>
-      <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
-        Hushållsmedlemmar
-      </Text>
-      <View>
-        {profiles &&
-          profiles.length > 0 &&
-          profiles.map((p) => <ProfileView profile={p} key={p.id}/>)}
-      </View>
+    <View style={[s.flex1]}>
+      <ScrollView>
+        <View>
+          <Text style={[s.fs26, s.mt16, s.textCenter]}>Hushållsmedlemmar</Text>
+          <View>
+            {profiles &&
+              profiles.length > 0 &&
+              profiles.map((p) => <ProfileView profile={p} key={p.id} />)}
+          </View>
 
-      <View style={[s.flex1, s.alignCenter]}>
-        <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
-          Kod för att gå med i hushåll
-        </Text>
-        <View style={[s.mv10]} />
-        <Text style={[s.pv2, s.w150, s.bgColWhite, s.br20, s.fs60]}>
-          {household?.code}
-        </Text>
-      </View>
+          <View style={[s.flex1, s.alignCenter]}>
+            <Text style={[s.fs26, s.mt16, s.textCenter]}>
+              Kod för att gå med i hushåll
+            </Text>
+            <View style={[s.mv10]} />
+            <Text
+              style={[
+                s.pv2,
+                s.w150,
+                s.bgColWhite,
+                s.br20,
+                s.fs60,
+                s.textCenter,
+              ]}
+            >
+              {household?.code}
+            </Text>
+          </View>
 
-      <Text style={[s.fs26, s.mt16, s.textCenter, s.colWhite]}>
-        Förfrågningar
-      </Text>
-      <View>
-        {requests &&
-          requests.length > 0 &&
-          requests.map((p) => <ProfileView profile={p} key={p.id}/>)}
-      </View>
+          {requests && requests.length > 0 && (
+            <View>
+              <Text style={[s.fs26, s.mt16, s.textCenter]}>Förfrågningar</Text>
+              {requests.map((p) => (
+                <ProfileView profile={p} key={p.id} />
+              ))}
+            </View>
+          )}
+        </View>
+      </ScrollView>
       {isAdmin && (
-      <Button
-        style={[s.pv2, s.bgColWhite, s.m10]}
-        labelStyle={[s.colBlack]}
-        onPress={() => navigation.navigate("AddEditHoushold", { household })}
-      >
-        Redigera namn
-      </Button>)}
+        <Button
+          style={[s.pv2, s.bgColWhite, s.m10]}
+          labelStyle={[s.colBlack]}
+          onPress={() => navigation.navigate("AddEditHoushold", { household })}
+        >
+          Redigera namn
+        </Button>
+      )}
       <Button
         style={[s.pv2, s.bgColWhite, s.m10]}
         labelStyle={[s.colBlack]}
@@ -76,6 +88,6 @@ export default function HouseholdInfoScreen({ navigation }:  props ) {
       >
         Lämna hushåll
       </Button>
-    </ScrollView>
+    </View>
   );
 }

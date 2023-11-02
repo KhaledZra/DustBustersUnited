@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FlatList, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { RootStackScreenProps } from "../../types";
 import ChoreView from "../Components/ChoreList/ChoreView";
 import { useAppDispatch, useAppSelector } from "../store";
@@ -26,7 +26,6 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   const chores = useAppSelector((state) => state.chore.chores).filter(
     (c) => c.isActive !== false
   );
-  const activeProfile = useAppSelector((state) => state.user.activeProfileId);
   const isAdmin = useAppSelector(selectIsAdmin);
 
   useEffect(() => {
@@ -45,26 +44,36 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   }, []);
 
   return (
-    <View style={s.flex1}>
-      <FlatList
-        data={chores}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ChoreView route={route} navigation={navigation} chore={item} />
-        )}
-      />
-      <View style={s.alignCenter}>
-        {isAdmin && (
-          <Button
-            mode="contained"
-            icon="plus-circle-outline"
-            onPress={() => navigation.navigate("AddOrEditChore", {})}
-            style={[s.br20, s.p6, s.mb10]}
-          >
-            Lägg till
-          </Button>
-        )}
-      </View>
+    <View>
+      {profile && !profile.isRequest && (
+        <View style={s.flex1}>
+          <FlatList
+            data={chores}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <ChoreView route={route} navigation={navigation} chore={item} />
+            )}
+          />
+          <View style={s.alignCenter}>
+            {isAdmin && (
+              <Button
+                mode="contained"
+                icon="plus-circle-outline"
+                onPress={() => navigation.navigate("AddOrEditChore", {})}
+                style={[s.br20, s.p6, s.mb10]}
+              >
+                Lägg till
+              </Button>
+            )}
+          </View>
+        </View>
+      )}
+
+      {profile && profile.isRequest && (
+        <View>
+          <Text>Väntar på att bli accepterad</Text>
+        </View>)}
+
     </View>
   );
 }
