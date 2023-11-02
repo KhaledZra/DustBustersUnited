@@ -4,9 +4,9 @@ import { ScrollView, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import ProfileView from "../Components/HouseholdInfo/ProfileView";
 import { useAppDispatch, useAppSelector } from "../store";
-import { deleteProfile, getHouseholdProfiles } from "../store/householdSlice";
+import { adminDeleteProfile, getHouseholdProfiles } from "../store/householdSlice";
 import s from "../utils/globalStyles";
-import { selectIsAdmin } from "../store/userSlice";
+import { selectActiveProfile, selectIsAdmin } from "../store/userSlice";
 import { RootStackScreenProps } from "../../types";
 import { useThemeContext } from "../themes/ThemeContext";
 import {
@@ -23,10 +23,11 @@ export default function HouseholdInfoScreen({ navigation }: props) {
   const isAdmin = useAppSelector(selectIsAdmin);
   const profiles = useAppSelector(selectProfiles);
   const household = useAppSelector(selectActiveHousehold);
+  const profile = useAppSelector(selectActiveProfile)
 
   const { theme } = useThemeContext();
   const handleLeaveHousehold = () => {
-    dispatch(deleteProfile());
+    dispatch(adminDeleteProfile(profile!.id));
     navigation.navigate("PickHousehold");
   };
   useEffect(() => {

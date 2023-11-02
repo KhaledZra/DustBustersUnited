@@ -55,7 +55,7 @@ export async function apiFetch(
   ]);
 }
 
-export async function apiSendFile(
+export async function apiSendImage(
   endpoint: string,
   image: ImagePickerAsset
 ): Promise<any> {
@@ -78,3 +78,28 @@ export async function apiSendFile(
   console.log("[Body] ::", body);
   return fetch(API_URL + endpoint, { method, body, headers });
 }
+
+export async function apiSendAudio(
+  endpoint: string,
+  audioUri: string
+): Promise<any> {
+  // Add a slash if needed
+  // This allows you to mess up both the API_URL and the endpoint, and still get a valid URL :p
+  if (endpoint[0] !== "/" && API_URL![API_URL!.length - 1] !== "/")
+    endpoint = "/" + endpoint;
+
+  const method = "POST";
+  const headers = { "Content-Type": "multipart/form-data" };
+  const body = new FormData();
+
+  body.append("file", {
+    uri: audioUri,
+    name: "audio.m4a",
+    type: "audio/mp4",
+  } as any);
+
+  console.log("[apiClient.ts] ::", method, endpoint);
+  console.log("[Body] ::", body);
+  return fetch(API_URL + endpoint, { method, body, headers });
+}
+

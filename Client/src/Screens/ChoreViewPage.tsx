@@ -1,15 +1,8 @@
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, View } from "react-native";
-import {
-  Badge,
-  Button,
-  Card,
-  List,
-  Surface,
-  Text
-} from "react-native-paper";
+import { Badge, Button, Card, List, Surface, Text } from "react-native-paper";
 import { RootStackParamList } from "../Navigators/RootStackNavigator";
 import { useAppDispatch, useAppSelector } from "../store";
 import {
@@ -18,9 +11,11 @@ import {
 } from "../store/choreSlice/thunks";
 import { getDaysSinceLastDone } from "../utils";
 import s from "../utils/globalStyles";
+import AudioPlayer from "../Components/AudioPlayer";
 import { selectActiveHouseholdId } from "../store/householdSlice/selectors";
 
 const IMAGES_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/images");
+const AUDIO_URL = process.env.EXPO_PUBLIC_API_URL?.replace("/api", "/audio");
 
 type ChoreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -57,6 +52,15 @@ export default function ChoreViewPage({ navigation, route }: Props) {
     <View style={[s.flex1]}>
       <Card style={[s.flex1]}>
         <Card.Content style={[s.alignCenter, s.gap10]}>
+          <Surface elevation={5} style={[{ position: "relative" }]}>
+            <Text style={[{ position: "absolute" }]}>Finns ingen Bild!</Text>
+            <Image
+              source={{ uri: `${IMAGES_URL}/chore-${chore.id}.jpg` }}
+              style={[s.w80, s.ar43, s.br10]}
+            />
+          </Surface>
+
+          <AudioPlayer audioUri={AUDIO_URL!} choreId={chore.id} />
           <Text style={[s.fs26, s.textCenter]}>
             <Text style={s.boldText}>Beskrivning:</Text> {chore.description}
           </Text>
@@ -75,12 +79,6 @@ export default function ChoreViewPage({ navigation, route }: Props) {
               <Badge style={[s.bgColGrey, props.style]}>{chore.energy}</Badge>
             )}
           />
-          <Surface elevation={5}>
-            <Image
-              source={{ uri: `${IMAGES_URL}/chore-${chore.id}.jpg` }}
-              style={[s.w80, s.ar43, s.br10]}
-            />
-          </Surface>
         </Card.Content>
       </Card>
 
