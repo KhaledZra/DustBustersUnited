@@ -10,8 +10,9 @@ const globalStyle = StyleSheet.create({
   colBlack: { color: "black" },
 
   // Background color
+  bgColFigmaGrey: { backgroundColor: "#F2F2F2" },
   bgColGrey: { backgroundColor: "grey" },
-  bgColRed: { backgroundColor: "red" },
+  bgColRed: { backgroundColor: "#CD5D6F" },
   bgColWhite: { backgroundColor: "white" },
   bgColBlack: { backgroundColor: "black" },
   bgColGreen: { backgroundColor: "green" },
@@ -74,6 +75,7 @@ const globalStyle = StyleSheet.create({
   pv2: { paddingVertical: 2 },
   pv3: { paddingVertical: 10 },
 
+  pt8: { paddingTop: 8 },
   pt15: { paddingTop: 15 },
   pt16: { paddingTop: 16 },
 
@@ -85,10 +87,13 @@ const globalStyle = StyleSheet.create({
 
   mv10: { marginVertical: 10 },
 
+  mb2: { marginBottom: 2 },
   mb7: { marginBottom: 7 },
   mb10: { marginBottom: 10 },
   mb20: { marginBottom: 20 },
 
+  mt6: { marginTop: 6 },
+  mt8: { marginTop: 8 },
   mt16: { marginTop: 16 },
 
   // Width

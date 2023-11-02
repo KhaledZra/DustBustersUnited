@@ -63,7 +63,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
 
   return (
     <View style={s.flex1}>
-      <ScrollView contentContainerStyle={[s.pt15, s.ph15, s.flex1, s.gap20]}>
+      <ScrollView contentContainerStyle={[s.pt15, s.ph15, s.flex1, s.gap20, s.mb10]}>
         <TextInput
           style={[s.overflowHidden, s.br10, s.boldText]}
           label="Titel"
@@ -71,6 +71,7 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           multiline
           value={nameField.value}
           onChangeText={nameField.onChange}
+          {...register("name", {required: true})}
         />
         <TextInput
           style={[s.overflowHidden, s.br10, s.boldText]}
@@ -79,18 +80,13 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           multiline
           value={descriptionField.value}
           onChangeText={descriptionField.onChange}
-          {...register("description")}
+          {...register("description", {required: true})}
         />
 
         <IntervalSelector key="" name="repeatInterval" control={control} />
 
         <EnergySelector name="energy" control={control} />
 
-        <TextInput
-          style={s.boldText}
-          label="Tilldela till anvädare: "
-          underlineColor="transparent"
-        />
         <ImageSelector onImageSelected={(img) => setImage(img)} />
 
         {isEdit && (
@@ -99,8 +95,8 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
             mode="contained"
             onPress={() => {
               Alert.alert(
-                "All statistik gällande sysslan kommer raderas. Vill du arkivera istället?",
                 "Är du säker?",
+                "All statistik gällande sysslan kommer raderas. Vill du arkivera istället?",
                 [
                   {
                     text: "Radera",
@@ -134,6 +130,10 @@ export default function AddOrEditChoreScreen({ route, navigation }: Props) {
           style={[s.flex1, s.radiusNone]}
           mode="contained"
           onPress={handleSubmit(onSubmit)}
+          disabled={
+            !nameField.value ||
+            !descriptionField.value
+          }
         >
           Spara
         </Button>

@@ -13,12 +13,16 @@ export default function ChoreAvatarRenderer(chore: Chore) {
   const [filtered, setFiltered] = useState<ProfileChore[]>([]);
 
   useEffect(() => {
-    setFiltered(profileChores.filter((pc) => pc.choreId === chore.id));
+    const filtered = profileChores.filter((pc) => pc.choreId === chore.id);
+    const slicedPChores = filtered.slice(0, 6);
+    filtered.length > 6 && slicedPChores.unshift({id: -1} as ProfileChore)
+    
+    setFiltered(slicedPChores);
   }, [profileChores]);
 
   return filtered.length === 0 ? (
-    <View style={[s.bgColGrey, s.w10, s.br10]}>
-      <Text variant="labelLarge" style={[s.colWhite, s.textCenter]}>
+    <View style={[s.bgColFigmaGrey, s.w10, s.br10]}>
+      <Text variant="labelLarge" style={[s.textCenter]}>
         0
       </Text>
     </View>
@@ -43,8 +47,7 @@ function AvatarRender(item: ProfileChore) {
   if (matchedProfile != undefined) {
     let avatar = avatars.find((a) => a.id === matchedProfile.avatar);
 
-    return <Text style={[s.fs20, s.ph1]}>{avatar?.avatar}</Text>;
+    return <Text style={[s.fs20, s.ph1, {textAlignVertical: "center"}]}>{avatar?.avatar}</Text>;
   }
-
-  return <Text>error</Text>;
+  return <Text style={[s.fs20, s.ph1, {textAlignVertical: "center"}]}>...</Text>;
 }

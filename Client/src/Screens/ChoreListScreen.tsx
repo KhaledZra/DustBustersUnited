@@ -46,9 +46,9 @@ export default function ChoreListScreen({ navigation, route }: Props) {
   console.log(profile);
 
   return (
-    <View style={s.flex1}>
+    <View style={[s.flex1]}>
       {profile && !profile.isRequest && (
-        <View style={s.flex1}>
+        <View style={[s.flex1]}>
           <FlatList
             data={chores}
             keyExtractor={(item) => item.id.toString()}
@@ -57,7 +57,7 @@ export default function ChoreListScreen({ navigation, route }: Props) {
             )}
           />
 
-          <View style={s.alignCenter}>
+          <View style={[s.alignCenter, s.pt15]}>
             {isAdmin && (
               <Button
                 mode="contained"

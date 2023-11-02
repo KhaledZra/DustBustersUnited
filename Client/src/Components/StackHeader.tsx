@@ -10,6 +10,7 @@ import {
 import { logout } from "../store/userSlice/thunks";
 import { ChoreHeaderBar } from "./ChoreHeaderBar";
 import IconButtonAvatar from "./IconButtonAvatar";
+import s from "../utils/globalStyles";
 
 type Props = NativeStackHeaderProps & {
   backNav?: boolean;
@@ -59,7 +60,8 @@ export default function StackHeader({
     <>
       <Appbar.Header style={{ paddingRight: 15 }}>
         {backNav && <Appbar.BackAction onPress={() => navigation.goBack()} />}
-        <Appbar.Content style={{ alignItems: "center" }} title={title} />
+        {!backNav && <Appbar.Action icon= ""/>}
+        <Appbar.Content style={[s.alignCenter]} title={title} />
         <Menu
           visible={menuVisible}
           onDismiss={close}
