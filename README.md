@@ -12,7 +12,11 @@ Team: Marcus, Johan, Omar, Mohammed and Khaled
 ```
 EXPO_PUBLIC_API_URL=https://dustbusters.space/api
 ```
-3. Installera dependencies med `npm install`
+3. Installera dependencies med 
+```
+cd Client
+npm install
+```
 
-# Starta projektet
+# Starta projektet, (också från Client/
 `npx expo start --clear`
